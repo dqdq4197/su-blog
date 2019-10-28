@@ -18,7 +18,7 @@ const Loggin = () => {
         setPassword(e.target.value);
     }
     return (
-        <>
+      <div className="field_container">
         <div className="container"> 
         <Form action="">
             <Form.Field>
@@ -39,7 +39,7 @@ const Loggin = () => {
         <div className="navi">
             <Nav />
         </div>
-        </>
+        </div>
     );
     
 };

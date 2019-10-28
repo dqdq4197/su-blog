@@ -1,21 +1,23 @@
-.container {
-    top: 100px;
-}
 .form-control {
     width:50%;
 }
 .gohome{
     font-size: 13px;
 }
-.container{
-    width:100%;
-    height:100vh;
 
-    text-align: center;
+.container{
+    margin:100px 0 0 0;
+    padding:0;
+    float:right;
 }
 .submitbtn {
     margin-bottom:20px !important;
 }
 .accfield{
     width:50% !important;
+}
+@media (min-width: 1200px){
+.container {
+    max-width: 100%
+}
 }

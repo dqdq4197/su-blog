@@ -11,9 +11,10 @@ import {Link} from 'react-router-dom';
 };  
   const item = {
       marginTop:'60px'
+      
   } 
     return (
-      <Menu vertical style={container}>
+      <Menu size='large' vertical style={container}>
         <Menu.Item style={item}>
           <Menu.Header>Products</Menu.Header>
           <Menu.Menu >
