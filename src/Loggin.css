@@ -1,0 +1,21 @@
+.container {
+    top: 100px;
+}
+.form-control {
+    width:50%;
+}
+.gohome{
+    font-size: 13px;
+}
+.container{
+    width:100%;
+    height:100vh;
+
+    text-align: center;
+}
+.submitbtn {
+    margin-bottom:20px !important;
+}
+.accfield{
+    width:50% !important;
+}
