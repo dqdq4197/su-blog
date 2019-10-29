@@ -4,7 +4,7 @@ import '../Loggin.css';
 import {Link} from 'react-router-dom';
 import ButtonExam from '../components/ButtonExam';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
-import Nav from '../components/Nav';
+import Nav from '../components/nav/Nav';
 
 const Loggin = () => {
 
@@ -40,6 +40,7 @@ const Loggin = () => {
             <Nav />
         </div>
         </div>
+
     );
     
 };

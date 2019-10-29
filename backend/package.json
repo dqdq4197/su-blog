@@ -1,0 +1,14 @@
+{
+  "name": "su-blog_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+  },
+  "author": "heesu",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
