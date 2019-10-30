@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../Loggin.css';
 import {Link} from 'react-router-dom';
@@ -7,10 +7,16 @@ import { Button, Checkbox, Form } from 'semantic-ui-react'
 import Nav from '../components/nav/Nav';
 
 const Loggin = () => {
-
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
-
+    
+    const [email,setEmail] = useState([]);
+    const [password,setPassword] = useState([]);
+    useEffect(() => {
+      fetch('/user/id')
+      .then(res=> res.json())
+      .then((user)=>{
+          setEmail(user)
+      })
+    },[]);
     const onchangeEmail = (e) => {
         setEmail(e.target.value);  
     }
@@ -39,6 +45,7 @@ const Loggin = () => {
         <div className="navi">
             <Nav />
         </div>
+        {console.log(email)}
         </div>
 
     );
