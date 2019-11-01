@@ -3,15 +3,18 @@ const cookieParser = require('cookie-Parser');
 const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
 require('dotenv').config();
-
+const passportConfig = require('./passport');
+const authRouter = require('./routes/auth');
 
 const {sequelize} =require('./models');
 
-
-
 const app = express();
+
 sequelize.sync();
+passportConfig(passport);
 
 app.set('port', process.env.PORT || 5000);
 app.use(morgan('dev'));
@@ -29,12 +32,17 @@ app.use(session({
   },
 }));
 
-app.get('/user/id', (req,res) => {
-    const user = [
-        {email:'asd@asd.asd' , password: 'asd'}
-    ];
-    res.json(user);
-})
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', authRouter);
+//app.get('/user/id', (req,res) => {
+//    const user = [
+//        {email:'asd@asd.asd' , password: 'asd'}
+//    ];
+//    res.json(user);
+//})
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');

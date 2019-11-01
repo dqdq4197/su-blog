@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import '../App.css';
 import {Link} from 'react-router-dom';
-import * as animationData from '../lodder.json';
+import * as animationData from '../lodder.json.js';
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
 const Shop = () => {
     

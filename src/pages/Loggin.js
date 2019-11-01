@@ -11,11 +11,6 @@ const Loggin = () => {
     const [email,setEmail] = useState([]);
     const [password,setPassword] = useState([]);
     useEffect(() => {
-      fetch('/user/id')
-      .then(res=> res.json())
-      .then((user)=>{
-          setEmail(user)
-      })
     },[]);
     const onchangeEmail = (e) => {
         setEmail(e.target.value);  
@@ -26,7 +21,7 @@ const Loggin = () => {
     return (
       <div className="field_container">
         <div className="container"> 
-        <Form action="">
+        <Form action="/auth/login">
             <Form.Field>
               <label>Email</label>
               <input className="accfield" placeholder='heesu@blog.com' value={email} onChange={onchangeEmail} />
