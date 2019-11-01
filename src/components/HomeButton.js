@@ -4,7 +4,7 @@ import { Button, Icon } from 'semantic-ui-react'
 const btnStyle = {
   display : 'inline'
 }
-const ButtonExam = () => (
+const HomeButton = () => (
 
   
   <div style={btnStyle}>
@@ -17,4 +17,4 @@ const ButtonExam = () => (
   </div>
 )
 
-export default ButtonExam
+export default HomeButton

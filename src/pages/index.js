@@ -5,3 +5,4 @@ export { default as ItemDetail} from './ItemDetail';
 export { default as Loggin } from './Loggin';
 export { default as Home } from './Home';
 export { default as Board} from './Board';
+export { default as Singup} from './Singup';

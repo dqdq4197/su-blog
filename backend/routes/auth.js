@@ -1,25 +1,38 @@
 const express = require('express');
 const passport = require('passport');
+const bcrypt = require('bcrypt');
+const {User} = require('../models');
 
 const router = express.Router();
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', (authError, user, info) => {
-      if (authError) {
-        console.error(authError);
-        return next(authError);
-      }
-      if (!user) {
-        req.flash('loginError', info.message);
-        return res.redirect('/');
-      }
-      return req.login(user, (loginError) => {
-        if (loginError) {
-          console.error(loginError);
-          return next(loginError);
-        }
-        return res.redirect('/');
+router.post('/login', (req,res,next) => {
+  passport.authenticate('local',(error,user,info) => {
+    if(error) {
+      res.status(500).json({
+        message: error || 'Oops, something happened!',
       });
-    })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
-  });
+      return next(error);
+    }
+    if(!user) {
+      req.flash('loginError', info.message);
+      return res.redirect('/');
+    }
+    return req.login(user, (loginError) => {
+      if(loginError) {
+        return next(loginError);
+      }
+      return res.json(user);
+    })
+  })(req,res,next);
+})
+
+router.post('/singup', async(req,res,next) => {
+  const {email,password} = req.body;
+  const hash = await bcrypt.hash(password, 12);
+  await User.create({
+    email,
+    password: hash,
+  })
+  return res.redirect('/');
+})
 
   module.exports = router;
