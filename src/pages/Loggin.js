@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import '../Loggin.css';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
 import Nav from '../components/nav/Nav';
@@ -11,33 +11,48 @@ const Loggin = () => {
     
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
+    const [logginError, setLogginError] = useState("");
+    const [islogging, setIslogging] = useState(false);
+
     useEffect(() => {
     },[]);
-    const onSubmitHandler = (e) => {
+    const history = useHistory();
+    const onSubmitHandler = async(e) => {
       e.preventDefault();
-      axios({
+     await axios({
         url: "/auth/login",
-        method: "POST",
-        data : {
-          email,
-          password
+        method: 'POST',
+        data: {
+            email,
+            password,
         }
       })
-      .then(res => {
-        this.props.history.push('/home');
+      .then((response)=> {
+        console.log(response.data)
+        const isAutenticated = response.data.nick;
+        window.localStorage.setItem('isAuthenticated',isAutenticated);
+        setIslogging(true);
+        history.push(`/Home/${response.data.nick}`);
+        
       })
-      .catch(error => {
-        console.log("Error: ", error.res);
-      })
+      .catch((error) =>{
+          setLogginError(error.response.data.message);
+          alert(logginError);
+      }); 
     }
+    
+
     const onchangeEmail = (e) => {
         setEmail(e.target.value);  
     }
     const onchangePassword = (e) => {
         setPassword(e.target.value);
     }
+    const isAutenticated = window.localStorage.getItem('isAuthenticated');
     return (
+      
       <div className="field_container">
+       {isAutenticated ? <Redirect to="/Home" /> : null}
         <div className="container"> 
           <Form onSubmit={onSubmitHandler}>
               <Form.Field>
@@ -65,8 +80,4 @@ const Loggin = () => {
     
 };
 
-
 export default Loggin;
-
-
-

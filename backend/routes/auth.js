@@ -14,15 +14,21 @@ router.post('/login', (req,res,next) => {
     }
     if(!user) {
       req.flash('loginError', info.message);
-      return res.redirect('/');
+      console.log('loginError');
+      return res.status(500).json({
+        message: error || info.message,
+      });
     }
     return req.login(user, (loginError) => {
       if(loginError) {
         return next(loginError);
       }
+      user.dd="true";
       return res.json(user);
     })
+    
   })(req,res,next);
+ 
 })
 
 router.post('/singup', async(req,res,next) => {
