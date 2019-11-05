@@ -28,7 +28,7 @@ const Loggin = () => {
         }
       })
       .then((response)=> {
-        console.log(response.data)console.log(response.data)
+        console.log(response.data)
         const isAutenticated = response.data.nick;
         window.localStorage.setItem('isAuthenticated',isAutenticated);
         setIslogging(true);
