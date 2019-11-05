@@ -11,7 +11,7 @@ const Singup = () => {
                </Form.Field>
                <Form.Field>
                  <label>Password</label>
-                 <input placeholder='password' name="password"/>
+                 <input type="password" placeholder='password' name="password"/>
                </Form.Field>
                <Form.Field>
                  <Checkbox label='I agree to the Terms and Conditions' />

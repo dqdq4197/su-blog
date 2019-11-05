@@ -28,7 +28,7 @@ const Loggin = () => {
         }
       })
       .then((response)=> {
-        console.log(response.data)
+        console.log(response.data)console.log(response.data)
         const isAutenticated = response.data.nick;
         window.localStorage.setItem('isAuthenticated',isAutenticated);
         setIslogging(true);
@@ -49,10 +49,10 @@ const Loggin = () => {
         setPassword(e.target.value);
     }
     const isAutenticated = window.localStorage.getItem('isAuthenticated');
+    // {isAutenticated ? <Redirect to="/Home" /> : null}
     return (
       
       <div className="field_container">
-       {isAutenticated ? <Redirect to="/Home" /> : null}
         <div className="container"> 
           <Form onSubmit={onSubmitHandler}>
               <Form.Field>
@@ -74,10 +74,8 @@ const Loggin = () => {
         <div className="navi">
             <Nav />
         </div>
-        </div>
-
+      </div>
     );
-    
 };
 
 export default Loggin;

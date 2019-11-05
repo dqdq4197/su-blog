@@ -26,7 +26,6 @@ router.post('/login', (req,res,next) => {
       user.dd="true";
       return res.json(user);
     })
-    
   })(req,res,next);
  
 })
@@ -41,4 +40,8 @@ router.post('/singup', async(req,res,next) => {
   return res.redirect('/');
 })
 
-  module.exports = router;
+router.get('/logout', (req,res) => {
+  return console.log('success');
+});
+
+module.exports = router;

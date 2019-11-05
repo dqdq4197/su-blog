@@ -11,7 +11,6 @@ import {Link} from 'react-router-dom';
 };  
   const item = {
       marginTop:'60px'
-      
   } 
     return (
       <Menu size='large' vertical style={container}>
@@ -35,7 +34,6 @@ import {Link} from 'react-router-dom';
 
         <Menu.Item>
           <Menu.Header>CMS Solutions</Menu.Header>
-
           <Menu.Menu>
             <Menu.Item
               name='rails'
@@ -93,6 +91,23 @@ import {Link} from 'react-router-dom';
             >
               FAQs
             </Menu.Item>
+          </Menu.Menu>
+        </Menu.Item>
+        <Menu.Item style={item}>
+          <Menu.Header>내정보</Menu.Header>
+          <Menu.Menu >
+          <Link to='/auth/logout'>
+            <Menu.Item
+              name='Logout'
+              active={activeItem === 'Logout'}
+              onClick={handleItemClick}
+            />
+          </Link>
+              <Menu.Item
+                name='About'
+                active={activeItem === 'About'}
+                onClick={handleItemClick}
+              />
           </Menu.Menu>
         </Menu.Item>
       </Menu>
