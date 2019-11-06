@@ -1,10 +1,20 @@
 import React,{useState}  from 'react'
 import { Menu } from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
+import axios from 'axios';
  const Nav = () =>  {
   const [activeItem, setActiveItem] =useState('');
-
+  const history = useHistory();
   const handleItemClick = (name) => setActiveItem(name);
+  const onclicklogout = async(e) => {
+    e.preventDefault();
+    await axios.get('/auth/logout')
+    .then((res) => {
+        history.push('/')
+        console.log(res);
+    })
+    .catch(error => console.log(error))
+  }
   const container = {
     height:'100vh',
     position:'fixed'
@@ -96,13 +106,11 @@ import {Link} from 'react-router-dom';
         <Menu.Item style={item}>
           <Menu.Header>내정보</Menu.Header>
           <Menu.Menu >
-          <Link to='/auth/logout'>
             <Menu.Item
               name='Logout'
               active={activeItem === 'Logout'}
-              onClick={handleItemClick}
+              onClick={onclicklogout}
             />
-          </Link>
               <Menu.Item
                 name='About'
                 active={activeItem === 'About'}

@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import '../Loggin.css';
+import '../components/loggin/Loggin.css';
 import {Link, useHistory, Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
@@ -53,6 +53,7 @@ const Loggin = () => {
     return (
       
       <div className="field_container">
+        
         <div className="container"> 
           <Form onSubmit={onSubmitHandler}>
               <Form.Field>

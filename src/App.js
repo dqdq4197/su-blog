@@ -10,16 +10,16 @@ function App() {
         <Switch>
           <Route path="/" exact component={Loggin}/>
           <Route path="/home/:nick" component={Home}/>
-          <Route path="/home" component={Home}/>
+          <Route path="/home" exact component={Home}/>
           <Route path="/about" component={About}/>
           <Route path="/shop" exact component={Shop}/>
-          <Route path="/shop/:id" component={ItemDetail} />
+          
           <Route path="/Postting" component={Board} />
-          <Route path="/Singup" component={Singup}/>
+          <Route path="/Singup" exact component={Singup}/>
         </Switch>
       </div>
     </Router>
-  );
+  );//<Route path="/shop/:id" component={ItemDetail} />
 }
 
 export default App;

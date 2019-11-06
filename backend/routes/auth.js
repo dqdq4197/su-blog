@@ -1,10 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const {User} = require('../models');
 
 const router = express.Router();
-router.post('/login', (req,res,next) => {
+router.post('/login',isNotLoggedIn, (req,res,next) => {
   passport.authenticate('local',(error,user,info) => {
     if(error) {
       res.status(500).json({
@@ -13,6 +14,7 @@ router.post('/login', (req,res,next) => {
       return next(error);
     }
     if(!user) {
+      console.log(user);
       req.flash('loginError', info.message);
       console.log('loginError');
       return res.status(500).json({
@@ -23,7 +25,6 @@ router.post('/login', (req,res,next) => {
       if(loginError) {
         return next(loginError);
       }
-      user.dd="true";
       return res.json(user);
     })
   })(req,res,next);
@@ -41,7 +42,9 @@ router.post('/singup', async(req,res,next) => {
 })
 
 router.get('/logout', (req,res) => {
-  return console.log('success');
+  req.logout();
+  req.session.destroy();
+  res.send('logout');
 });
 
 module.exports = router;
