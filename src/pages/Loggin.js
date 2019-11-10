@@ -23,7 +23,7 @@ const Loggin = () => {
         url: "/auth/login",
         method: 'POST',
         data: {
-            email,
+            email: email,
             password,
         }
       })
