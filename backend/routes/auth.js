@@ -11,10 +11,10 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
       res.status(500).json({
         message: error || 'Oops, something happened!',
       });
+      console.log('loginerorr');
       return next(error);
     }
     if(!user) {
-      console.log(user);
       req.flash('loginError', info.message);
       console.log('loginError');
       return res.status(500).json({
@@ -23,9 +23,15 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
     }
     return req.login(user, (loginError) => {
       if(loginError) {
-        return next(loginError);
+        return (
+          next(loginError),
+          console.log('continue')
+        );
       }
-      return res.json(user);
+      return (
+        res.json(user),
+        console.log('login_success')
+      )
     })
   })(req,res,next);
  

@@ -1,20 +1,26 @@
 import React,{useState}  from 'react'
 import { Menu } from 'semantic-ui-react'
 import {Link, useHistory} from 'react-router-dom';
+import {useSelector,useDispatch} from 'react-redux';
 import axios from 'axios';
+import { logoutRequest } from '../../actions/authentication';
  const Nav = () =>  {
+
+  const user = useSelector(state => state.authentication)
+  const dispatch = useDispatch();
   const [activeItem, setActiveItem] =useState('');
   const history = useHistory();
   const handleItemClick = (name) => setActiveItem(name);
   const onclicklogout = async(e) => {
     e.preventDefault();
-    await axios.get('/auth/logout')
-    .then((res) => {
-        history.push('/')
-        console.log(res);
-    })
-    .catch(error => console.log(error))
+    dispatch(logoutRequest()).then(
+      () => {
+        history.push('/');
+        console.log(user.status.isLoggedIn)
+      } 
+    )
   }
+    
   const container = {
     height:'100vh',
     position:'fixed'
@@ -22,7 +28,33 @@ import axios from 'axios';
   const item = {
       marginTop:'60px'
   } 
+  const loginButton = (
+    <Link to="/">
+      <Menu.Item
+        name='LogIn'
+        active={activeItem === 'LogIn'}
+        onClick={onclicklogout}
+      />
+    </Link>
+  )
+  const logoutButton = (
+    <>
+      <Menu.Item
+          name='Logout'
+          active={activeItem === 'Logout'}
+          onClick={onclicklogout}
+      />
+      <Link to="/about">
+      <Menu.Item
+          name='About'
+          active={activeItem === 'About'}
+          onClick={handleItemClick}
+      />
+      </Link>
+    </>
+  )
     return (
+      
       <Menu size='large' vertical style={container}>
         <Menu.Item style={item}>
           <Menu.Header>Products</Menu.Header>
@@ -106,16 +138,7 @@ import axios from 'axios';
         <Menu.Item style={item}>
           <Menu.Header>내정보</Menu.Header>
           <Menu.Menu >
-            <Menu.Item
-              name='Logout'
-              active={activeItem === 'Logout'}
-              onClick={onclicklogout}
-            />
-              <Menu.Item
-                name='About'
-                active={activeItem === 'About'}
-                onClick={handleItemClick}
-              />
+            {user.status.isLoggedIn ? logoutButton : loginButton}
           </Menu.Menu>
         </Menu.Item>
       </Menu>

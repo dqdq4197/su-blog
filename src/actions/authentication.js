@@ -8,9 +8,9 @@ import axios from 'axios';
 
 //  LOGIN
 export function loginRequest(email,password) {
-    return (dispatch,getState) => {
+    return (dispatch) => {
         dispatch(login());
-        return axios.post('/auth/login', {email, password})
+        return axios.post('/auth/login', {email,password})
         .then((response) => {
             dispatch(loginSuccess(email));
         }).catch((error) => {
@@ -19,6 +19,17 @@ export function loginRequest(email,password) {
     };
 }
 
+export function logoutRequest() {
+    return (dispatch) => {
+        return axios.get('/auth/logout')
+        .then((response) => {
+            dispatch(logout())
+        }).catch((error) => {
+            console.log(error.response);
+        })
+
+    }
+}
 export function login() {
     return {
         type: AUTH_LOGIN
