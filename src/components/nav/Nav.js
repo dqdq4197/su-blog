@@ -2,7 +2,6 @@ import React,{useState}  from 'react'
 import { Menu } from 'semantic-ui-react'
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
-import axios from 'axios';
 import { logoutRequest } from '../../actions/authentication';
  const Nav = () =>  {
 
@@ -10,7 +9,7 @@ import { logoutRequest } from '../../actions/authentication';
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] =useState('');
   const history = useHistory();
-  const handleItemClick = (name) => setActiveItem(name);
+  const handleItemClick = (name) => {setActiveItem(name);console.log(activeItem)}
   const onclicklogout = async(e) => {
     e.preventDefault();
     dispatch(logoutRequest()).then(

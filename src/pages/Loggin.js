@@ -1,4 +1,4 @@
-import React,{useState,useCallback,useMemo} from 'react';
+import React,{useCallback} from 'react';
 import '../components/loggin/Loggin.css';
 import {Link, useHistory, Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';
@@ -9,21 +9,16 @@ import LoginField from '../components/loggin/LoginField';
 
 
 const Loggin = () => {
-  const user = useSelector(state => state.authentication);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.authentication);
   //const userpatch = useCallback(() => dispatch({type: 'AUTH_LOGIN_SUCCESS'}),[dispatch])
+  //const history = useHistory();
 
-
-  const history = useHistory();
-
-  const onSubmitHandler = useCallback((email,password) => {
-    dispatch(loginRequest(email,password))
+  const onSubmitHandler = useCallback(async(email,password) => {
+    await dispatch(loginRequest(email,password))
+    console.log(user.status.isLoggedIn)
   },[])
 
-
-    
-    
-  
 
   return (
     <div className="field_container">
@@ -36,8 +31,6 @@ const Loggin = () => {
             <Nav />
         </div>
     </div>
-    
-    
   );
 };
 

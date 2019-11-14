@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
-import {Board, Shop, About, ItemDetail, Loggin, Home, Singup} from './pages';
+import {Board, Shop, About, Loggin, Home, Signup} from './pages';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/shop" exact component={Shop}/>
           
           <Route path="/Postting" component={Board} />
-          <Route path="/Singup" exact component={Singup}/>
+          <Route path="/Signup" exact component={Signup}/>
         </Switch>
       </div>
     </Router>

@@ -1,41 +1,51 @@
-import React,{useState} from 'react';
+import React,{useState,useReducer} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link} from 'react-router-dom';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
+
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: action.value
+  };
+}
+
 const LoginField = ({onSubmitHandler}) => {
 
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
+    const [state, dispatch] = useReducer(reducer, {
+      email: '',
+      password: '',
+      
 
+    });
+    const {email, password} = state;
+    const onChangeHandler = (e) => {
+      dispatch(e.target);
+    }
 
-    const handleLogin = async() => {
+    const handleLogin = async(e) => {
+        e.preventDefault();
         await onSubmitHandler(email,password);
     }
-    const onchangeEmail = (e) => {
-        setEmail(e.target.value);  
-    }
-    const onchangePassword = (e) => {
-        setPassword(e.target.value);
-    }
+  
 
-    return (
-        
-      
+    return (      
       <> 
         <Form onSubmit={handleLogin}>
             <Form.Field>
               <label>Email</label>
-              <input name="email" className="accfield" placeholder='heesu@blog.com' value={email} onChange={onchangeEmail} />
+              <input name="email" className="accfield" placeholder='heesu@blog.com' value={email} onChange={onChangeHandler} />
             </Form.Field>
             <Form.Field>
               <label>Password</label>
-              <input type="password" name="password" className="accfield" placeholder='Password' value={password} onChange={onchangePassword} />
+              <input type="password" name="password" className="accfield" placeholder='Password' value={password} onChange={onChangeHandler} />
             </Form.Field>
             <Form.Field>
               <Checkbox label='I agree to the Terms and Conditions' />
             </Form.Field>
             <Button type='submit' className="submitbtn">SingIn</Button>
-            <Link to='/Singup'><Button>SingUp</Button></Link>
+            <Link to='/Signup'><Button>SignUp</Button></Link>
         </Form>
       </>
       

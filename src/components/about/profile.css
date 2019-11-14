@@ -1,0 +1,33 @@
+.container_profile {
+    text-align: center;
+    margin-top:100px;
+}
+.profile_thumnail{
+    position: relative;
+    width:150px;
+    height:150px;
+    background-color: black;
+    background-image: url('./two1.jpg');
+    background-position: center center;
+    background-size: 150px;
+}
+input#img {
+    top:0;
+}
+.change_btn{
+    margin-top: 15px;
+}
+form {
+    margin:0 auto 50px auto;
+    text-align: center;
+    width:150px;
+    height:150px;
+}
+.profile_thumnail input{
+    display: flex;
+    position: absolute;
+    opacity: 0;
+    width:150px;
+    height:150px;
+    
+}

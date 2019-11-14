@@ -1,16 +1,16 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
+import Profile from '../components/about/Profile';
 
 const About = () => {
     const user = useSelector(state => state.authentication)
     return (
-        <div>
-            <h2>소개</h2>
-            <p>
-                안녕하세요,저는 React Router 공부중입니다.
-                이메일: {user.status.currentUser}
-            </p>
-        </div>
+        <>
+            <Profile
+             email={user.status.currentUser.user_email}
+             nick= {user.status.currentUser.user_nick}
+            />
+        </>
     );
 };
 
