@@ -7,7 +7,10 @@ const initialState = {
     status: {
         valid: false,
         isLoggedIn: false,
-        currentUser: '',
+        currentUser: {
+            user_email: '',
+            user_nick: ''
+        } 
     }
 };
 
@@ -30,7 +33,11 @@ export default function authentication(prevState=initialState, action) {
                 },
                 status: {
                     isLoggedIn: true ,
-                    currentUser: action.email,
+                    currentUser: {
+                        ...prevState.currentUser,
+                        user_email : action.email,
+                        user_nick : action.nick
+                    }
                 }
             };
         case types.AUTH_LOGIN_FAILURE:
@@ -46,7 +53,9 @@ export default function authentication(prevState=initialState, action) {
                 ...prevState,
                 status: {
                     isLoggedIn: false,
-                    currentUser: ''
+                    currentUser: {
+                        ...prevState.currentUser
+                    }
                 }
             };
         default:

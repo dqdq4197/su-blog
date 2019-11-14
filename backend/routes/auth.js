@@ -38,11 +38,12 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
 })
 
 router.post('/singup', async(req,res,next) => {
-  const {email,password} = req.body;
+  const {email,password,nick} = req.body;
   const hash = await bcrypt.hash(password, 12);
   await User.create({
     email,
     password: hash,
+    nick
   })
   return res.redirect('/');
 })

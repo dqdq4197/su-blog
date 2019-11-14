@@ -12,7 +12,8 @@ export function loginRequest(email,password) {
         dispatch(login());
         return axios.post('/auth/login', {email,password})
         .then((response) => {
-            dispatch(loginSuccess(email));
+            let nick = response.data.nick;
+            dispatch(loginSuccess(email,nick));
         }).catch((error) => {
             dispatch(loginFailure());
         });
@@ -36,10 +37,11 @@ export function login() {
     };
 }
 
-export function loginSuccess(email) {
+export function loginSuccess(email,nick) {
     return {
         type: AUTH_LOGIN_SUCCESS,
-        email
+        email,
+        nick
     };
 }
 
