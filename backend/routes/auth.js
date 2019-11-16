@@ -1,8 +1,10 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const {User} = require('../models');
+const path = require('path');
 
 const router = express.Router();
 router.post('/login',isNotLoggedIn, (req,res,next) => {
@@ -52,6 +54,26 @@ router.get('/logout', (req,res) => {
   req.logout();
   req.session.destroy();
   res.send('logout');
+});
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'profiles/')
+  },
+  filename(req, file, cb) {
+  const ext = path.extname(file.originalname);  
+      cb(null, path.basename(file.originalname, ext) + Date.now() + ext); 
+  },
+  limits: { fileSize: 5 * 1024 * 1024 },
+})
+
+var upload = multer({ storage: storage })
+
+router.post('/profile/img',upload.single('img'), (req, res) => {
+  console.log('req.file:',req.file);
+  //console.log(req.body);
+  res.json({ url: `${req.file.filename}` });
+  console.log('change')
 });
 
 module.exports = router;

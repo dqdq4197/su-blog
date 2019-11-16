@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
-
+import {Link} from 'react-router-dom';
 
 
 const SignupField = () => {
@@ -25,6 +25,7 @@ const SignupField = () => {
                </Form.Field>
                
                <Button type='submit'>Join</Button>
+               <Link to='/'><Button>Login</Button></Link>
              </Form>
         </>
     ) 

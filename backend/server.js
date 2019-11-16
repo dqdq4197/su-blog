@@ -19,6 +19,7 @@ passportConfig(passport);
 app.set('port', process.env.PORT || 5000);
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname,'public')));
+app.use('/auth/profile/img', express.static(path.join(__dirname,'profiles')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
