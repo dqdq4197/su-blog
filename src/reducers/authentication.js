@@ -9,7 +9,8 @@ const initialState = {
         isLoggedIn: false,
         currentUser: {
             user_email: '',
-            user_nick: ''
+            user_nick: '',
+            profile_img_path:''
         } 
     }
 };
@@ -34,7 +35,7 @@ export default function authentication(prevState=initialState, action) {
                 status: {
                     isLoggedIn: true ,
                     currentUser: {
-                        ...prevState.currentUser,
+                        ...prevState.status.currentUser,
                         user_email : action.email,
                         user_nick : action.nick
                     }
@@ -54,10 +55,21 @@ export default function authentication(prevState=initialState, action) {
                 status: {
                     isLoggedIn: false,
                     currentUser: {
-                        ...prevState.currentUser
+                        ...prevState.status.currentUser
                     }
                 }
             };
+        case types.AUTH_PROFILE_IMG_CHANGE_SUCCESS:
+            return {
+                ...prevState,
+                status: {
+                    ...prevState.status,
+                    currentUser: {
+                        ...prevState.status.currentUser,
+                        profile_img_path: action.path
+                    }
+                }
+            }
         default:
             return prevState;
     }

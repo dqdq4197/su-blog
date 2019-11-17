@@ -2,7 +2,9 @@ import {
     AUTH_LOGIN,
     AUTH_LOGIN_SUCCESS,
     AUTH_LOGIN_FAILURE,
-    AUTH_LOGOUT
+    AUTH_LOGOUT,
+    AUTH_PROFILE_IMG_CHANGE_REQUEST,
+    AUTH_PROFILE_IMG_CHANGE_SUCCESS,
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -12,8 +14,9 @@ export function loginRequest(email,password) {
         dispatch(login());
         return axios.post('/auth/login', {email,password})
         .then((response) => {
-            let nick = response.data.nick;
+            const nick = response.data.nick;
             dispatch(loginSuccess(email,nick));
+            console.log(response.data);
         }).catch((error) => {
             dispatch(loginFailure());
         });
@@ -28,7 +31,17 @@ export function logoutRequest() {
         }).catch((error) => {
             console.log(error.response);
         })
+    }
+}
 
+export function profile_img_change(formdata) {
+    return (dispatch) => {
+        return axios.post('/auth/profile/img',formdata)
+        .then((res) => {
+            dispatch(profile_img_change_success(res.data.path))
+        }).catch((error) => {
+            console.log("action profile_img_change_error")
+        })
     }
 }
 export function login() {
@@ -55,4 +68,10 @@ export function logout() {
     return {
         type: AUTH_LOGOUT
     };
+}
+export function profile_img_change_success(path) {
+    return {
+        type: AUTH_PROFILE_IMG_CHANGE_SUCCESS,
+        path
+    }
 }

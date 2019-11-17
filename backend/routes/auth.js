@@ -67,13 +67,20 @@ var storage = multer.diskStorage({
   limits: { fileSize: 5 * 1024 * 1024 },
 })
 
-var upload = multer({ storage: storage })
+var upload = multer({ storage })
 
 router.post('/profile/img',upload.single('img'), (req, res) => {
-  console.log('req.file:',req.file);
-  //console.log(req.body);
-  res.json({ url: `${req.file.filename}` });
-  console.log('change')
+  console.log(req.file);
+  if(req.file){
+    res.json({ path: `${req.file.filename}` });
+  }else {
+    req.status("404").json("No file to Upload!")
+  }
 });
 
+router.post('/profile/save', async(req,res) => {
+  const {phone, img_path,id} = req.body;
+  User.update({profile_img: img_path},{where: {email: id}})
+  
+})
 module.exports = router;
