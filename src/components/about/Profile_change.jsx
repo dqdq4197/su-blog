@@ -1,8 +1,5 @@
 import React,{useEffect} from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import axios from 'axios';
-
-
 
 
 const Profile_change= ({onImgChange, path}) => {
@@ -14,9 +11,6 @@ const Profile_change= ({onImgChange, path}) => {
             document.getElementById('thumnail').style.display='block'
         }
     },[path])
-    const onFormSubmit = (e) => {
-
-    }
     
     return (
         <div className="profile_img_container">

@@ -6,11 +6,11 @@ const initialState = {
     },
     status: {
         valid: false,
-        isLoggedIn: false,
+        isLoggedIn: false,      //로그인 중인지
         currentUser: {
-            user_email: '',
-            user_nick: '',
-            profile_img_path:''
+            user_email: '',      //유저 이메일
+            user_nick: '',       //유저 닉네임
+            profile_img_path:''  //프로필 이미지 경로
         } 
     }
 };
@@ -37,15 +37,24 @@ export default function authentication(prevState=initialState, action) {
                     currentUser: {
                         ...prevState.status.currentUser,
                         user_email : action.email,
-                        user_nick : action.nick
+                        user_nick : action.nick,
+                        profile_img_path : action.path,
                     }
                 }
             };
         case types.AUTH_LOGIN_FAILURE:
             return {
-                ...prevState,
                 login: {
                     status: 'FAILURE'
+                },
+                status: {
+                    ...prevState,
+                    isLoggedIn:false,
+                    currentUser: {
+                        user_email: '',   
+                        user_nick: '',    
+                        profile_img_path:''
+                    }
                 }
             };
         //  LOG_OUT

@@ -48,3 +48,14 @@
 .profile_change_container label:hover {
     background-color: rgba(0,0,0,.2);
 }
+.formbtn {
+    margin-top: 100px;
+}
+/*profile_edit */
+
+.ui.list {
+    margin:20px auto;
+    font-size: 1.1em;
+    width:30%;
+    text-align: center;
+}

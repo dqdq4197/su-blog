@@ -3,7 +3,6 @@ import {
     AUTH_LOGIN_SUCCESS,
     AUTH_LOGIN_FAILURE,
     AUTH_LOGOUT,
-    AUTH_PROFILE_IMG_CHANGE_REQUEST,
     AUTH_PROFILE_IMG_CHANGE_SUCCESS,
 } from './ActionTypes';
 import axios from 'axios';
@@ -15,7 +14,8 @@ export function loginRequest(email,password) {
         return axios.post('/auth/login', {email,password})
         .then((response) => {
             const nick = response.data.nick;
-            dispatch(loginSuccess(email,nick));
+            const profile_img_path = response.data.profile_img;
+            dispatch(loginSuccess(email,nick,profile_img_path));
             console.log(response.data);
         }).catch((error) => {
             dispatch(loginFailure());
@@ -50,11 +50,12 @@ export function login() {
     };
 }
 
-export function loginSuccess(email,nick) {
+export function loginSuccess(email,nick,path) {
     return {
         type: AUTH_LOGIN_SUCCESS,
         email,
-        nick
+        nick,
+        path
     };
 }
 

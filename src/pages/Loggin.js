@@ -1,6 +1,6 @@
-import React,{useCallback} from 'react';
+import React, {useCallback} from 'react';
 import '../components/loggin/Loggin.css';
-import {Link, useHistory, Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';
 import Nav from '../components/nav/Nav';
 import {loginRequest} from '../actions/authentication';
@@ -16,7 +16,6 @@ const Loggin = () => {
 
   const onSubmitHandler = useCallback(async(email,password) => {
     await dispatch(loginRequest(email,password))
-    console.log(user.status.isLoggedIn)
   },[])
 
 
