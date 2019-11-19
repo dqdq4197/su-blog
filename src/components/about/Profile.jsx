@@ -1,4 +1,4 @@
-import React,{useEffect, useState, useRef, useCallback} from 'react';
+import React,{useEffect, useState, useCallback} from 'react';
 import './profile.css';
 import Profile_change from './Profile_change';
 import axios from 'axios';
@@ -14,7 +14,6 @@ const Profile = ({email,nick}) => {
     const [phone, setPhone] = useState('');
     const [img_path, setImg_path] = useState('');
 
-    const confirm = useRef();
 
     useEffect(() => {
         setImg_path(user.profile_img_path)

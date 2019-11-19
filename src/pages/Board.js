@@ -1,12 +1,11 @@
 import React from 'react';
-import TextBoard from '../components/board/TextBoard';
-import '../components/board/board.css';
+import WriteFormEditor from '../components/board/WriteFormEditor';
 
 const Board = () => {
     return (
-        <div>
-            <TextBoard />
-        </div>
+        <>
+            <WriteFormEditor />
+        </>
     )
 }
 

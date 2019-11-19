@@ -26,4 +26,6 @@ const Profile_edit = ({email, nick}) => (
     </List>
 )
 
+
+
 export default Profile_edit
