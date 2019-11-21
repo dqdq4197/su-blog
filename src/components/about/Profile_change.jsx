@@ -15,7 +15,7 @@ const Profile_change= ({onImgChange, path}) => {
     return (
         <div className="profile_img_container">
         <div className="profile">
-            <img style={{width:150, heigth:150}} id="thumnail" src={path} /> 
+            <img style={{width:150, heigth:150}} id="thumnail" src={path} alt=""/> 
         </div>
         <div className="profile_change_dropdown">
             <Dropdown

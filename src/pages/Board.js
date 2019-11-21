@@ -1,10 +1,10 @@
 import React from 'react';
-import WriteFormEditor from '../components/board/WriteFormEditor';
+import MarkdownEditorjs from '../components/board/MarkdownEditorjs';
 
 const Board = () => {
     return (
         <>
-            <WriteFormEditor />
+            <MarkdownEditorjs />
         </>
     )
 }

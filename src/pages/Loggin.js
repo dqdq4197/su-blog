@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import '../components/loggin/Loggin.css';
 import {Link, Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';
@@ -14,9 +14,9 @@ const Loggin = () => {
   //const userpatch = useCallback(() => dispatch({type: 'AUTH_LOGIN_SUCCESS'}),[dispatch])
   //const history = useHistory();
 
-  const onSubmitHandler = useCallback(async(email,password) => {
+  const onSubmitHandler = async(email,password) => {
     await dispatch(loginRequest(email,password))
-  },[])
+  }
 
 
   return (

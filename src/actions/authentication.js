@@ -13,9 +13,10 @@ export function loginRequest(email,password) {
         dispatch(login());
         return axios.post('/auth/login', {email,password})
         .then((response) => {
+            const id = response.data.id;
             const nick = response.data.nick;
             const profile_img_path = response.data.profile_img;
-            dispatch(loginSuccess(email,nick,profile_img_path));
+            dispatch(loginSuccess(id,email,nick,profile_img_path));
             console.log(response.data);
         }).catch((error) => {
             dispatch(loginFailure());
@@ -50,9 +51,10 @@ export function login() {
     };
 }
 
-export function loginSuccess(email,nick,path) {
+export function loginSuccess(id,email,nick,path) {
     return {
         type: AUTH_LOGIN_SUCCESS,
+        id,
         email,
         nick,
         path

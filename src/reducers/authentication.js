@@ -8,6 +8,7 @@ const initialState = {
         valid: false,
         isLoggedIn: false,      //로그인 중인지
         currentUser: {
+            user_id: '',               //유저 아이디
             user_email: '',      //유저 이메일
             user_nick: '',       //유저 닉네임
             profile_img_path:''  //프로필 이미지 경로
@@ -36,6 +37,7 @@ export default function authentication(prevState=initialState, action) {
                     isLoggedIn: true ,
                     currentUser: {
                         ...prevState.status.currentUser,
+                        user_id : action.id,
                         user_email : action.email,
                         user_nick : action.nick,
                         profile_img_path : action.path,
