@@ -8,17 +8,10 @@ module.exports = {
 
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-    */
-   return queryInterface.changeColumn(
-     'users','nick',{
-       type:Sequelize.STRING(15),
-       allowNUll:true,
-       unique:true,
-       defaultValue:'heesu123'
-     }
-   )
+    */return queryInterface.removeColumn("faqs", "views");
 
-   },
+
+  },
 
   down: (queryInterface, Sequelize) => {
     /*
