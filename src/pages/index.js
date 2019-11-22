@@ -6,3 +6,4 @@ export { default as Loggin } from './Loggin';
 export { default as Home } from './Home';
 export { default as Board} from './Board';
 export { default as Signup} from './Signup';
+export { default as Poster} from './Poster';

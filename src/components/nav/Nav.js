@@ -3,6 +3,16 @@ import { Menu } from 'semantic-ui-react'
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
 import { logoutRequest } from '../../actions/authentication';
+import styled from 'styled-components';
+
+
+
+const NaviContainer = styled.div`
+    position:relative;
+    width: 22.2%;
+    height: 100vh;
+`
+
  const Nav = () =>  {
 
   const user = useSelector(state => state.authentication)
@@ -51,18 +61,19 @@ import { logoutRequest } from '../../actions/authentication';
       />
       </Link>
     </>
-  )
+  );
+
     return (
-      
+      <NaviContainer>
       <Menu size='large' vertical style={container}>
         <Menu.Item style={item}>
           <Menu.Header>Products</Menu.Header>
           <Menu.Menu >
-            <Menu.Item
+            <Link to='/poster'><Menu.Item
               name='enterprise'
               active={activeItem === 'enterprise'}
               onClick={handleItemClick}
-            />
+            /></Link>
             <Link to='/about'>
               <Menu.Item
                 name='About'
@@ -141,6 +152,7 @@ import { logoutRequest } from '../../actions/authentication';
           </Menu.Menu>
         </Menu.Item>
       </Menu>
+      </NaviContainer>
     )
 }
 
