@@ -1,9 +1,12 @@
+import storage from '../lib/storage';
+
 import {
     AUTH_LOGIN,
     AUTH_LOGIN_SUCCESS,
     AUTH_LOGIN_FAILURE,
     AUTH_LOGOUT,
     AUTH_PROFILE_IMG_CHANGE_SUCCESS,
+    AUTH_LOGIN_INFO_SAVE,
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -18,8 +21,12 @@ export function loginRequest(email,password) {
             const profile_img_path = response.data.profile_img;
             dispatch(loginSuccess(id,email,nick,profile_img_path));
             console.log(response.data);
+           storage.set('loginInfo',response.data);
+            
         }).catch((error) => {
             dispatch(loginFailure());
+            alert(error.response.data.message);
+            
         });
     };
 }
@@ -40,6 +47,7 @@ export function profile_img_change(formdata) {
         return axios.post('/auth/profile/img',formdata)
         .then((res) => {
             dispatch(profile_img_change_success(res.data.path))
+            console.log('바뀨다',res.data.path)
         }).catch((error) => {
             console.log("action profile_img_change_error")
         })
@@ -76,5 +84,11 @@ export function profile_img_change_success(path) {
     return {
         type: AUTH_PROFILE_IMG_CHANGE_SUCCESS,
         path
+    }
+}
+export function login_info_save(userinfo) {
+    return {
+        type: AUTH_LOGIN_INFO_SAVE,
+        userinfo
     }
 }

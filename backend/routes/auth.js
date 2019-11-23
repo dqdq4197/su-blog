@@ -13,11 +13,10 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
       res.status(500).json({
         message: error || 'Oops, something happened!',
       });
-      console.log('loginerorr');
+      console.log('loginerror');
       return next(error);
     }
     if(!user) {
-      req.flash('loginError', info.message);
       console.log('loginError');
       return res.status(500).json({
         message: error || info.message,
@@ -80,6 +79,6 @@ router.post('/profile/img',upload.single('img'), (req, res) => {
 router.post('/profile/save', async(req,res) => {
   const {phone, img_path,id} = req.body;
   User.update({profile_img: img_path},{where: {email: id}})
-  
+  console.log(img_path);
 })
 module.exports = router;

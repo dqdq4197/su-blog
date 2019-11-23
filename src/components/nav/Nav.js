@@ -1,10 +1,10 @@
-import React,{useState}  from 'react'
+import React  from 'react'
 import { Menu } from 'semantic-ui-react'
 import {Link, useHistory} from 'react-router-dom';
 import {useSelector,useDispatch} from 'react-redux';
 import { logoutRequest } from '../../actions/authentication';
 import styled from 'styled-components';
-
+import storage from '../../lib/storage';
 
 
 const NaviContainer = styled.div`
@@ -14,18 +14,16 @@ const NaviContainer = styled.div`
 `
 
  const Nav = () =>  {
-
+  const isLoggedIn = storage.get('loginInfo');
   const user = useSelector(state => state.authentication)
   const dispatch = useDispatch();
-  const [activeItem, setActiveItem] =useState('');
   const history = useHistory();
-  const handleItemClick = (name) => {setActiveItem(name);console.log(activeItem)}
   const onclicklogout = async(e) => {
     e.preventDefault();
     dispatch(logoutRequest()).then(
       () => {
+        storage.remove('loginInfo');
         history.push('/');
-        console.log(user.status.isLoggedIn)
       } 
     )
   }
@@ -41,7 +39,6 @@ const NaviContainer = styled.div`
     <Link to="/">
       <Menu.Item
         name='LogIn'
-        active={activeItem === 'LogIn'}
         onClick={onclicklogout}
       />
     </Link>
@@ -50,14 +47,11 @@ const NaviContainer = styled.div`
     <>
       <Menu.Item
           name='Logout'
-          active={activeItem === 'Logout'}
           onClick={onclicklogout}
       />
       <Link to="/about">
       <Menu.Item
           name='About'
-          active={activeItem === 'About'}
-          onClick={handleItemClick}
       />
       </Link>
     </>
@@ -71,14 +65,10 @@ const NaviContainer = styled.div`
           <Menu.Menu >
             <Link to='/poster'><Menu.Item
               name='enterprise'
-              active={activeItem === 'enterprise'}
-              onClick={handleItemClick}
             /></Link>
             <Link to='/about'>
               <Menu.Item
                 name='About'
-                active={activeItem === 'About'}
-                onClick={handleItemClick}
               />
             </Link>
           </Menu.Menu>
@@ -89,57 +79,41 @@ const NaviContainer = styled.div`
           <Menu.Menu>
             <Menu.Item
               name='rails'
-              active={activeItem === 'rails'}
-              onClick={handleItemClick}
             />
             <Menu.Item
-              name='python'
-              active={activeItem === 'python'}
-              onClick={handleItemClick}
+              name='python'     
             />
             <Menu.Item
               name='php'
-              active={activeItem === 'php'}
-              onClick={handleItemClick}
             />
           </Menu.Menu>
         </Menu.Item>
 
         <Menu.Item>
           <Menu.Header>Postting</Menu.Header>
-
           <Menu.Menu>
             <Link to='/Postting'>
               <Menu.Item
               name='Write'
-              active={activeItem === 'Write'}
-              onClick={handleItemClick}
               />
             </Link>
             <Menu.Item
               name='Mypost'
-              active={activeItem === 'Mypost'}
-              onClick={handleItemClick}
             />
           </Menu.Menu>
         </Menu.Item>
 
         <Menu.Item>
           <Menu.Header>Support</Menu.Header>
-
           <Menu.Menu>
             <Menu.Item
               name='email'
-              active={activeItem === 'email'}
-              onClick={handleItemClick}
             >
               E-mail Support
             </Menu.Item>
 
             <Menu.Item
               name='faq'
-              active={activeItem === 'faq'}
-              onClick={handleItemClick}
             >
               FAQs
             </Menu.Item>
@@ -148,7 +122,7 @@ const NaviContainer = styled.div`
         <Menu.Item style={item}>
           <Menu.Header>내정보</Menu.Header>
           <Menu.Menu >
-            {user.status.isLoggedIn ? logoutButton : loginButton}
+            {isLoggedIn ? logoutButton : loginButton}
           </Menu.Menu>
         </Menu.Item>
       </Menu>

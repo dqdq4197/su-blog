@@ -19,10 +19,7 @@ const Profile = ({email,nick}) => {
         setImg_path(user.profile_img_path)
     },[user.profile_img_path])
 
-    const onChangeValue = (e) => {
-        return setPhone(e.target.value);
-    }
-
+    
     const onSubmitForm = (e) => {
         e.preventDefault();
         axios({

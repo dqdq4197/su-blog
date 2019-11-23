@@ -16,8 +16,6 @@ const LoginField = ({onSubmitHandler}) => {
     const [state, dispatch] = useReducer(reducer, {
       email: '',
       password: '',
-      
-
     });
     const {email, password} = state;
     const onChangeHandler = (e) => {

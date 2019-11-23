@@ -9,6 +9,10 @@ router.post('/upload', (req,res,next) => {
     const data = outputData.blocks.map((res)=> {
         return res;
     })
+    outputData.blocks.map((res) => {
+        console.log(res);
+    })
+    console.log('data :',data);
     console.log(userId);
     if(userId){
         Post.create({
@@ -17,5 +21,13 @@ router.post('/upload', (req,res,next) => {
         })
     }
     res.json(data);
+})
+router.get('/:id', (req,res) => {
+    console.log(req.params.id);
+    post_content = Post.findOne({where: {id: req.params.id},attribute:['id']});
+    post_content.then((response) => {
+        res.json(response.dataValues.content);
+    })
+    
 })
 module.exports = router;

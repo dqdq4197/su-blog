@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components'
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header'; 
@@ -13,6 +13,7 @@ import InlineCode from '@editorjs/inline-code';
 import './markdown.css';
 import axios from 'axios';
 import {useSelector } from 'react-redux';
+import PosterModal from '../../lib/PosterModal';
 
 
 const MarkdownContainer = styled.div`
@@ -25,7 +26,7 @@ const MarkdownEditorjs = () => {
 
 
   const user = useSelector(state => state.authentication.status.currentUser);
-  const [userId, setUserId] = useState(user.user_id);
+  
 
   const editor = new EditorJS({ 
     holderId: 'editorjs', 
@@ -86,27 +87,30 @@ const MarkdownEditorjs = () => {
 
 const onClickSave = () => {
   editor.save().then((outputData) => {
-    console.log(user.user_id,userId);
+    const userId = user.user_id
+    console.log('userid:',userId);
     axios.post('/post/upload',
     {
       outputData,
-      userId    
+      userId
     })
     .then((res) => {
       console.log(res.data);
-    }).catch((error) => {console.log(error)})
+    }).catch((error) => {
+      console.log(error.response)
+    })
     console.log('Article data: ', outputData)
   }).catch((error) => {
-    console.log('Saving failed: ', error)
+    console.log('Saving failed: ', error.response)
   });
 }
 
   
   return (
     <MarkdownContainer className="markdown">
-      <h1>MY CONTENT</h1>
+      <h1>Create posters</h1>
       <div id="editorjs"></div>
-      <button onClick={onClickSave}>save</button>
+      <PosterModal onClick={onClickSave}/>
     </MarkdownContainer>
   )
 }

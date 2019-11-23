@@ -3,6 +3,8 @@ import {useSelector} from 'react-redux';
 import Profile from '../components/about/Profile';
 
 const About = () => {
+
+
     const user = useSelector(state => state.authentication)
     return (
         <>

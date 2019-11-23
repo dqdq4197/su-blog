@@ -4,7 +4,7 @@ import MarkdownEditorjs from '../components/board/MarkdownEditorjs';
 const Board = () => {
     return (
         <>
-            <MarkdownEditorjs />
+            <div><MarkdownEditorjs /></div>
         </>
     )
 }

@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import Nav from '../components/nav/Nav';
 import styled from 'styled-components';
-
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 
 const PosterContainer= styled.div`
     display:flex;
@@ -10,7 +11,9 @@ const PosterContainer= styled.div`
 
 
 const Poster = () => {
-    var json = { // json 받아오기 (axios이용)
+
+    const posterId = useSelector(state => state.posts )
+   /* var json = { // json 받아오기 (axios이용)
         "time": 1563816717958,
         "blocks": [{
             "type": "header",
@@ -53,7 +56,7 @@ const Poster = () => {
           {
             "type": "paragraph",
             "data": {
-              "text": "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark class=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
+              "text": "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark className=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
             }
           },
           {
@@ -78,7 +81,7 @@ const Poster = () => {
           {
             "type": "paragraph",
             "data": {
-              "text": "Given data can be used as you want: render with HTML for <code class=\"inline-code\">Web clients</code>, render natively for <code class=\"inline-code\">mobile apps</code>, create markup for <code class=\"inline-code\">Facebook Instant Articles</code> or <code class=\"inline-code\">Google AMP</code>, generate an <code class=\"inline-code\">audio version</code> and so on."
+              "text": "Given data can be used as you want: render with HTML for <code className=\"inline-code\">Web clients</code>, render natively for <code className=\"inline-code\">mobile apps</code>, create markup for <code className=\"inline-code\">Facebook Instant Articles</code> or <code className=\"inline-code\">Google AMP</code>, generate an <code className=\"inline-code\">audio version</code> and so on."
             }
           },
           {
@@ -111,14 +114,26 @@ const Poster = () => {
           }
         ],
         "version": "2.15.0"
-      };
+      };  */
 
+      //var json=null;
+
+      const posterShowRquest = async() => {
+        await axios.get(`/post/${posterId.postData}`)
+        .then((res) => {
+          console.log(res.data);
+          if(res.data) {asd(res.data)};
+        })
+      }
+     
       useEffect(() => {
-        asd();
-      },[json])
-      const asd = () => {
+        posterShowRquest();
+       
+      },[]);
+
+      const asd = (json) => {
         var html = '';
-        json.blocks.forEach(function(block) {
+        json.forEach(function(block) {
           switch (block.type) {
             case 'header':
               html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
@@ -130,7 +145,7 @@ const Poster = () => {
               html += '<hr />';
               break;
             case 'image':
-              html += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+              html += `<img className="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
               break;
             case 'list':
               html += '<ul>';
@@ -147,7 +162,7 @@ const Poster = () => {
           document.getElementById('content').innerHTML = html;
           //console.log(block);
         });
-        console.log('html: ', html);
+        //console.log('html: ', html);
       };
       
 
@@ -158,14 +173,12 @@ const Poster = () => {
     return (
         <PosterContainer>
         <Nav />
-        <div class="container" style={{marginLeft:200,marginTop:0, marginRight:-200, textAlign:'left'}}>
-          <main role="main" class="container">
-            <div class="row">
-              <div class="col-md-8 blog-main">
-                <div class="blog-post">
-                  <div id="content">
-                    loading content...
-                    
+        <div className="container" style={{marginLeft:200,marginTop:-60, marginRight:-200, marginBottom:150, textAlign:'left'}}>
+          <main role="main" className="container">
+            <div className="row">
+              <div className="col-md-8 blog-main">
+                <div className="blog-post">
+                  <div id="content">                  
                   </div>
                 </div>
               </div>

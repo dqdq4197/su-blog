@@ -1,11 +1,10 @@
 import React,{useEffect ,useState} from 'react';
 import Nav from '../components/nav/Nav';
-import Contents from '../components/post/Contents';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import Test from './Test';
-import '../components/Home/home.css';
+import {home_load_request, home_load_success} from '../actions/home';
+import {useDispatch, useSelector} from 'react-redux';
 
 
 const Content = styled.div`
@@ -36,43 +35,33 @@ const PosterContainer = styled.div`
 `
 
 
-const Home = ({match}) => {
-    
-
+const Home = () => {
+    const isLoading = useSelector(state => state.home.isLoading);
+    const dispatch = useDispatch();
     const [posterId, setPosterId] = useState([]);
-    const [id, setId] = useState([]);
+
     useEffect(() => {
         callPosts();
     },[]);
-    const GetPostId = (
-        <div>
-            <Link to={`home:${posterId}`}>`${posterId}번 포스터` </Link>
-        </div>
-    )
 
     const callPosts = async() => {
-       // const posterContainer = document.getElementById('posterContainer')
+        dispatch(home_load_request());
         await axios.get('/home')
         .then((res) => {
+            dispatch(home_load_success());
             res.data.map((post) => {
-                setPosterId((previd)=> [...previd,post])
+                return setPosterId((previd)=> [...previd,post])
         })
         }).catch((err) => {
             console.log(err.res);
         })
-        
     }
-    
-    
-
     return (
-        
         <Content> 
             <Nav />
             <div className="asd">
             <PosterContainer id='posterContainer'>
-                {posterId.map(info=><Test id={info.id}></Test>)}
-                {console.log("posterId : ", posterId.map(info=>info.id))}
+                {isLoading==='SUCCESS' ? posterId.map(info=><Test key ={info.id} id={info.id}></Test>) : "isLoading..."}
             </PosterContainer>
             </div>
         </Content>

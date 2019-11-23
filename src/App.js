@@ -1,9 +1,21 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
 import {Board, Shop, About, Loggin, Home, Poster, Signup} from './pages';
+import storage from './lib/storage';
+import {login_info_save} from './actions/authentication';
+import {useDispatch} from 'react-redux';
 
 function App() {
+  const dispatch = useDispatch();
+  const userInfo = async() => {
+    const loginInfo = storage.get('loginInfo');
+    dispatch(login_info_save(loginInfo));
+  }
+useEffect(() => {
+  userInfo();
+},[]);
+
   return (
     <Router>
       <div className="App">

@@ -12,7 +12,8 @@ const initialState = {
             user_email: '',      //유저 이메일
             user_nick: '',       //유저 닉네임
             profile_img_path:''  //프로필 이미지 경로
-        } 
+        },
+        result: null,
     }
 };
 
@@ -41,9 +42,14 @@ export default function authentication(prevState=initialState, action) {
                         user_email : action.email,
                         user_nick : action.nick,
                         profile_img_path : action.path,
-                    }
+                    },
                 }
             };
+        case types.AUTH_LOGIN_INFO_SAVE:
+            return {
+                ...prevState,
+                result:action.userinfo
+            }
         case types.AUTH_LOGIN_FAILURE:
             return {
                 login: {
@@ -56,7 +62,7 @@ export default function authentication(prevState=initialState, action) {
                         user_email: '',   
                         user_nick: '',    
                         profile_img_path:''
-                    }
+                    },
                 }
             };
         //  LOG_OUT
@@ -67,7 +73,7 @@ export default function authentication(prevState=initialState, action) {
                     isLoggedIn: false,
                     currentUser: {
                         ...prevState.status.currentUser
-                    }
+                    },
                 }
             };
         case types.AUTH_PROFILE_IMG_CHANGE_SUCCESS:
