@@ -10,7 +10,7 @@ function App() {
   const dispatch = useDispatch();
   const userInfo = async() => {
     const loginInfo = storage.get('loginInfo');
-    dispatch(login_info_save(loginInfo));
+    await dispatch(login_info_save(loginInfo));
   }
 useEffect(() => {
   userInfo();

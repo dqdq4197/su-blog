@@ -12,16 +12,16 @@ const initialState = {
             user_email: '',      //유저 이메일
             user_nick: '',       //유저 닉네임
             profile_img_path:''  //프로필 이미지 경로
-        },
-        result: null,
-    }
+        }
+    },
+    result: null,
 };
 
 export default function authentication(prevState=initialState, action) {
    
     switch(action.type) {
         //LOGIN
-        case types.AUTH_LOGIN:
+        case types.AUTH_LOGIN_REQUEST:
             return {
                 ...prevState,
                 login: {

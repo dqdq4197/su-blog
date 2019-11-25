@@ -2,37 +2,40 @@ import React,{useEffect, useState, useCallback} from 'react';
 import './profile.css';
 import Profile_change from './Profile_change';
 import axios from 'axios';
-import {profile_img_change} from '../../actions/authentication';
+import {profile_img_change, login} from '../../actions/authentication';
 import {useDispatch, useSelector} from 'react-redux';
 import Profile_edit from './Profile_edit';
+import storage from '../../lib/storage';
 
 const Profile = ({email,nick}) => {
 
-    const user = useSelector(state => state.authentication.status.currentUser);
+    const {status, result} = useSelector(state => state.authentication);
     const dispatch = useDispatch();
+    
 
     const [phone, setPhone] = useState('');
     const [img_path, setImg_path] = useState('');
 
 
     useEffect(() => {
-        setImg_path(user.profile_img_path)
-    },[user.profile_img_path])
-
-    
-    const onSubmitForm = (e) => {
+        setImg_path(status.currentUser.profile_img_path)
+    },[status.currentUser.profile_img_path])
+    const onSubmitForm = async(e) => {
         e.preventDefault();
-        axios({
+        await axios({
             url:'/auth/profile/save',
             method:'post',
             data:{
                 phone,
                 img_path,
-                id:user.user_email
+                id:status.currentUser.user_email
             }
         })
         .then((res) => {
-            console.log(res);
+            console.log(res.data);
+            const loginInfo = storage.get('loginInfo');
+            loginInfo.profile_img = res.data
+            storage.set('loginInfo',loginInfo);
         })
     }
 
@@ -46,11 +49,11 @@ const Profile = ({email,nick}) => {
 
     return (
         <div className="container_profile">
-            <form onSubmit={onSubmitForm}>
-                <Profile_change onImgChange={onImgChange} path={user.profile_img_path}/>
+           <form onSubmit={onSubmitForm}>
+                <Profile_change onImgChange={onImgChange} path={status.currentUser.profile_img_path ? status.currentUser.profile_img_path :  result.profile_img}/>
                 <Profile_edit email={email} nick={nick}/>
                 <button className="formbtn">저장</button>
-            </form>    
+            </form>   
         </div>
     )
 }

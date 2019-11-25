@@ -79,6 +79,6 @@ router.post('/profile/img',upload.single('img'), (req, res) => {
 router.post('/profile/save', async(req,res) => {
   const {phone, img_path,id} = req.body;
   User.update({profile_img: img_path},{where: {email: id}})
-  console.log(img_path);
+  res.send(img_path);
 })
 module.exports = router;

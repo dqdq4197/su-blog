@@ -1,7 +1,7 @@
 import storage from '../lib/storage';
 
 import {
-    AUTH_LOGIN,
+    AUTH_LOGIN_REQUEST,
     AUTH_LOGIN_SUCCESS,
     AUTH_LOGIN_FAILURE,
     AUTH_LOGOUT,
@@ -12,9 +12,9 @@ import axios from 'axios';
 
 //  LOGIN
 export function loginRequest(email,password) {
-    return (dispatch) => {
+    return async(dispatch) => {
         dispatch(login());
-        return axios.post('/auth/login', {email,password})
+        return await axios.post('/auth/login', {email,password})
         .then((response) => {
             const id = response.data.id;
             const nick = response.data.nick;
@@ -22,6 +22,7 @@ export function loginRequest(email,password) {
             dispatch(loginSuccess(id,email,nick,profile_img_path));
             console.log(response.data);
            storage.set('loginInfo',response.data);
+           console.log('1번');
             
         }).catch((error) => {
             dispatch(loginFailure());
@@ -29,8 +30,7 @@ export function loginRequest(email,password) {
             
         });
     };
-}
-
+}   
 export function logoutRequest() {
     return (dispatch) => {
         return axios.get('/auth/logout')
@@ -47,7 +47,7 @@ export function profile_img_change(formdata) {
         return axios.post('/auth/profile/img',formdata)
         .then((res) => {
             dispatch(profile_img_change_success(res.data.path))
-            console.log('바뀨다',res.data.path)
+            console.log('path: ',res.data.path)
         }).catch((error) => {
             console.log("action profile_img_change_error")
         })
@@ -55,7 +55,7 @@ export function profile_img_change(formdata) {
 }
 export function login() {
     return {
-        type: AUTH_LOGIN
+        type: AUTH_LOGIN_REQUEST
     };
 }
 
