@@ -6,13 +6,14 @@ import List from '@editorjs/list';
 import Embed from '@editorjs/embed';
 import RawTool from '@editorjs/raw';
 import Quote from '@editorjs/quote';
-//import ImageTool from '@editorjs/image';
+import ImageTool from '@editorjs/image';
 import Checklist from '@editorjs/checklist';
-import SimpleImage from '@editorjs/simple-image';
+//import SimpleImage from '@editorjs/simple-image';
 import InlineCode from '@editorjs/inline-code';
+import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
 import axios from 'axios';
-import {useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
 
 
@@ -26,17 +27,59 @@ const MarkdownEditorjs = () => {
 
 
   const user = useSelector(state => state.authentication.status.currentUser);
-  
+
 
   const editor = new EditorJS({ 
     holderId: 'editorjs', 
     placeholder: '여기에 작성하세요!',
     tools: {
-      image: SimpleImage,
+      image: {
+        class: ImageTool,
+        config: {
+          uploader: {
+            /**
+             * Upload file to the server and return an uploaded image data
+             * @param {File} file - file selected from the device or pasted by drag-n-drop
+             * @return {Promise.<{success, file: {url}}>}
+             */
+            uploadByFile(file){
+              // your own uploading logic here
+              const formdata = new FormData();
+              formdata.append('image', file)
+              return axios.post('/postting/fetchFile', formdata)
+                .then((res) => {
+                  console.log(res.data)
+                return {
+                  success: 1,
+                  file: {
+                    url: res.data ,
+                    // any other image data you want to store, such as width, height, color, extension, etc
+                  }
+                };
+              });
+            },
+            uploadByUrl(url){
+              // your ajax request for uploading
+              return axios.post('/postting/fetchUrl', {url}).then((res) => {
+                console.log(res.data);
+                return {
+                  success: 1,
+                  file: {
+                    url: res.data,
+                    // any other image data you want to store, such as width, height, color, extension, etc
+                  }
+                }
+              })
+            }
+          }
+        }
+      },
+      //image: SimpleImage,
       inlineCode: {
         class: InlineCode,
         shortcut: 'CMD+SHIFT+M',
       },
+      delimiter: Delimiter,
       checklist :{
         class: Checklist,
         inlineToolbar: true,
@@ -87,12 +130,14 @@ const MarkdownEditorjs = () => {
 
 const onClickSave = () => {
   editor.save().then((outputData) => {
-    const userId = user.user_id
+    const userId = user.user_id;
+    const nick = user.user_nick;
     console.log('userid:',userId);
     axios.post('/post/upload',
     {
       outputData,
-      userId
+      userId,
+      nick,
     })
     .then((res) => {
       console.log(res.data);

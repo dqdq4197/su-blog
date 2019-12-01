@@ -1,7 +1,8 @@
 import * as types from '../actions/ActionTypes';
 
 const initialState =  {
-    postData: null
+    postData: null,
+    isLoadding: '',
 }
 
 
@@ -14,7 +15,19 @@ export default function poster(prevState = initialState, action) {
                 ...prevState,
                 postData: action.id
             }
-            default : 
-                return prevState;
+        case types.POSTER_LOAD_REQUEST :
+            return {
+                ...prevState,
+                isLoadding: 'WAITTING'
+            }
+        case types.POSTER_LOAD_SUCCESS :
+            return {
+                ...prevState,
+                isLoadding: 'SUCCESS'
+            }
+            
+        default : 
+            return prevState;
     }
+        
 }

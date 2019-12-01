@@ -1,137 +1,40 @@
 import React, {useEffect} from 'react';
 import Nav from '../components/nav/Nav';
 import styled from 'styled-components';
-import {useSelector} from 'react-redux';
+import VariousBtn from '../components/poster/VariousBtn'
+import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
+import storage from '../lib/storage';
 
 const PosterContainer= styled.div`
     display:flex;
-
 `
 
 
-const Poster = () => {
 
-    const posterId = useSelector(state => state.posts )
-   /* var json = { // json 받아오기 (axios이용)
-        "time": 1563816717958,
-        "blocks": [{
-            "type": "header",
-            "data": {
-              "text": "Editor.js",
-              "level": 2
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
-            }
-          },
-          {
-            "type": "header",
-            "data": {
-              "text": "Key features",
-              "level": 3
-            }
-          },
-          {
-            "type": "list",
-            "data": {
-              "style": "unordered",
-              "items": [
-                "It is a block-styled editor",
-                "It returns clean data output in JSON",
-                "Designed to be extendable and pluggable with a simple API"
-              ]
-            }
-          },
-          {
-            "type": "header",
-            "data": {
-              "text": "What does it mean «block-styled editor»",
-              "level": 3
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark className=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "There are dozens of <a href=\"https://github.com/editor-js\">ready-to-use Blocks</a> and the <a href=\"https://editorjs.io/creating-a-block-tool\">simple API</a> for creation any Block you need. For example, you can implement Blocks for Tweets, Instagram posts, surveys and polls, CTA-buttons and even games."
-            }
-          },
-          {
-            "type": "header",
-            "data": {
-              "text": "What does it mean clean data output",
-              "level": 3
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "Classic WYSIWYG-editors produce raw HTML-markup with both content data and content appearance. On the contrary, Editor.js outputs JSON object with data of each Block. You can see an example below"
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "Given data can be used as you want: render with HTML for <code className=\"inline-code\">Web clients</code>, render natively for <code className=\"inline-code\">mobile apps</code>, create markup for <code className=\"inline-code\">Facebook Instant Articles</code> or <code className=\"inline-code\">Google AMP</code>, generate an <code className=\"inline-code\">audio version</code> and so on."
-            }
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "Clean data is useful to sanitize, validate and process on the backend."
-            }
-          },
-          {
-            "type": "delimiter",
-            "data": {}
-          },
-          {
-            "type": "paragraph",
-            "data": {
-              "text": "We have been working on this project more than three years. Several large media projects help us to test and debug the Editor, to make it's core more stable. At the same time we significantly improved the API. Now, it can be used to create any plugin for any task. Hope you enjoy. 😏"
-            }
-          },
-          {
-            "type": "image",
-            "data": {
-              "file": {
-                "url": "https://codex.so/upload/redactor_images/o_e48549d1855c7fc1807308dd14990126.jpg"
-              },
-              "caption": "Image caption",
-              "withBorder": true,
-              "stretched": false,
-              "withBackground": false
-            }
-          }
-        ],
-        "version": "2.15.0"
-      };  */
+const Poster = ({match}) => {
 
-      //var json=null;
+  const userInfo = storage.get('loginInfo');
+
+  const dispatch = useDispatch();
+  const {isLoadding} = useSelector(state => state.posts);
 
       const posterShowRquest = async() => {
-        await axios.get(`/post/${posterId.postData}`)
+        dispatch(posterLoadRequest());
+        await axios.get(`/post/${match.params.id}/${match.params.author || 'Operator'}`)
         .then((res) => {
+          dispatch(posterLoadSuccess());
           console.log(res.data);
-          if(res.data) {asd(res.data)};
+          if(res.data) {jsonData(res.data)};
         })
       }
      
       useEffect(() => {
         posterShowRquest();
-       
       },[]);
 
-      const asd = (json) => {
+      const jsonData = (json) => {
         var html = '';
         json.forEach(function(block) {
           switch (block.type) {
@@ -154,15 +57,15 @@ const Poster = () => {
               });
               html += '</ul>';
               break;
+            case 'embed':
+              html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
             default:
               console.log('Unknown block type', block.type);
               console.log(block);
               break;
           }
           document.getElementById('content').innerHTML = html;
-          //console.log(block);
         });
-        //console.log('html: ', html);
       };
       
 
@@ -183,6 +86,7 @@ const Poster = () => {
                 </div>
               </div>
             </div>
+            {isLoadding === 'SUCCESS' && (userInfo.nick === match.params.author || userInfo.nick === ' Operator')  ? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
           </main>
           </div>
         </PosterContainer>

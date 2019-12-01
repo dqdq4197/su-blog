@@ -9,6 +9,7 @@ const Profile_change= ({onImgChange, path}) => {
     useEffect(() => {
         if(path) {
             document.getElementById('thumnail').style.display='block'
+            console.log(path)
         }
     },[path])
     

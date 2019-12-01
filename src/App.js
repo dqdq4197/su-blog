@@ -25,7 +25,7 @@ useEffect(() => {
           <Route path="/home" exact component={Home}/>
           <Route path="/about" component={About}/>
           <Route path="/shop" exact component={Shop}/>
-          <Route path="/poster" component={Poster} />
+          <Route path="/poster/:id/:author" component={Poster} />
           <Route path="/Postting" component={Board} />
           <Route path="/Signup" exact component={Signup}/>
         </Switch>
