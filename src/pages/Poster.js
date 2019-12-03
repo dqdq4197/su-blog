@@ -22,7 +22,7 @@ const Poster = ({match}) => {
 
       const posterShowRquest = async() => {
         dispatch(posterLoadRequest());
-        await axios.get(`/post/${match.params.id}/${match.params.author || 'Operator'}`)
+        await axios.get(`/post/${match.params.id}/${match.params.author}`)
         .then((res) => {
           dispatch(posterLoadSuccess());
           console.log(res.data);
@@ -32,11 +32,13 @@ const Poster = ({match}) => {
      
       useEffect(() => {
         posterShowRquest();
+        
       },[]);
 
       const jsonData = (json) => {
         var html = '';
         json.forEach(function(block) {
+          
           switch (block.type) {
             case 'header':
               html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
@@ -48,7 +50,7 @@ const Poster = ({match}) => {
               html += '<hr />';
               break;
             case 'image':
-              html += `<img className="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+              html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
               break;
             case 'list':
               html += '<ul>';
@@ -67,27 +69,25 @@ const Poster = ({match}) => {
           document.getElementById('content').innerHTML = html;
         });
       };
-      
-
-
 
 
 
     return (
         <PosterContainer>
-        <Nav />
-        <div className="container" style={{marginLeft:200,marginTop:-60, marginRight:-200, marginBottom:150, textAlign:'left'}}>
-          <main role="main" className="container">
-            <div className="row">
-              <div className="col-md-8 blog-main">
-                <div className="blog-post">
-                  <div id="content">                  
+          <Nav />
+          <div className="container" style={{marginLeft:200,marginTop:-60, marginRight:-200, marginBottom:150, textAlign:'left'}}>
+            <main role="main" className="container">
+              <div className="row">
+                <div className="col-md-8 blog-main">
+                  <div className="blog-post">
+                    <div id="content">
+                      ..isLoadding                  
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {isLoadding === 'SUCCESS' && (userInfo.nick === match.params.author || userInfo.nick === ' Operator')  ? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
-          </main>
+              {isLoadding === 'SUCCESS' && (userInfo.email == match.params.author || userInfo.email == ' Operator') ? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+            </main>
           </div>
         </PosterContainer>
     )

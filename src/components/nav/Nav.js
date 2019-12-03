@@ -78,19 +78,19 @@ const NaviContainer = styled.div`
           <Menu.Header>CMS Solutions</Menu.Header>
           <Menu.Menu>
             <Menu.Item
-              name='rails'
+              name='React'
             />
             <Menu.Item
-              name='python'     
+              name='Node'     
             />
             <Menu.Item
-              name='php'
+              name='Javascript'
             />
           </Menu.Menu>
         </Menu.Item>
 
         <Menu.Item>
-          <Menu.Header>Postting</Menu.Header>
+          <Menu.Header>Posting</Menu.Header>
           <Menu.Menu>
             <Link to='/Postting'>
               <Menu.Item
@@ -119,7 +119,7 @@ const NaviContainer = styled.div`
             </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
-        <Menu.Item style={item}>
+        <Menu.Item>
           <Menu.Header>내정보</Menu.Header>
           <Menu.Menu >
             {isLoggedIn ? logoutButton : loginButton}

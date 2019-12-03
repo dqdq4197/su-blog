@@ -32,6 +32,7 @@ const Profile = ({email,nick}) => {
             }
         })
         .then((res) => {
+            alert('프로필 정보를 저장하였습니다.')
             console.log(res.data);
             const loginInfo = storage.get('loginInfo');
             loginInfo.profile_img = res.data

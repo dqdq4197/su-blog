@@ -26,7 +26,7 @@ const MarkdownContainer = styled.div`
 const MarkdownEditorjs = () => {
 
 
-  const user = useSelector(state => state.authentication.status.currentUser);
+  const {result} = useSelector(state => state.authentication);
 
 
   const editor = new EditorJS({ 
@@ -130,8 +130,8 @@ const MarkdownEditorjs = () => {
 
 const onClickSave = () => {
   editor.save().then((outputData) => {
-    const userId = user.user_id;
-    const nick = user.user_nick;
+    const userId = result.id;
+    const nick = result.nick;
     console.log('userid:',userId);
     axios.post('/post/upload',
     {
@@ -140,6 +140,7 @@ const onClickSave = () => {
       nick,
     })
     .then((res) => {
+      alert('저장 완료')
       console.log(res.data);
     }).catch((error) => {
       console.log(error.response)
@@ -149,7 +150,7 @@ const onClickSave = () => {
     console.log('Saving failed: ', error.response)
   });
 }
-
+console.log(result)
   
   return (
     <MarkdownContainer className="markdown">
