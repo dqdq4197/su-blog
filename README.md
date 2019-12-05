@@ -15,3 +15,5 @@
 - About페이지 Add function , Home페이지, Poster페이지 로딩처리, 로그인페이지 storage 비동기 문제해결, Postting add Title textArea
 
 - postting thumnail, title, hashtag  모달창으로 받기 
+
+- PostModal 해시태그 map반복문 key값 value로

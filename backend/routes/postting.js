@@ -26,7 +26,11 @@ router.post('/fetchFile', upload.single('image'), (req,res) => {
 router.post('/fetchUrl',(req,res) => {
     res.json(req.body.url)
     console.log(req.body.url);
-    })
+})
 
+router.post('/tumnail',upload.single('poster'), (req,res) => {
+  console.log(req.file);
+  res.json(req.file.filename);
+})
 
 module.exports = router;

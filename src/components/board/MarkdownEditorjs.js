@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components'
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header'; 
 import List from '@editorjs/list';
@@ -8,7 +7,6 @@ import RawTool from '@editorjs/raw';
 import Quote from '@editorjs/quote';
 import ImageTool from '@editorjs/image';
 import Checklist from '@editorjs/checklist';
-//import SimpleImage from '@editorjs/simple-image';
 import InlineCode from '@editorjs/inline-code';
 import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
@@ -17,11 +15,7 @@ import {useSelector} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
 
 
-const MarkdownContainer = styled.div`
-   
 
-
-`
 
 const MarkdownEditorjs = () => {
 
@@ -150,14 +144,13 @@ const onClickSave = () => {
     console.log('Saving failed: ', error.response)
   });
 }
-console.log(result)
   
   return (
-    <MarkdownContainer className="markdown">
+    <div>
       <h1>Create posters</h1>
       <div id="editorjs"></div>
       <PosterModal onClick={onClickSave}/>
-    </MarkdownContainer>
+    </div>
   )
 }
 

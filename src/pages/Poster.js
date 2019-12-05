@@ -86,7 +86,7 @@ const Poster = ({match}) => {
                   </div>
                 </div>
               </div>
-              {isLoadding === 'SUCCESS' && (userInfo.email == match.params.author || userInfo.email == ' Operator') ? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+              {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick == match.params.author || userInfo.nick == ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
             </main>
           </div>
         </PosterContainer>

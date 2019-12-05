@@ -27,6 +27,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/', express.static(path.join(__dirname,'profiles')));
 app.use('/', express.static(path.join(__dirname,'posterImage')));
+app.use('/poster/:id/', express.static(path.join(__dirname,'posterImage')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

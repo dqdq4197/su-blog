@@ -34,8 +34,8 @@ const Profile_change= ({onImgChange, path}) => {
                         <input onChange={onImgChange} id="profile_change_input" name="img" type="file" accept="image/*"></input>
                     </div>
                     <Dropdown.Item
-                    label={{ color: 'green', empty: true, circular: true }}
-                    text='프로필 삭제'
+                        label={{ color: 'green', empty: true, circular: true }}
+                        text='프로필 삭제'
                     />
                  </Dropdown.Menu>
             </Dropdown>
