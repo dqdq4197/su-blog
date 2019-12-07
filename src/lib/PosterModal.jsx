@@ -1,5 +1,5 @@
-import React, {useState, useRef} from 'react';
-import { Button, Header, Image, Modal, Icon } from 'semantic-ui-react';
+import React, {useState, useRef, useEffect} from 'react';
+import { Button, Header, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
 import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -11,7 +11,7 @@ border-radius:100px;
 border:1px solid rgba(0,0,0,.8);
 height:30px;
 width:150px;
-
+bottom:30%;
 #tagBox {
   border:none;
   width:80px;
@@ -45,13 +45,14 @@ const TagKeyBox = styled.div`
   position:absolute;
   display:inline;
   margin-top:30px;
+  top:60%;
   .tagKey {
+    position:relative;
     width:70px;
     font-size:.88rem;
     height:23px;
     margin:13px 0 0 5px;
-    top:50%;
-    transform:translateY(-50%);
+    bottom:0;
     padding:0 6px;
     border-radius:20px;
     background-color: rgba(241, 237, 237, .3);
@@ -59,12 +60,18 @@ const TagKeyBox = styled.div`
     display: inline-block;
     &:before { margin-left:5px;}
   }
+  .deleteIcon {
+    position:absolute;
+    right : 0px;
+    display:inline;
+
+  }
 `
 const UploadBtn = styled.div`
+  position: relative;
   text-align:center;
   left: 21px;
-  position: relative;
-  bottom: 15px;
+  bottom:5%
   border-radius: 15px;
   background-color: transparent;
   border: 1px solid rgba(0,0,0,.8);
@@ -91,6 +98,20 @@ const UploadBtn = styled.div`
     cursor:pointer;
   }
 `
+
+const options = [
+  { key: 'angular', text: 'Angular', value: 'angular' },
+  { key: 'css', text: 'CSS', value: 'css' },
+  { key: 'design', text: 'Graphic Design', value: 'design' },
+  { key: 'html', text: 'HTML', value: 'html' },
+  { key: 'javascript', text: 'Javascript', value: 'javascript' },
+  { key: 'node', text: 'NodeJS', value: 'node' },
+  { key: 'python', text: 'Python', value: 'python' },
+  { key: 'react', text: 'React', value: 'react' },
+  { key: 'ui', text: 'UI Design', value: 'ui' },
+  { key: 'ux', text: 'User Experience', value: 'ux' },
+];
+
 const PosterModal = ({onClick}) => {
 
   
@@ -98,10 +119,20 @@ const PosterModal = ({onClick}) => {
   const [dimmer, setDimmer] = useState(null);
   const [tags, setTags] = useState([]);
   const [imgUrl, setImgUrl] = useState('https://cdn.pixabay.com/photo/2019/11/23/11/26/steel-mill-4646843__480.jpg');
+  const [skills, setSkills] = useState('');
+  const [tumnailTitle, setTumnailTitle] = useState('');
+  const [tumnailPosterInfo, setTumnailPosterInfo] = useState(
+      [{
+        title: '',
+        imgUrl:'https://cdn.pixabay.com/photo/2019/11/23/11/26/steel-mill-4646843__480.jpg',
+        tags:'',
+        skills:'',
+      }]
+  )
+
+
   const tagnames= useRef();
-
-
-
+  const titleRef = useRef();
   const show = (dimmer) => () => {
     setDimmer(dimmer);
     setOpen(true);
@@ -110,11 +141,19 @@ const PosterModal = ({onClick}) => {
   const close = () => {
     setOpen(false);
   };
+  const onChangeTitle = (event) => {
+    setTumnailTitle(event.target.value);
+    console.log(event.target.value);
+    setTumnailPosterInfo(state => ({...state, title:titleRef.current.value}));
+    console.log(tumnailPosterInfo)
+  }
 
   const onEnter = (event) =>{
     if(event.keyCode === 13) {
+      if(tagnames.current.value == '') return ;
       setTags((prevState) => [...prevState, tagnames.current.value])
-      setTimeout(function() {tagnames.current.value=''; tagnames.current.focus()},0);
+      
+      setTimeout(function() { tagnames.current.value=''; tagnames.current.focus()},0);
     }else {
         return ;
     }
@@ -125,6 +164,13 @@ const PosterModal = ({onClick}) => {
     setTags(del);
   };
 
+  const getSKills = (event,{value}) => {
+    setSkills(value.join(','));
+    setTumnailPosterInfo(state=> ({...state, skills: value.join(',')}));
+    console.log(tumnailPosterInfo)
+
+}
+
   const onTumnail = async(e) => {
     const formdata = new FormData();
     formdata.append('poster', e.target.files[0]);
@@ -133,10 +179,10 @@ const PosterModal = ({onClick}) => {
     .then((res) => {
       console.log(res.data);
       setImgUrl(res.data);
+      setTumnailPosterInfo(state=> ({...state, imgUrl: res.data}));
     }).catch((err) => {
       console.log(err.res);
     })
-
   };
     return (
       <>
@@ -152,28 +198,29 @@ const PosterModal = ({onClick}) => {
               size='medium'
               src={imgUrl}
             />
-            
             <Modal.Description>
-              <Header>Default Profile Image</Header>
-              <TagsBox>
-                <Icon className="tag_icon" name='tags' />
-                <input id="tagBox" type="text" ref={tagnames} onKeyDown={e => onEnter(e)} placeholder=" Enter tags" ></input>
-                <Icon className="plusBtn" name="plus circle"></Icon>
-              </TagsBox>
-              <TagKeyBox >{tags.map(
-                            (value,i) => 
-                              <div key={i} className="tagKey">
-                                <Icon name="tag" />{value}
-                                <div onClick={() => onDeleteTag(i)} ><Icon name="cancel"/></div>
-                              </div>
-                          )}</TagKeyBox>
+              <input type="text" id="editTitle" placeholder="  Enter Title" ref={titleRef} onChange={onChangeTitle}/>
+              <Dropdown placeholder='Skills' fluid multiple selection scrolling onChange={getSKills} options={options} />
+              <div>
+                <TagsBox>
+                  <Icon className="tag_icon" name='tags' />
+                  <input id="tagBox" type="text" ref={tagnames} onKeyDown={e => onEnter(e)} placeholder=" Enter tags" ></input>
+                  <Icon className="plusBtn" name="plus circle"></Icon>
+                </TagsBox>
+                <TagKeyBox >{tags.map(
+                              (value,i) => 
+                                <div key={i} className="tagKey">
+                                  <Icon name="tag" />{value}
+                                  <div className="deleteIcon" onClick={() => onDeleteTag(i)} ><Icon name="cancel"/></div>
+                                </div>
+                            )}
+                </TagKeyBox>
+              </div>
             </Modal.Description>
           </Modal.Content>
           <UploadBtn>
-            
               <label htmlFor="upFile">Upload</label>
               <input type="file" onChange={onTumnail} name="poster" id="upFile" accept="image/*"></input>
-           
           </UploadBtn>
           <Modal.Actions>
             
@@ -185,7 +232,8 @@ const PosterModal = ({onClick}) => {
               icon='checkmark'
               labelPosition='right'
               content="저장"
-              onClick={close}
+              onClick={onClick}
+              className="saveBtn"
             />
           </Modal.Actions>
         </Modal>

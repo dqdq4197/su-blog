@@ -1,9 +1,16 @@
 .ui.modal.transition.visible.active {
     height: 45%;
-    width:50%;
+    width:60%;
     transform: translate(-50%,-50%);
     left:50%;
     top:50% ;
+}
+.actions {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
 }
 i.icon.tags:before {
     top: 50%;
@@ -13,4 +20,40 @@ i.icon.tags:before {
 .ui.medium.image {
     overflow: hidden;
     height:200px;
+}
+
+#editTitle{
+    position:relative;
+    font-size:1.2rem;
+    min-width:50px;
+    border-radius:5px;
+    border:none;
+    top:0;
+    padding:5px 0 5px 20px;
+}
+#editTitle:focus {
+    outline: none;
+}
+#editTitle:hover{ 
+    background-color: rgba(0,0,0,.07);
+}
+.saveBtn {
+    top:0px;
+}
+
+ /* drop down */
+.ui.fluid.multiple.selection.dropdown {
+    max-width:310px;
+    min-width:310px;
+    margin-top:12px;
+
+}
+.ui.fluid.multiple.selection.dropdown a{
+    font-size: .8rem;
+    background-color: rgba(0,0,0,.07);
+}
+@media (max-width: 767px) {
+    .ui.modal.transition.visible.active {
+        height: 70%;
+    }
 }

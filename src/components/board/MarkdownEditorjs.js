@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useCallback} from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header'; 
 import List from '@editorjs/list';
@@ -24,7 +24,7 @@ const MarkdownEditorjs = () => {
 
 
   const editor = new EditorJS({ 
-    holderId: 'editorjs', 
+    holderId: 'markdownEditor', 
     placeholder: '여기에 작성하세요!',
     tools: {
       image: {
@@ -122,7 +122,7 @@ const MarkdownEditorjs = () => {
   }
 })
 
-const onClickSave = () => {
+const onClickSave = useCallback(() => {
   editor.save().then((outputData) => {
     const userId = result.id;
     const nick = result.nick;
@@ -143,12 +143,12 @@ const onClickSave = () => {
   }).catch((error) => {
     console.log('Saving failed: ', error.response)
   });
-}
+},[])
   
   return (
     <div>
       <h1>Create posters</h1>
-      <div id="editorjs"></div>
+      <div id="markdownEditor"></div>
       <PosterModal onClick={onClickSave}/>
     </div>
   )
