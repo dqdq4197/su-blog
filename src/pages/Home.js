@@ -61,7 +61,16 @@ const Home = () => {
             <Nav />
             <div className="asd">
             <PosterContainer id='posterContainer'>
-                {isLoading==='SUCCESS' ? posterId.map((info, index)=><Test key ={info.id} id={info.id} num={index} author={info.author}></Test>) : "isLoading..."}
+                {isLoading==='SUCCESS' ? posterId.map((info, index)=>
+                        <Test key ={info.id} 
+                              id={info.id} 
+                              num={index} 
+                              author={info.author}
+                              title={info.tumnailTitle}
+                              tags={info.hashTags}
+                              skills={info.skills}
+                              tumnail={info.tumnailImg}
+                        />) : "isLoading..."}
             </PosterContainer>
             </div>
         </Content>

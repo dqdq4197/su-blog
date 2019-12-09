@@ -3,6 +3,7 @@ import { Button, Header, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
 import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
 
 
 const TagsBox = styled.div`
@@ -114,13 +115,12 @@ const options = [
 
 const PosterModal = ({onClick}) => {
 
-  
+  const {result} = useSelector(state => state.authentication);
+  const {posterOutputData} = useSelector(state => state.posts)
   const [open,setOpen] = useState(false);
   const [dimmer, setDimmer] = useState(null);
   const [tags, setTags] = useState([]);
   const [imgUrl, setImgUrl] = useState('https://cdn.pixabay.com/photo/2019/11/23/11/26/steel-mill-4646843__480.jpg');
-  const [skills, setSkills] = useState('');
-  const [tumnailTitle, setTumnailTitle] = useState('');
   const [tumnailPosterInfo, setTumnailPosterInfo] = useState(
       [{
         title: '',
@@ -130,10 +130,10 @@ const PosterModal = ({onClick}) => {
       }]
   )
 
-
   const tagnames= useRef();
   const titleRef = useRef();
   const show = (dimmer) => () => {
+    onClick();
     setDimmer(dimmer);
     setOpen(true);
   };
@@ -142,17 +142,16 @@ const PosterModal = ({onClick}) => {
     setOpen(false);
   };
   const onChangeTitle = (event) => {
-    setTumnailTitle(event.target.value);
-    console.log(event.target.value);
     setTumnailPosterInfo(state => ({...state, title:titleRef.current.value}));
-    console.log(tumnailPosterInfo)
   }
 
-  const onEnter = (event) =>{
+  const onEnter = async(event) =>{
     if(event.keyCode === 13) {
       if(tagnames.current.value == '') return ;
-      setTags((prevState) => [...prevState, tagnames.current.value])
-      
+      await Promise.resolve().then(() => {
+        setTags((prevState) => [...prevState, tagnames.current.value])
+      })
+      setTumnailPosterInfo(state=> ({...state, tags:[...tags,tagnames.current.value]}))
       setTimeout(function() { tagnames.current.value=''; tagnames.current.focus()},0);
     }else {
         return ;
@@ -162,12 +161,12 @@ const PosterModal = ({onClick}) => {
   const onDeleteTag = (key) => {
     const del = tags.filter((v,i) => i!==key ) 
     setTags(del);
+    setTumnailPosterInfo(state=> ({...state, tags:[...tags,tagnames.current.value]}))
+      console.log(tumnailPosterInfo);
   };
 
   const getSKills = (event,{value}) => {
-    setSkills(value.join(','));
     setTumnailPosterInfo(state=> ({...state, skills: value.join(',')}));
-    console.log(tumnailPosterInfo)
 
 }
 
@@ -180,14 +179,38 @@ const PosterModal = ({onClick}) => {
       console.log(res.data);
       setImgUrl(res.data);
       setTumnailPosterInfo(state=> ({...state, imgUrl: res.data}));
+      console.log(tumnailPosterInfo);
     }).catch((err) => {
       console.log(err.res);
     })
-  };
+  }; 
+  const onClickSave = () => {
+    const userId= result.id;
+    const nick = result.nick;
+    console.log(posterOutputData)
+    console.log(tumnailPosterInfo);
+    axios.post('/post/upload',
+      {
+        outputData:posterOutputData,
+        userId,       
+        nick,
+        tumnailTitle:tumnailPosterInfo.title,
+        hashTags: tumnailPosterInfo.tags.join(','),
+        tumnailImg: tumnailPosterInfo.imgUrl,
+        skills:tumnailPosterInfo.skills,
+      })
+      .then((res) => {
+        alert('저장 완료')
+        console.log(res.data);
+      }).catch((error) => {
+        console.log(error.response)
+      })
+  }
+  
     return (
       <>
         <Button onClick={show("blurring")}>저장하기</Button>
-        <Button onClick={onClick}>임시저장</Button>
+        <Button>임시저장</Button>
 
         <Modal dimmer={dimmer} open={open} onClose={close}>
           <Modal.Header>Select a Thumnail</Modal.Header>
@@ -232,7 +255,7 @@ const PosterModal = ({onClick}) => {
               icon='checkmark'
               labelPosition='right'
               content="저장"
-              onClick={onClick}
+              onClick={onClickSave}
               className="saveBtn"
             />
           </Modal.Actions>

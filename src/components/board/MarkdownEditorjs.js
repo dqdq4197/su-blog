@@ -1,4 +1,4 @@
-import React,{useCallback} from 'react';
+import React,{useRef,useCallback} from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header'; 
 import List from '@editorjs/list';
@@ -11,8 +11,9 @@ import InlineCode from '@editorjs/inline-code';
 import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
+import {posterOutputData} from '../../actions/posts';
 
 
 
@@ -20,9 +21,9 @@ import PosterModal from '../../lib/PosterModal';
 const MarkdownEditorjs = () => {
 
 
-  const {result} = useSelector(state => state.authentication);
 
-
+  const dispatch = useDispatch();
+  const data= useRef('');
   const editor = new EditorJS({ 
     holderId: 'markdownEditor', 
     placeholder: '여기에 작성하세요!',
@@ -115,41 +116,44 @@ const MarkdownEditorjs = () => {
       }  
   },
   onReady: () => {
-    console.log('Editor.js is ready to work!')
+   var elements = document.querySelectorAll('.codex-editor');
+    if(elements[1]) elements[1].style.display="none";
  },
   onChange: () => {
-    console.log('changed');
+    editor.save().then((outputData) => {
+      data.current=outputData;
+      
+      //setOutput(outputData);
+      //const userId = result.id;
+      //const nick = result.nick;
+      //console.log('userid:',userId);
+      //axios.post('/post/upload',
+      //{
+      //  outputData,
+      //  userId,       
+      //  nick,
+      //})
+      //.then((res) => {
+      //  alert('저장 완료')
+      //  console.log(res.data);
+      //}).catch((error) => {
+      //  console.log(error.response)
+      //})
+      //console.log('Article data: ', outputData)
+    }).catch((error) => {
+      console.log('Saving failed: ', error.response)
+    });
   }
 })
+const outData = () => {
+  dispatch(posterOutputData(data.current));
+}
 
-const onClickSave = useCallback(() => {
-  editor.save().then((outputData) => {
-    const userId = result.id;
-    const nick = result.nick;
-    console.log('userid:',userId);
-    axios.post('/post/upload',
-    {
-      outputData,
-      userId,
-      nick,
-    })
-    .then((res) => {
-      alert('저장 완료')
-      console.log(res.data);
-    }).catch((error) => {
-      console.log(error.response)
-    })
-    console.log('Article data: ', outputData)
-  }).catch((error) => {
-    console.log('Saving failed: ', error.response)
-  });
-},[])
-  
   return (
     <div>
       <h1>Create posters</h1>
       <div id="markdownEditor"></div>
-      <PosterModal onClick={onClickSave}/>
+      <PosterModal onClick={outData}/>
     </div>
   )
 }

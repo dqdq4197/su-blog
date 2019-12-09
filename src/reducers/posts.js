@@ -3,6 +3,7 @@ import * as types from '../actions/ActionTypes';
 const initialState =  {
     postData: null,
     isLoadding: '',
+    posterOutputData: '',
 }
 
 
@@ -24,6 +25,11 @@ export default function poster(prevState = initialState, action) {
             return {
                 ...prevState,
                 isLoadding: 'SUCCESS'
+            }
+        case types.POSTER_OUTPUT_DATA :
+            return {
+                ...prevState,
+                posterOutputData: action.data
             }
             
         default : 

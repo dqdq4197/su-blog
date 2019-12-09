@@ -52,6 +52,10 @@ i.icon.tags:before {
     font-size: .8rem;
     background-color: rgba(0,0,0,.07);
 }
+
+.description .visible.menu.transition {
+    height:110px;
+}
 @media (max-width: 767px) {
     .ui.modal.transition.visible.active {
         height: 70%;
