@@ -1,32 +1,24 @@
 import React from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Checkbox, Form } from 'semantic-ui-react'
 import {Link} from 'react-router-dom';
+import {Input ,Button} from '../../lib/AuthInput';
 
 
 const SignupField = () => {
 
     return ( 
         <>
-            <Form action="/auth/singup" method="post">
-               <Form.Field>
-                 <label>Email</label>
-                 <input className="accfield" placeholder='heesu@blog.com' name="email" />
-               </Form.Field>
-               <Form.Field>
-                 <label>Password</label>
-                 <input className="accfield" type="password" placeholder='password' name="password"/>
-               </Form.Field>
-               <Form.Field>
-                 <label>NickName</label>
-                 <input className="accfield" placeholder='NickName' name="nick" />
-               </Form.Field>
+        <h2 style={{fontSize:50,marginBottom:30}}>Create Account</h2>
+            <form action="/auth/singup" method="post">
+               <Input name="email" />
+               <Input type="password" name="password"/>
+               <Input name="Nickname" />
                <Form.Field>
                  <Checkbox label='I agree to the Terms and Conditions' />
                </Form.Field>
                
-               <Button type='submit'>Join</Button>
-               <Link to='/'><Button>Login</Button></Link>
-             </Form>
+               <Button width="15%" height="40px" type='submit'>Join</Button>
+             </form>
         </>
     ) 
 }

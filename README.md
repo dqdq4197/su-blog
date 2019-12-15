@@ -18,3 +18,7 @@
 
 - PostModal 해시태그 map반복문 key값 value로
 - posterTumnail img src로 할지 background:url로 할지..
+
+
+
+### title, nav, test

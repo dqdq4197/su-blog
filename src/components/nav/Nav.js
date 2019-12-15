@@ -11,6 +11,9 @@ const NaviContainer = styled.div`
     position:relative;
     width: 22.2%;
     height: 100vh;
+    a { 
+      color: black;
+    }
 `
 
  const Nav = () =>  {
@@ -73,7 +76,7 @@ const NaviContainer = styled.div`
             </Link>
           </Menu.Menu>
         </Menu.Item>
-
+        
         <Menu.Item>
           <Menu.Header>CMS Solutions</Menu.Header>
           <Menu.Menu>

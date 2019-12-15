@@ -1,4 +1,4 @@
-import React,{useRef,useCallback} from 'react';
+import React,{useRef} from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header'; 
 import List from '@editorjs/list';
@@ -11,7 +11,7 @@ import InlineCode from '@editorjs/inline-code';
 import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
 import axios from 'axios';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
 import {posterOutputData} from '../../actions/posts';
 

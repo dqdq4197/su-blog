@@ -21,9 +21,7 @@ export function loginRequest(email,password) {
             const profile_img_path = response.data.profile_img;
             dispatch(loginSuccess(id,email,nick,profile_img_path));
             console.log(response.data);
-           storage.set('loginInfo',response.data);
-           console.log('1번');
-            
+            storage.set('loginInfo',response.data);
         }).catch((error) => {
             dispatch(loginFailure());
             alert(error.response.data.message);

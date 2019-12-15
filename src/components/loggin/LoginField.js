@@ -1,7 +1,10 @@
 import React,{useReducer} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import {Link} from 'react-router-dom';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import {  Checkbox } from 'semantic-ui-react'
+import {Input,Button }from '../../lib/AuthInput';
+
+
+
 
 
 function reducer(state, action) {
@@ -30,21 +33,15 @@ const LoginField = ({onSubmitHandler}) => {
 
     return (      
       <> 
-        <Form onSubmit={handleLogin}>
-            <Form.Field>
-              <label>Email</label>
-              <input name="email" className="accfield" placeholder='heesu@blog.com' value={email} onChange={onChangeHandler} />
-            </Form.Field>
-            <Form.Field>
-              <label>Password</label>
-              <input type="password" name="password" className="accfield" placeholder='Password' value={password} onChange={onChangeHandler} />
-            </Form.Field>
-            <Form.Field>
-              <Checkbox label='I agree to the Terms and Conditions' />
-            </Form.Field>
-            <Button type='submit' className="submitbtn">SingIn</Button>
-            <Link to='/Signup'><Button>SignUp</Button></Link>
-        </Form>
+       <h2 style={{fontSize:50,marginBottom:30}}>Sing in to Su_blog</h2>
+        <form onSubmit={handleLogin}>
+          <Input name="email" value={email} onChange={onChangeHandler}/>
+          <Input type="password" name="password"  value={password} onChange={onChangeHandler} />
+          <div>
+            <Checkbox label='I agree to the Terms and Conditions' />
+          </div>
+            <Button width="15%" height="40px" type='submit' className="submitbtn">SingIn</Button>
+        </form>
       </>
       
     )
