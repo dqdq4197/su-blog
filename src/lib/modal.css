@@ -39,6 +39,7 @@ i.icon.tags:before {
 }
 .saveBtn {
     top:0px;
+
 }
 
  /* drop down */
@@ -46,7 +47,6 @@ i.icon.tags:before {
     max-width:310px;
     min-width:310px;
     margin-top:12px;
-
 }
 .ui.fluid.multiple.selection.dropdown a{
     font-size: .8rem;

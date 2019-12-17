@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import Nav from '../components/nav/Nav';
+import Header from './Header';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
@@ -7,8 +8,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import storage from '../lib/storage';
 
+
 const PosterContainer= styled.div`
-    display:flex;
+display:flex;
 `
 
 
@@ -74,8 +76,9 @@ const Poster = ({match}) => {
 
     return (
         <PosterContainer>
+          <Header />
           <Nav />
-          <div className="container" style={{marginLeft:200,marginTop:-60, marginRight:-200, marginBottom:150, textAlign:'left'}}>
+          <div style={{marginLeft:300,marginTop:100, marginRight:-200, marginBottom:150, textAlign:'left'}}>
             <main role="main" className="container">
               <div className="row">
                 <div className="col-md-8 blog-main">

@@ -20,12 +20,13 @@ export const Input = styled.input.attrs(props => ({
   `;
 
   export const Button = styled.button`
+   font-size: ${props => props.size || "1rem"};
    border-radius:20px;
-   background-color:rgba(13, 72, 50);
+   background-color:${props=> props.bgcolor || "rgb(13, 72, 50)"};
    border:none;
-   color:white;
-   &:hover{ background-color:rgba(13, 72, 50,.8);}
+   color:${props => props.color || "white"};
+   &:hover{ background-color:${props=> props.hover || "rgba(13, 72, 50,.8)"}};
    transition:.5s;
-   width:${props => props.width};
-   height:${props => props.height};
+   width:${props => props.width || "100px"};
+   height:${props => props.height || "30px"};
   `
