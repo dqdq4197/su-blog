@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
-import Nav from '../components/nav/Nav';
-import Header from './Header';
+import Header from '../components/header/Header';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
@@ -10,7 +9,13 @@ import storage from '../lib/storage';
 
 
 const PosterContainer= styled.div`
-display:flex;
+  .posterdiv {
+    .col-md-8.blog-main {
+      margin:0 auto;
+      padding:50px;
+      word-break:break-word;
+    }
+  }
 `
 
 
@@ -75,11 +80,10 @@ const Poster = ({match}) => {
 
 
     return (
-        <PosterContainer>
+      <>
           <Header />
-          <Nav />
-          <div style={{marginLeft:300,marginTop:100, marginRight:-200, marginBottom:150, textAlign:'left'}}>
-            <main role="main" className="container">
+          <PosterContainer>
+            <main role="main" className="posterdiv">
               <div className="row">
                 <div className="col-md-8 blog-main">
                   <div className="blog-post">
@@ -87,12 +91,13 @@ const Poster = ({match}) => {
                       ..isLoadding                  
                     </div>
                   </div>
+                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick == match.params.author || userInfo.nick == ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
                 </div>
               </div>
-              {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick == match.params.author || userInfo.nick == ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+              
             </main>
-          </div>
         </PosterContainer>
+      </>
     )
 }
 export default Poster;

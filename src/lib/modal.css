@@ -50,7 +50,7 @@ i.icon.tags:before {
 }
 .ui.fluid.multiple.selection.dropdown a{
     font-size: .8rem;
-    background-color: rgba(0,0,0,.07);
+    background-color: rgba(12, 184, 175, 0.07);
 }
 
 .description .visible.menu.transition {

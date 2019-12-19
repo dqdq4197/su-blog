@@ -4,6 +4,10 @@
 body {
   box-sizing: border-box;
 }
+a{
+  color:black;
+  text-decoration: none;
+}
 Nav {
   display: flex;
   justify-content: space-around;

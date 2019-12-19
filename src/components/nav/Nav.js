@@ -11,6 +11,7 @@ const NaviContainer = styled.div`
     position:fixed;
     text-align:center;
     width: 270px;
+    left:-270px;
     height: 100vh;
     color:white;
     ul{

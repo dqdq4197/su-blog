@@ -8,8 +8,7 @@ module.exports = (sequelize,DataTypes) => (
         nick: {
             type:DataTypes.STRING(15),
             allowNull: true,
-            unique:true,
-            defaultValue:'heesu1'
+            unique:true
         },
         password: {
             type:DataTypes.STRING(100),

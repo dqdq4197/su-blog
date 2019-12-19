@@ -5,42 +5,84 @@ import styled from 'styled-components';
 import Test from './Test';
 import {home_load_request, home_load_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
-import Header from './Header';
+import Header from '../components/header/Header';
 
 
 const Content = styled.div`
-    height:100%;
     width:100%;
-    display:flex;
-    .main {
-        width:100%;
-        height:100%;
-        
+    height:auto;
+    background-color:#fafbfc;
+    .categorieswrapper {
+        position:relative;
+        text-align:left;
+        margin-top:15px;
+        height:auto;
+        .categories {
+            top:50px;
+            position:sticky;
+            position:-webkit-sticky;
+            width:120px;
+            list-style: none;
+            margin:0;
+            padding:0;
+            h5{
+                font-weight:600;
+                margin-bottom:20px;
+            }
+            li {
+                margin-top:10px;
+                &::before {
+                    content:'a';
+                    font-size:.7rem;
+                    margin-right:5px;
+                    color:transparent;
+                    width:3px;
+                    height:100%;
+                    background-color:green;
+                }
+            }
+        }
     }
 `
 const PosterContainer = styled.div`
-    
-    margin:100px 0 0 300px;
-    width:80%;
-    height:100%;
-    .poster{ 
-        border:1px solid black;
-        width:100%;
-        height:300px;
-        display:inline-block;
+    position:relative;
+    display:flex;
+    margin:15px auto 0;
+    width:1010px;
+    height:auto;
+    text-align:center;
+    .feed {
+        width:520px;
+        height:100%;
+        margin-left:130px;
+        padding-bottom:40px;
     }
 `
 
 
 const Home = () => {
+    const category = [
+        "React",
+        "Nodejs",
+        "Css",
+        "Ui Design",
+        "Grapic Design",
+        "Html",
+        "User Experience",
+        "Javascript",
+        "Angular",
+        "Vue",
+        "Jquery",]
     const isLoading = useSelector(state => state.home.isLoading);
     const dispatch = useDispatch();
+
     const [posterId, setPosterId] = useState([]);
+    
 
     useEffect(() => {
         callPosts();
     },[]);
-
+    
     const callPosts = async() => {
         dispatch(home_load_request());
         await axios.get('/home')
@@ -54,24 +96,29 @@ const Home = () => {
         })
     }
     return (
-        <Content> 
-            <Nav />
-            <div className="main">
-                <div> </div>
-                <Header></Header>
-                <PosterContainer id='posterContainer'>
+        <Content>
+            <Header></Header>
+            <PosterContainer>
+                <div className="categorieswrapper">
+                    <ul className="categories">
+                        <h5>Categories</h5>
+                        {category.map(value => (<li key={value}>{value}</li>))}
+                    </ul>
+                </div>
+                <div className="feed">
                     {isLoading==='SUCCESS' ? posterId.map((info, index)=>
-                            <Test key ={info.id} 
-                                  id={info.id} 
-                                  num={index} 
-                                  author={info.author}
-                                  title={info.tumnailTitle}
-                                  tags={info.hashTags}
-                                  skills={info.skills}
-                                  tumnail={info.tumnailImg}
-                            />) : "isLoading..."}
-                </PosterContainer>
-            </div>
+                        <Test key ={info.id} 
+                              id={info.id} 
+                              num={index} 
+                              author={info.author}
+                              title={info.tumnailTitle}
+                              tags={info.hashTags}
+                              skills={info.skills}
+                              tumnail={info.tumnailImg}
+                              date={info.createdAt}
+                        />) : "isLoading..."}
+                </div>
+            </PosterContainer>
         </Content>
     );
 }

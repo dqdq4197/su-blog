@@ -211,11 +211,9 @@ const PosterModal = ({onClick}) => {
       <>
         <Button onClick={show("blurring")}>저장하기</Button>
         <Button>임시저장</Button>
-
         <Modal dimmer={dimmer} open={open} onClose={close}>
           <Modal.Header>Select a Thumnail</Modal.Header>
           <Modal.Content image>
-          
             <Image
               wrapped
               size='medium'

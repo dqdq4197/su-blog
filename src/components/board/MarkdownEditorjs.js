@@ -14,7 +14,12 @@ import axios from 'axios';
 import {useDispatch} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
 import {posterOutputData} from '../../actions/posts';
+import Head from '../../components/header/Header';
+import styled from 'styled-components';
 
+const Canvas = styled.div`
+  text-align:center;
+`
 
 
 
@@ -150,11 +155,12 @@ const outData = () => {
 }
 
   return (
-    <div>
+    <Canvas>
+      <Head />
       <h1>Create posters</h1>
       <div id="markdownEditor"></div>
       <PosterModal onClick={outData}/>
-    </div>
+    </Canvas>
   )
 }
 
