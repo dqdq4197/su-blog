@@ -1,7 +1,7 @@
 import React from 'react'
 import { List } from 'semantic-ui-react'
 
-const Profile_edit = ({email, nick}) => (
+const ProfileEdit = ({email, nick}) => (
     <List>
       <List.Item>
         <List.Icon name='users' />
@@ -28,4 +28,4 @@ const Profile_edit = ({email, nick}) => (
 
 
 
-export default Profile_edit
+export default ProfileEdit

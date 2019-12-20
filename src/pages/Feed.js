@@ -26,6 +26,9 @@ const PosterWrap = styled.div`
             width:40px;
             height:40px;
             border-radius:50%;
+            background:url(${props => props.profile_img});
+            background-size:cover;
+            background-position:center center;
             background-color:rgba(0,0,0,.5);
         };
         .feed_Header_text {
@@ -64,26 +67,24 @@ const PosterWrap = styled.div`
 
 `
 
-const Test = ({id,author,num,title,tags, skills, tumnail,date}) => {
+const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath}) => {
     const dispatch = useDispatch();
     const onclickPoster = () => {
         dispatch(postShowRequest(id));
-        console.log(author)
     }
-
     return (
-        <PosterWrap className="posterDetail" url={tumnail} onClick={onclickPoster}>
+        <PosterWrap className="posterDetail" url={tumnail} profile_img={imgPath} onClick={onclickPoster}>
             <div className="feed_Header">
                 <div className="feed_profile"></div>
                 <div className="feed_Header_text"> 
                     <span className="author">{author}</span>
-                    <span className="date"><TimeAgo date={date} locale="en" /></span>
+                    <span className="date"><TimeAgo date={time} locale="en" /></span>
                 </div>
             </div>
             <div className="feed_content">
                 <Link to={`/poster/${id}/${author}`}>
                     <h4>{title}</h4>
-                    <img style={{width:520}} src={tumnail}></img>
+                    <img style={{width:520}} src={tumnail} alt="" ></img>
                     <div className="feed_preview">tate Street is one of the world's largest banks.  It has over $30 trillion in assets under custody and almost $3 trillion in assets under m…</div>
                 </Link>
             </div>
@@ -91,4 +92,4 @@ const Test = ({id,author,num,title,tags, skills, tumnail,date}) => {
     )
 }
 
-export default Test
+export default Feed

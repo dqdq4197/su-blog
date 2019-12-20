@@ -1,8 +1,7 @@
 import React,{useEffect ,useState} from 'react';
-import Nav from '../components/nav/Nav';
 import axios from 'axios';
 import styled from 'styled-components';
-import Test from './Test';
+import Feed from './Feed';
 import {home_load_request, home_load_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
@@ -105,9 +104,11 @@ const Home = () => {
                         {category.map(value => (<li key={value}>{value}</li>))}
                     </ul>
                 </div>
+                
                 <div className="feed">
                     {isLoading==='SUCCESS' ? posterId.map((info, index)=>
-                        <Test key ={info.id} 
+                        
+                        <Feed key ={info.id} 
                               id={info.id} 
                               num={index} 
                               author={info.author}
@@ -115,7 +116,8 @@ const Home = () => {
                               tags={info.hashTags}
                               skills={info.skills}
                               tumnail={info.tumnailImg}
-                              date={info.createdAt}
+                              time={info.createdAt}
+                              imgPath={info.user.profile_img}
                         />) : "isLoading..."}
                 </div>
             </PosterContainer>

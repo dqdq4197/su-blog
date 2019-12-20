@@ -2,14 +2,13 @@ import React,{useEffect} from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
 
-const Profile_change= ({onImgChange, path}) => {
+const ProfileChange= ({onImgChange, path}) => {
     
 
     
     useEffect(() => {
         if(path) {
-            document.getElementById('thumnail').style.display='block'
-            console.log(path)
+            document.getElementById('thumnail').style.display='block';
         }
     },[path])
     
@@ -30,7 +29,7 @@ const Profile_change= ({onImgChange, path}) => {
                     text='프로필 바꾸기'
                     />
                     <div className="profile_change_container">
-                        <label for="profile_change_input"></label>
+                        <label htmlFor="profile_change_input"></label>
                         <input onChange={onImgChange} id="profile_change_input" name="img" type="file" accept="image/*"></input>
                     </div>
                     <Dropdown.Item
@@ -44,4 +43,4 @@ const Profile_change= ({onImgChange, path}) => {
     );
 }
 
-export default Profile_change;
+export default ProfileChange;

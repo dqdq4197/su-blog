@@ -1,8 +1,13 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styled from 'styled-components';
+import { logoutRequest } from '../../actions/authentication';
+import { useDispatch} from 'react-redux';
+import {Link ,useHistory} from 'react-router-dom';
 import storage from '../../lib/storage';
 
-const Profile_container = styled.div`
+
+
+const ProfileContainer = styled.div`
     width:40px;
     height:40px;
     border-radius:50%;
@@ -11,13 +16,78 @@ const Profile_container = styled.div`
     background-size:cover;
     background-position:center center;
 `
+const ProfileUtil = styled.div`
+    position:absolute;
+    display:${props => props.show ? "block" : "none"};
+    overflow:hidden;
+    top:48px;
+    left:4px;
+    width:130px;
+    height:124px;
+    background-color:#fff;
+    border: 1px solid rgba(34,36,38,.15);
+    border-radius:.2rem;
+    ul{
+        list-style:none;
+        margin:0;
+        padding:0;
+        li{
+            &:first-child {
+                margin-bottom:3px;
+            }
+            a {
+                color:black;
+                text-decoration:none;
+            }
+            color:rgba(0,0,0,.5);
+            font-weight:500;
+            &:not(:first-child) {
+                color:black;
+                height:25px;
+                &:hover {
+                    background-color:rgba(0,0,0,.05);
+                }
+            }
+        }
+    }
+`
 
-const ProfileTrigger = () => {
+const ProfileTrigger = ({nick}) => {
 
     const info = storage.get('loginInfo');
+    const [click, setClick] = useState(false);
 
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+
+    const onClickProfile = () => {
+        setClick(!click);
+    }
+
+    const onclicklogout = async(e) => {
+        e.preventDefault();
+        dispatch(logoutRequest()).then(
+          () => {
+            storage.remove('loginInfo');
+            history.push('/');
+          } 
+        )
+      }
     return (
-        <Profile_container img={info.profile_img}></Profile_container>
+        <>
+            <ProfileContainer onClick={onClickProfile} img={info.profile_img}></ProfileContainer>
+            <ProfileUtil show={click}>
+                <ul>
+                    <li>Hello, {nick}!</li>
+                    <li><Link to="/about">Your Profile</Link></li>
+                    <li>Settings</li>
+                    <li><Link to="/postting">Write</Link></li>
+                    <li onClick={onclicklogout}>Sign Out</li>
+                </ul>
+                
+            </ProfileUtil>
+        </>
     )
 }
 

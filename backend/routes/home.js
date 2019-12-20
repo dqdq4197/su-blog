@@ -1,16 +1,20 @@
 const express = require('express');
-const {Post} = require('../models');
+const {Post,User} = require('../models');
 
 const router = express.Router();
 
-router.get('/', (req,res) => {
+router.get('/', async(req,res) => {
     Post.findAll({
+        include: {
+            model: User,
+            attributes:['profile_img'],
+        },
         order:[['createdAt','DESC']],
-    }).then((posts) => {
+    }).then((posts) =>{
         res.json(posts);
-    }).catch((err) => {
-        console.log(err);
+        console.log(posts);
     })
+    
 })
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import '../components/loggin/Loggin.css';
 import {Link,Redirect} from 'react-router-dom';
 import HomeButton from '../components/HomeButton';

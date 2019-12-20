@@ -32,7 +32,6 @@ const Poster = ({match}) => {
         await axios.get(`/post/${match.params.id}/${match.params.author}`)
         .then((res) => {
           dispatch(posterLoadSuccess());
-          console.log(res.data);
           if(res.data) {jsonData(res.data)};
         })
       }
@@ -68,6 +67,7 @@ const Poster = ({match}) => {
               break;
             case 'embed':
               html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
+              break;
             default:
               console.log('Unknown block type', block.type);
               console.log(block);
@@ -91,10 +91,9 @@ const Poster = ({match}) => {
                       ..isLoadding                  
                     </div>
                   </div>
-                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick == match.params.author || userInfo.nick == ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
                 </div>
               </div>
-              
             </main>
         </PosterContainer>
       </>

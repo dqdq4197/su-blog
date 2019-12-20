@@ -10,7 +10,7 @@ JavascriptTimeAgo.locale(en)
 JavascriptTimeAgo.locale(ru)
 
 export { default as About} from './About';
-export { default as Loggin } from './Loggin';
+export { default as Login } from './Login';
 export { default as Home } from './Home';
 export { default as Board} from './Board';
 export { default as Signup} from './Signup';

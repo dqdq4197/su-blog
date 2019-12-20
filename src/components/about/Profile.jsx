@@ -1,19 +1,18 @@
 import React,{useEffect, useState, useCallback} from 'react';
-import './profile.css';
-import Profile_change from './Profile_change';
-import axios from 'axios';
-import {profile_img_change, login} from '../../actions/authentication';
+import ProfileChange from './ProfileChange';
+import Header from '../header/Header';
+import {profile_img_change} from '../../actions/authentication';
 import {useDispatch, useSelector} from 'react-redux';
-import Profile_edit from './Profile_edit';
+import ProfileEdit from './ProfileEdit';
 import storage from '../../lib/storage';
+import axios from 'axios';
+import './profile.css';
 
 const Profile = ({email,nick}) => {
 
     const {status, result} = useSelector(state => state.authentication);
     const dispatch = useDispatch();
     
-
-    const [phone, setPhone] = useState('');
     const [img_path, setImg_path] = useState('');
 
 
@@ -26,7 +25,6 @@ const Profile = ({email,nick}) => {
             url:'/auth/profile/save',
             method:'post',
             data:{
-                phone,
                 img_path,
                 id:status.currentUser.user_email
             }
@@ -50,9 +48,10 @@ const Profile = ({email,nick}) => {
 
     return (
         <div className="container_profile">
-           <form onSubmit={onSubmitForm}>
-                <Profile_change onImgChange={onImgChange} path={status.currentUser.profile_img_path ? status.currentUser.profile_img_path :  result.profile_img}/>
-                <Profile_edit email={email} nick={nick}/>
+            <Header />
+            <form onSubmit={onSubmitForm}>
+                <ProfileChange onImgChange={onImgChange} path={status.currentUser.profile_img_path ? status.currentUser.profile_img_path :  result.profile_img}/>
+                <ProfileEdit email={email} nick={nick}/>
                 <button className="formbtn">저장</button>
             </form>   
         </div>

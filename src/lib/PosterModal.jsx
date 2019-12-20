@@ -1,5 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
-import { Button, Header, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
+import React, {useState, useRef} from 'react';
+import { Button, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
 import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -147,7 +147,7 @@ const PosterModal = ({onClick}) => {
 
   const onEnter = async(event) =>{
     if(event.keyCode === 13) {
-      if(tagnames.current.value == '') return ;
+      if(tagnames.current.value === '') return ;
       await Promise.resolve().then(() => {
         setTags((prevState) => [...prevState, tagnames.current.value])
       })
