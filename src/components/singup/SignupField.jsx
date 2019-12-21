@@ -8,7 +8,7 @@ const SignupField = () => {
     return ( 
         <>
         <h2 style={{fontSize:50,marginBottom:30}}>Create Free Account</h2>
-            <form action="/auth/singup" method="post">
+            <form action="/auth/signup" method="post">
                <Input name="email" />
                <Input type="password" name="password"/>
                <Input name="Nickname" />

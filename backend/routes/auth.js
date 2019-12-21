@@ -37,13 +37,27 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
  
 })
 
-router.post('/singup', async(req,res,next) => {
-  const {email,password,nick} = req.body;
+router.get('/facebook', passport.authenticate('facebook',{
+  authType: 'rerequest', scope: ['public_profile', 'email']
+}));
+
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('http://localhost:3000/home');
+  }
+);
+
+
+
+router.post('/signup', async(req,res,next) => {
+  const {email,password,Nickname} = req.body;
   const hash = await bcrypt.hash(password, 12);
   await User.create({
     email,
     password: hash,
-    nick
+    nick:Nickname,
   })
   return res.redirect('/');
 })
@@ -81,4 +95,10 @@ router.post('/profile/save', async(req,res) => {
   User.update({profile_img: img_path},{where: {email: id}})
   res.send(img_path);
 })
+router.get('/kakao', passport.authenticate('kakao'));
+router.get('/kakao/callback', passport.authenticate('kakao', {
+  failureRedirect: '/',
+}), (req, res) => {
+  res.redirect('http://localhost:3000/home');
+});
 module.exports = router;

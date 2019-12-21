@@ -1,4 +1,6 @@
 const local = require('./localStrategy');
+const facebook = require('./facebookStrategy');
+const kakao = require('./kakaoStrategy');
 const {User} = require('../models');
 
 module.exports = (passport) => {
@@ -14,4 +16,6 @@ module.exports = (passport) => {
         .catch((error) => done(error));
       });
       local(passport);
-}
+      kakao(passport);
+      facebook(passport);
+};

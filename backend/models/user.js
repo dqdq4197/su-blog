@@ -8,7 +8,7 @@ module.exports = (sequelize,DataTypes) => (
         nick: {
             type:DataTypes.STRING(15),
             allowNull: true,
-            unique:true
+            unique:true,
         },
         password: {
             type:DataTypes.STRING(100),
@@ -23,7 +23,11 @@ module.exports = (sequelize,DataTypes) => (
             type:DataTypes.STRING(200),
             allowNull:true,
             defaultValue:'basic.png',
-        }
+        },
+        snsId: {
+            type: DataTypes.STRING(30),
+            allowNull: true,
+        },
     },{
         timestamps: true,
         paranoid:true,

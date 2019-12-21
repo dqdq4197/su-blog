@@ -2,6 +2,7 @@ import React,{useReducer} from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {  Checkbox } from 'semantic-ui-react'
 import {Input,Button }from '../../lib/AuthInput';
+import axios from 'axios';
 
 
 
@@ -30,7 +31,14 @@ const LoginField = ({onSubmitHandler}) => {
         await onSubmitHandler(email,password);
     }
   
-
+    const kakaoSignin =() => {
+      axios.get('/auth/kakao')
+      .then((res) => {
+        console.log(res.data);
+      }).catch ((error) => {
+        console.log(error);
+      })
+    }
     return (      
       <> 
        <h2 style={{fontSize:50,marginBottom:30}}>Sing in to Su_blog</h2>
@@ -42,6 +50,7 @@ const LoginField = ({onSubmitHandler}) => {
           </div>
             <Button width="15%" height="40px" type='submit' className="submitbtn">SingIn</Button>
         </form>
+        <Button onClick={()=> window.location = "/auth/kakao"} width="15%" height="40px">kakao</Button>
       </>
       
     )
