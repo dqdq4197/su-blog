@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {postShowRequest} from '../actions/posts';
@@ -55,7 +55,13 @@ const PosterWrap = styled.div`
           };
           .feed_preview {
               padding:4px 16px;
-              overflow-wrap:break-word;
+              max-height:200px;
+              overflow:hidden;
+              text-overflow: ellipsis;
+              white-space: normal;
+              word-wrap: break-word;
+              -webkit-line-clamp: 3;
+              display: -webkit-box
               font-family: Source Serif Pro,serif;
               font-weight: 400;
               font-size: 16px;
@@ -67,11 +73,12 @@ const PosterWrap = styled.div`
 
 `
 
-const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath}) => {
+const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents}) => {
     const dispatch = useDispatch();
     const onclickPoster = () => {
         dispatch(postShowRequest(id));
     }
+    
     return (
         <PosterWrap className="posterDetail" url={tumnail} profile_img={imgPath} onClick={onclickPoster}>
             <div className="feed_Header">
@@ -85,7 +92,7 @@ const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath}) => {
                 <Link to={`/poster/${id}/${author}`}>
                     <h4>{title}</h4>
                     <img style={{width:520}} src={tumnail} alt="" ></img>
-                    <div className="feed_preview">tate Street is one of the world's largest banks.  It has over $30 trillion in assets under custody and almost $3 trillion in assets under m…</div>
+                    <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
                 </Link>
             </div>
         </PosterWrap>

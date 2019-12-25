@@ -103,14 +103,16 @@ const UploadBtn = styled.div`
 const options = [
   { key: 'angular', text: 'Angular', value: 'angular' },
   { key: 'css', text: 'CSS', value: 'css' },
-  { key: 'design', text: 'Graphic Design', value: 'design' },
+  { key: 'graphic design', text: 'Graphic Design', value: 'graphic design' },
   { key: 'html', text: 'HTML', value: 'html' },
   { key: 'javascript', text: 'Javascript', value: 'javascript' },
-  { key: 'node', text: 'NodeJS', value: 'node' },
+  { key: 'nodejs', text: 'NodeJS', value: 'nodejs' },
   { key: 'python', text: 'Python', value: 'python' },
   { key: 'react', text: 'React', value: 'react' },
-  { key: 'ui', text: 'UI Design', value: 'ui' },
-  { key: 'ux', text: 'User Experience', value: 'ux' },
+  { key: 'ui design', text: 'UI Design', value: 'ui design' },
+  { key: 'user experience', text: 'User Experience', value: 'user experience' },
+  { key: 'vue', text: 'Vue', value: 'vue' },
+  { key: 'jquery', text: 'Jquery', value: 'jquery' },
 ];
 
 const PosterModal = ({onClick}) => {

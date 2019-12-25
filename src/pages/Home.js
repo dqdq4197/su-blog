@@ -30,6 +30,7 @@ const Content = styled.div`
             }
             li {
                 margin-top:10px;
+                cursor:pointer;
                 &::before {
                     content:'a';
                     font-size:.7rem;
@@ -38,6 +39,12 @@ const Content = styled.div`
                     width:3px;
                     height:100%;
                     background-color:green;
+                }
+                &:hover {
+                    font-weight:600;
+                }
+                &:active {
+                    color:red;
                 }
             }
         }
@@ -61,38 +68,48 @@ const PosterContainer = styled.div`
 
 const Home = () => {
     const category = [
+        "All",
         "React",
         "Nodejs",
         "Css",
         "Ui Design",
-        "Grapic Design",
         "Html",
         "User Experience",
         "Javascript",
         "Angular",
         "Vue",
-        "Jquery",]
+        "Jquery",
+    ]
     const isLoading = useSelector(state => state.home.isLoading);
     const dispatch = useDispatch();
 
     const [posterId, setPosterId] = useState([]);
-    
+    const [value, setValue] = useState('All');
 
     useEffect(() => {
         callPosts();
-    },[]);
+        
+    },[value]);
     
     const callPosts = async() => {
+        setPosterId([]);
         dispatch(home_load_request());
         await axios.get('/home')
         .then((res) => {
             dispatch(home_load_success());
+            console.log(res.data);
             res.data.map((post) => {
-                return setPosterId((previd)=> [...previd,post])
-        })
+                let result; 
+                value === 'All' ? result = true : result = post.skills.split(',').includes(value.toLowerCase());
+                result ? setPosterId((previd)=> [...previd,post]) : setPosterId((previd) => [...previd]);
+            })
         }).catch((err) => {
             console.log(err.res);
         })
+    }
+
+    const matchCategory = (key) => {
+        setValue(key);
     }
     return (
         <Content>
@@ -101,24 +118,24 @@ const Home = () => {
                 <div className="categorieswrapper">
                     <ul className="categories">
                         <h5>Categories</h5>
-                        {category.map(value => (<li key={value}>{value}</li>))}
+                        {category.map(value => (<li onClick={() => matchCategory(value)} key={value}>{value}</li>))}
                     </ul>
                 </div>
                 
                 <div className="feed">
-                    {isLoading==='SUCCESS' ? posterId.map((info, index)=>
-                        
-                        <Feed key ={info.id} 
+                    {isLoading==='SUCCESS' ? (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index)=>
+                        <Feed key ={index} 
                               id={info.id} 
                               num={index} 
                               author={info.author}
+                              contents={info.content.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
                               title={info.tumnailTitle}
                               tags={info.hashTags}
                               skills={info.skills}
                               tumnail={info.tumnailImg}
                               time={info.createdAt}
                               imgPath={info.user.profile_img}
-                        />) : "isLoading..."}
+                        />)) : "isLoading..."}
                 </div>
             </PosterContainer>
         </Content>
