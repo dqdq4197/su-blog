@@ -16,6 +16,8 @@
     "bootstrap": "^4.0.0-alpha.6",
     "codemirror": "^5.49.2",
     "delimiter": "^1.0.2",
+    "highlight.js": "^9.17.1",
+    "http-proxy-middleware": "^0.20.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-kakao-login": "^1.2.0",
