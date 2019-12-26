@@ -35,7 +35,7 @@ const PosterContainer= styled.div`
       padding:50px;
       word-break:break-word;
       img {
-        max-width:700px;
+        max-width:720px;
       }
     }
   }
