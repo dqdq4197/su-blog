@@ -47,7 +47,7 @@ const LoginField = ({onSubmitHandler}) => {
        <span style={{backgroundColor:"yellow", width:50, height:50, cursor:"pointer"}} onClick={()=> window.location = "/auth/kakao"}>Kakao</span>
        <SocialIcon network="facebook" onClick={()=> window.location = "/auth/facebook"}/>
         <form onSubmit={handleLogin}>
-          <Input name="email" value={email} onChange={onChangeHandler}/>
+          <Input name="email" style={{color:"palevioletred"}} value={email} onChange={onChangeHandler}/>
           <Input type="password" name="password"  value={password} onChange={onChangeHandler} />
           <div>
             <Checkbox label='I agree to the Terms and Conditions' />

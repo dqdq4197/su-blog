@@ -5,6 +5,7 @@ const multer = require('multer');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const {User} = require('../models');
 const path = require('path');
+const {userinfo} = require('../passport/kakaoStrategy');
 
 const router = express.Router();
 router.post('/login',isNotLoggedIn, (req,res,next) => {
@@ -45,7 +46,7 @@ router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('http://localhost:3000/home');
+    res.redirect('/home');
   }
 );
 
@@ -95,6 +96,7 @@ router.post('/profile/save', async(req,res) => {
   User.update({profile_img: img_path},{where: {email: id}})
   res.send(img_path);
 })
+
 router.get('/kakao', passport.authenticate('kakao'));
 router.get('/kakao/callback', passport.authenticate('kakao', {
   failureRedirect: '/',

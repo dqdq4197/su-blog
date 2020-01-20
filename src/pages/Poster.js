@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import Header from '../components/header/Header';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
 import {useDispatch, useSelector} from 'react-redux';
+import ContentBox from '../components/poster/Comments';
 import axios from 'axios';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
@@ -49,13 +50,17 @@ const Poster = ({match}) => {
 
   const dispatch = useDispatch();
   const {isLoadding} = useSelector(state => state.posts);
-
+  const [comments, setComments] = useState({});
       const posterShowRquest = async() => {
         dispatch(posterLoadRequest());
         await axios.get(`/post/${match.params.id}/${match.params.author}`)
         .then((res) => {
           dispatch(posterLoadSuccess());
           if(res.data) {jsonData(res.data)};
+        })
+        await axios.get(`/comment/${match.params.id}`).then((res) =>{
+          console.log(res.data);
+          setComments(res.data);
         })
       }
 
@@ -97,7 +102,7 @@ const Poster = ({match}) => {
             case 'raw':
               //const a = replaceAll(block.data.html,"<","&lt")
               const highlightedCode = hljs.highlightAuto(block.data.html).value
-              html += `<pre><code class="hljs" style="max-height:300px">${highlightedCode}</code></pre>`
+              html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
               break;
             default:
               console.log('Unknown block type', block.type);
@@ -124,6 +129,8 @@ const Poster = ({match}) => {
                     </div>
                   </div>
                   {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+                  <hr style={{backgroundColor:'#333', marginTop:60}} />
+                  <ContentBox data={comments} postId={match.params.id}/>
                 </div>
               </div>
             </main>

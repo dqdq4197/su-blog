@@ -12,7 +12,6 @@ router.get('/', async(req,res) => {
         order:[['createdAt','DESC']],
     }).then((posts) =>{
         res.json(posts);
-        console.log(posts);
     })
     
 })

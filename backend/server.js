@@ -11,6 +11,7 @@ const passportConfig = require('./passport');
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
 const homeRouter = require('./routes/home');
+const commentRouter = require('./routes/comment');
 const posttingRouter = require('./routes/postting');
 const cors = require('cors');
 
@@ -52,6 +53,7 @@ app.use('/auth', authRouter);
 app.use('/post', postRouter);
 app.use('/home', homeRouter);
 app.use('/postting', posttingRouter);
+app.use('/comment', commentRouter);
 
 
 //app.use((req, res, next) => {
