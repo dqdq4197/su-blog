@@ -11,7 +11,7 @@ import InlineCode from '@editorjs/inline-code';
 import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
 import axios from 'axios';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import PosterModal from '../../lib/PosterModal';
 import {posterOutputData} from '../../actions/posts';
 import Head from '../../components/header/Header';
@@ -23,10 +23,9 @@ const Canvas = styled.div`
 
 
 
-const MarkdownEditorjs = () => {
+const MarkdownEditorjs = ({}) => {
 
-
-
+  const modifyData = useSelector(state => state.posterModify)
   const dispatch = useDispatch();
   const data= useRef('');
   const editor = new EditorJS({ 
@@ -120,6 +119,7 @@ const MarkdownEditorjs = () => {
         inlineToolbar: true, 
       }  
   },
+   data: modifyData.posterModifyData.content,
   onReady: () => {
    var elements = document.querySelectorAll('.codex-editor');
     if(elements[1]) elements[1].style.display="none";
@@ -151,7 +151,11 @@ const MarkdownEditorjs = () => {
   }
 })
 const outData = () => {
-  dispatch(posterOutputData(data.current));
+  if(!data.current && modifyData) {
+    dispatch(posterOutputData(modifyData.posterModifyData.content));
+  }else {
+    dispatch(posterOutputData(data.current));
+  }
 }
 
   return (
@@ -159,7 +163,7 @@ const outData = () => {
       <Head />
       <h1>Create posters</h1>
       <div id="markdownEditor"></div>
-      <PosterModal onClick={outData}/>
+      <PosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
     </Canvas>
   )
 }

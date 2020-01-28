@@ -115,7 +115,7 @@ const options = [
   { key: 'jquery', text: 'Jquery', value: 'jquery' },
 ];
 
-const PosterModal = ({onClick}) => {
+const PosterModal = ({onClick, posterId, modifydata}) => {
 
   const {result} = useSelector(state => state.authentication);
   const {posterOutputData} = useSelector(state => state.posts)
@@ -169,7 +169,6 @@ const PosterModal = ({onClick}) => {
 
   const getSKills = (event,{value}) => {
     setTumnailPosterInfo(state=> ({...state, skills: value.join(',')}));
-
 }
 
   const onTumnail = async(e) => {
@@ -191,22 +190,39 @@ const PosterModal = ({onClick}) => {
     const nick = result.nick;
     console.log(posterOutputData)
     console.log(tumnailPosterInfo);
-    axios.post('/post/upload',
-      {
-        outputData:posterOutputData,
-        userId,       
-        nick,
-        tumnailTitle:tumnailPosterInfo.title,
-        hashTags: tumnailPosterInfo.tags.join(','),
-        tumnailImg: tumnailPosterInfo.imgUrl,
-        skills:tumnailPosterInfo.skills,
-      })
-      .then((res) => {
-        alert('저장 완료')
-        console.log(res.data);
-      }).catch((error) => {
-        console.log(error.response)
-      })
+    if(posterId) {
+      axios.post(`/post/modify/${posterId}`,
+        {
+          outputData:posterOutputData,
+          userId,       
+          nick,
+          tumnailTitle:tumnailPosterInfo.title,
+          hashTags: tumnailPosterInfo.tags.join(','),
+          tumnailImg: tumnailPosterInfo.imgUrl,
+          skills:tumnailPosterInfo.skills,
+        }).then((res) => {
+          alert('수정 완료')
+        }).catch((error) => {
+          console.log(error.response)
+        })
+    }else {
+      axios.post('/post/upload',
+        {
+          outputData:posterOutputData,
+          userId,       
+          nick,
+          tumnailTitle:tumnailPosterInfo.title,
+          hashTags: tumnailPosterInfo.tags.join(','),
+          tumnailImg: tumnailPosterInfo.imgUrl,
+          skills:tumnailPosterInfo.skills,
+        })
+        .then((res) => {
+          alert('저장 완료');
+          console.log(res.data);
+        }).catch((error) => {
+          console.log(error.response)
+        });
+    }
   }
   
     return (

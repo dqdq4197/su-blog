@@ -26,4 +26,5 @@ export function posterOutputData(data) {
         type: POSTER_OUTPUT_DATA,
         data
     };
-}
+};
+

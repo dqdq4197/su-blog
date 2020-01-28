@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios'; 
 import {useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {posterModifyData} from '../../actions/posterModify';
 
 const BtnContainer = styled.div`
     margin-top: 60px;
@@ -20,9 +23,10 @@ const BtnContainer = styled.div`
     }
 `
 
-const VariousBtn = ({posterId, author}) => {
+const VariousBtn = ({posterId, author,data}) => {
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const deleteOnclick = async() => {
         await axios.post(`/post/delete/${posterId}/${author}`)
@@ -34,10 +38,15 @@ const VariousBtn = ({posterId, author}) => {
         console.log(posterId);
     }
     
+    const onClickModify = () => {
+        dispatch(posterModifyData(posterId,data))
+    }
 
     return (
         <BtnContainer>
             <button className="deletebtn" onClick={deleteOnclick}> 글삭제 </button>
+            <Link to={'/postting'}> <button className="deletebtn" onClick={onClickModify}>글 수정</button> 
+            </Link>
         </BtnContainer>
     )
 }

@@ -92,7 +92,7 @@ const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents}
                 <Link to={`/poster/${id}/${author}`}>
                     <h4>{title}</h4>
                     <img style={{width:520}} src={tumnail} alt="" ></img>
-                    <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
+                    {/* <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div> */}
                 </Link>
             </div>
         </PosterWrap>

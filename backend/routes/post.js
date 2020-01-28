@@ -9,12 +9,9 @@ router.post('/upload', (req,res,next) => {
     const data = outputData.blocks.map((res)=> {
         return res;
     })
-    outputData.blocks.map((res) => {
-        console.log(res);
-    })
     if(userId){
         Post.create({
-            content:data,
+            content:outputData,
             userId,
             author: nick,
             tumnailTitle,
@@ -23,13 +20,26 @@ router.post('/upload', (req,res,next) => {
             tumnailImg
         })
     }
-    res.json(data);
+    res.json(outputData);
+})
+
+router.post('/modify/:posterId', async(req,res,next) => {
+    const {outputData, userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
+    console.log(userId, nick,tumnailTitle,hashTags,skills,tumnailImg)
+    await Post.update({content:outputData,
+        userId,
+        author:nick,
+        tumnailTitle,
+        hashTags,
+        skills,
+        tumnailImg},{where: {id: req.params.posterId}})
 })
 
 router.get('/:id/:author', (req,res) => {
     const post_content = Post.findOne({where: {id: req.params.id},attribute:['id']});
     post_content.then((response) => {
-        res.json(response.dataValues.content);
+        console.log(response.dataValues)
+        res.json(response.dataValues);
     })
 })
 

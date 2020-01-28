@@ -51,12 +51,21 @@ const Poster = ({match}) => {
   const dispatch = useDispatch();
   const {isLoadding} = useSelector(state => state.posts);
   const [comments, setComments] = useState({});
-      const posterShowRquest = async() => {
+  const [modifyData, setModifyData] = useState({});
+
+      const posterShowRequest = async() => {
         dispatch(posterLoadRequest());
         await axios.get(`/post/${match.params.id}/${match.params.author}`)
         .then((res) => {
+          console.log(res.data);
           dispatch(posterLoadSuccess());
-          if(res.data) {jsonData(res.data)};
+          if(res.data) {
+            const outdata = res.data.content.blocks.map((result)=>{
+              return result;
+            })
+            setModifyData(res.data);
+            jsonData(outdata)};
+            console.log(res.data)
         })
         await axios.get(`/comment/${match.params.id}`).then((res) =>{
           console.log(res.data);
@@ -65,7 +74,7 @@ const Poster = ({match}) => {
       }
 
       useEffect(() => {
-        posterShowRquest();
+        posterShowRequest();
       },[]);
 
       function replaceAll(str, searchStr, replaceStr) {
@@ -128,7 +137,8 @@ const Poster = ({match}) => {
                       ..isLoadding                  
                     </div>
                   </div>
-                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false )? <VariousBtn posterId={match.params.id} author={match.params.author}/> : ''}
+                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
+                    <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
                   <hr style={{backgroundColor:'#333', marginTop:60}} />
                   <ContentBox data={comments} postId={match.params.id}/>
                 </div>
