@@ -5,7 +5,7 @@
 ### Nodejs
 - backend
 - passport를 이용한 로그인 구현
--
+- 회원가입 인증메일 (nodemailer)
 
 
 

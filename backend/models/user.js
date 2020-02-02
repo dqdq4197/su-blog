@@ -10,6 +10,12 @@ module.exports = (sequelize,DataTypes) => (
             allowNull: true,
             unique:true,
         },
+        verify: {
+            type:DataTypes.BOOLEAN,
+        },
+        key_verify: {
+            type:DataTypes.STRING,
+        },
         password: {
             type:DataTypes.STRING(100),
             allowNull:true,

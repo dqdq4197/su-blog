@@ -4,7 +4,7 @@ import { logoutRequest } from '../../actions/authentication';
 import { useDispatch} from 'react-redux';
 import {Link ,useHistory} from 'react-router-dom';
 import storage from '../../lib/storage';
-
+import {posterModifyData} from '../../actions/posterModify';
 
 
 const ProfileContainer = styled.div`
@@ -73,7 +73,11 @@ const ProfileTrigger = ({nick}) => {
             history.push('/');
           } 
         )
-      }
+    }
+
+    const resetState = () => {
+        dispatch(posterModifyData('',''));
+    }
     return (
         <>
             <ProfileContainer onClick={onClickProfile} img={info.profile_img}></ProfileContainer>
@@ -82,7 +86,7 @@ const ProfileTrigger = ({nick}) => {
                     <li>Hello, {nick}!</li>
                     <li><Link to="/about">Your Profile</Link></li>
                     <li>Settings</li>
-                    <li><Link to="/postting">Write</Link></li>
+                    <li onClick={resetState}><Link to="/postting">Write</Link></li>
                     <li onClick={onclicklogout}>Sign Out</li>
                 </ul>
                 
