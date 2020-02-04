@@ -22,6 +22,7 @@ const PosterWrap = styled.div`
         width:100%;
         height:82px;
         padding:16px;
+        
         .feed_profile{
             width:40px;
             height:40px;
@@ -40,6 +41,25 @@ const PosterWrap = styled.div`
         }
         .date {
             color:rgba(0,0,0,.6);
+        }
+    }
+    .feed_tags {
+        position:relative;
+        width:auto;
+        background-color:transparent;
+        border:1px solid #E1E7EB;
+        border-radius:5px;
+        padding: 3px 8px;
+        margin:0 0 30px 5px;
+        font-weight:500;
+        color:#90A4AE
+        transition:.2s;
+        &:hover {
+            border-color:#008000;
+            color:#008000
+        }
+        &:nth-child(2) {
+            margin-left:15px;
         }
     }
     .feed_content {
@@ -91,8 +111,9 @@ const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents}
             <div className="feed_content">
                 <Link to={`/poster/${id}/${author}`}>
                     <h4>{title}</h4>
-                    <img style={{width:520}} src={tumnail} alt="" ></img>
-                    {/* <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div> */}
+                    {tags.match(',') ? tags.split(',').map( (res) => <span className="feed_tags">{res}</span>) : <span className="feed_tags">{tags}</span>}
+                    <img style={{width:520, marginTop:10}} src={tumnail} alt="thumnail" ></img>
+                    <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
                 </Link>
             </div>
         </PosterWrap>

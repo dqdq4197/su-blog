@@ -10,7 +10,7 @@ module.exports = (passport) => {
     session:true,
   }, async (email, password, done) => {
     try {
-      const exUser = await User.findOne({ where: { email } });
+      const exUser = await User.findOne({ where: { email, verify:1 } });
       if (exUser) {
         const result = bcrypt.compareSync(password, exUser.password);
         if (result) {

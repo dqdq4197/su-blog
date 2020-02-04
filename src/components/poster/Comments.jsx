@@ -2,12 +2,14 @@ import React,{useState} from 'react';
 import styled from 'styled-components';
 import {Button} from '../../lib/AuthInput';
 import axios from 'axios';
+import {Icon} from 'semantic-ui-react';
 import storage from '../../lib/storage';
-
+import TimeAgo from '../../lib/TimeAgo';
 
 const CommentContainer = styled.div`
     width:100%;
     height:500px;
+    margin-top:30px;
     form {
         text-align:right;
     }
@@ -16,32 +18,147 @@ const CommentContainer = styled.div`
         height:100px;
     }
 `
+const ReplyBox = styled.div`
+    position:relative;
+    margin-top:15px;
+    .profile {
+        position:relative;
+        display:inline-block;
+        width:35px;
+        height:35px;
+        top:10px;
+        border-radius:20px;
+        background-color:black;
+        background:url(${props => props.path});
+        background-position:center center;
+        background-size:cover;
+    }
+    .profile_info {
+        .author {
+            font-weight:500;
+            font-size:1.1em;
+        }
+        .date {
+            div {
+                display:inline-block;
+            }
+            font-weight:400;
+            font-style: normal;
+            font-size: 0.9em;
+            color:rgba(0,0,0,.4);
+            margin-left:6px;
+        }
+        display:inline-block;
+        margin-left:10px;
+    }
+    .comment {
+        margin:10px 0 5px 45px;
+        color:rgba(0, 0, 0, 0.54);
+        font-weight:600;
+    }
+    .reply {
+        margin:5px 0 0 22px;
+        font-size:.9em;
+        color:rgba(0,0,0,0.67);
+        cursor:pointer;
+        &:hover {
+            color:rgba(0,0,0,.9);
+        }
+    }
+    .like {
+        cursor: pointer;
+        &:hover {
+            i {
+                color:red;
+            }
+            color:rgba(0,0,0,.8);
+        }
+        i {
+            margin-right:3px;
+        }
+        transition: .3s;
+        margin-left:5px;
+        color:rgba(0,0,0,0.54);
+        font-size: .9em;
+    }
+    .replyBox {
+        text-align:right;
+        width:100%;
+        height:120px;
+        textarea {
+            width:94%;
+            height:100px;
+            margin:10px 0 0 28px;
+            resize:none;
+        }
+    }
+`
 
 
 const Comments = ({postId,data}) => {
-    const [value, setValue] = useState('');
+    const [parentValue, setParentValue] = useState('');
+    const [childValue, setChildValue] = useState('');
+    const [reply, setReply] = useState(null);
+    
     const userInfo = storage.get('loginInfo');
 
-    const onEnter = (e) => {
-        console.log(e.target.value)
-        setValue(e.target.value)
+    const onChangeParent = (e) => {
+        setParentValue(e.target.value)
     }
 
-    const onSubmit = () => {
-        axios.post(`/post/reply/${userInfo.nick}`, {
-            value,
-            postId,
+    const onChangeChild = (e) => {
+        setChildValue(e.target.value);
+    }
+    const onClickReply = (index) => {
+        reply === index+1 ? setReply( null ) :setReply(index + 1) ;
+    }
+    const onReplyParent = (e) => {
+        e.preventDefault();
+        if(parentValue) {
+            axios.post(`/comment/parentReply/${userInfo.nick}`, {
+                parentValue,
+                postId,
+        }).then(() => {
+            window.location.reload()
+        })} else {
+            e.preventDefault();
+        }
+    }
+
+    const onReplyChild = (e,userId) => {
+        e.preventDefault();
+        axios.post(`/comment/childReply/${userInfo.id}`, {
+            userId,
         })
     }
     return (
         <>
-        <h3>Comments....</h3>
-        {data[0] && data.map(res=> <h5 key={res.id}>{res.content}</h5>)}
-        {data[0] && data.map(res=> <h5 key={res.id}>{console.log(res)}</h5>)}
+        <h3 style={{marginTop:30}}>{data.length} 답변</h3>
+        <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
+        {data[0] && data.map(
+            (res, i) => <ReplyBox key={res.id} path={res.profile_img}>
+                        <div className="profile"></div>
+                        <div className="profile_info">
+                          <span className="author">{res.author}</span>
+                          <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                        </div>
+                        <div className="comment">{res.content}</div>
+                        <span className="reply" onClick={()=>onClickReply(i)}><Icon name="reply" /> 댓글 달기</span>
+                        <span className="like"><Icon name="like"/>3 likes</span>
+        {reply && (i===reply -1 ) ?
+            <div className="replyBox">
+                <form>
+                    {userInfo ? <textarea onChange={onChangeChild} value={childValue}></textarea> : <textarea readOnly placeholder='로그인이 필요합니다.'></textarea>}
+                    <Button onClick={(event) => onReplyChild(event,res.userId)} width="70px" size='.85rem'>댓글 작성</Button>
+                </form>
+            </div> : null}
+            </ReplyBox>)
+        }
         <CommentContainer>
+            <hr />
             <form>
-                <textarea onChange={onEnter} value={value}></textarea>
-                <Button onClick={onSubmit}>댓글 작성</Button>
+                {userInfo ? <textarea onChange={onChangeParent} value={parentValue}></textarea> : <textarea readOnly placeholder='로그인이 필요합니다.'></textarea> }
+                <Button onClick={onReplyParent}>댓글 작성</Button>
             </form>
         </CommentContainer>
         </>

@@ -104,7 +104,7 @@ router.post('/signup', async(req,res) => {
             key_verify:key_for_verify,
           })
         } else {
-          User.update({key_verify:key_for_verify},{where: {email}})
+          User.update({password: hash,nick:Nickname,key_verify:key_for_verify},{where: {email}})
         }
         console.log("Message sent: " + response.message);
         res.end("sent");

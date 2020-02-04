@@ -5,6 +5,7 @@ import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
 import {useDispatch, useSelector} from 'react-redux';
 import ContentBox from '../components/poster/Comments';
+import {Icon} from 'semantic-ui-react';
 import axios from 'axios';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
@@ -42,10 +43,53 @@ const PosterContainer= styled.div`
   }
 `
 
+const ScrollupBtn = styled.div`
+  position:fixed;
+  width:50px;
+  height:50px;
+  border-radius:50px;
+  border:2px solid #e9e7e7;
+  left:83%
+  bottom:120px;
+  font-size:3em;
+  color:#6c757d;
+  transition:.3s;
+  &:hover {
+    color:rgba(13,72,50,.8);
+    border-color:rgba(13,72,50,.5);
+  }
+  i {
+    left: -3%;
+    position: relative;
+    top: -23%;
+  }
+`
+const ScrolldownBtn = styled.div`
+  position:fixed;
+  width:50px;
+  height:50px;
+  border-radius:50px;
+  border:2px solid #e9e7e7;
+  left:83%
+  bottom: 50px;
+  font-size:3em;
+  color:#6c757d;
+  transition:.3s;
+  &:hover {
+    color:rgba(13,72,50,.8);
+    border-color:rgba(13,72,50,.5);
+  }
+  i {
+    left: -3%;
+    position: relative;
+    top: -20%;
+  }
+`
+
 
 
 const Poster = ({match}) => {
-
+  
   const userInfo = storage.get('loginInfo');
 
   const dispatch = useDispatch();
@@ -75,10 +119,24 @@ const Poster = ({match}) => {
 
       useEffect(() => {
         posterShowRequest();
+        
       },[]);
 
-      function replaceAll(str, searchStr, replaceStr) {
-        return str.split(searchStr).join(replaceStr);
+      // function replaceAll(str, searchStr, replaceStr) {
+        // return str.split(searchStr).join(replaceStr);
+      // }
+
+      const scrollup = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      const scrolldown = () => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
       }
 
       const jsonData = (json) => {
@@ -128,6 +186,8 @@ const Poster = ({match}) => {
     return (
       <>
           <Header />
+          <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
+          <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
           <PosterContainer>
             <main role="main" className="posterdiv">
               <div className="row">
@@ -139,7 +199,6 @@ const Poster = ({match}) => {
                   </div>
                   {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
                     <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
-                  <hr style={{backgroundColor:'#333', marginTop:60}} />
                   <ContentBox data={comments} postId={match.params.id}/>
                 </div>
               </div>

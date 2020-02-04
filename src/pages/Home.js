@@ -128,7 +128,7 @@ const Home = () => {
                               id={info.id} 
                               num={index} 
                               author={info.author}
-                              //contents={info.content.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
+                              contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
                               title={info.tumnailTitle}
                               tags={info.hashTags}
                               skills={info.skills}

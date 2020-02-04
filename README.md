@@ -1,6 +1,7 @@
-### React hooks 
-- frontend
-### Redux + immer
+### FrontEnd
+- React Hooks
+- markdownEditor(editorjs)
+### Redux + immer + thunk
 - React-redux를 통해 상태관리 
 ### Nodejs
 - backend
@@ -27,8 +28,6 @@
 - image 옵션 3개, Quote, checklist 구현
 
 ### 댓글 작업
-- Feed.js 95번째 줄
-- Home.js 131번째 줄
 - 수정 전 backend post -> outputData를 data로 , front poster에 61번째 줄
 - poster 71번째 줄 (backend 주석처리 때문에 404뜨는중)
 
