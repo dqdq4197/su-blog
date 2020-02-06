@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../components/loggin/Loggin.css';
 import {Link,Redirect} from 'react-router-dom';
-import HomeButton from '../components/HomeButton';
+import HomeButton from '../components/loggin/HomeButton';
 import {loginRequest, login_info_save} from '../actions/authentication';
 import { useDispatch, useSelector} from 'react-redux';
 import LoginField from '../components/loggin/LoginField';

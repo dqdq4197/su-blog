@@ -4,6 +4,7 @@ import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 
 const TagsBox = styled.div`
@@ -131,7 +132,7 @@ const PosterModal = ({onClick, posterId, modifydata}) => {
         skills:'',
       }]
   )
-
+  const history = useHistory();
   const tagnames= useRef();
   const titleRef = useRef();
   const show = (dimmer) => () => {
@@ -201,7 +202,8 @@ const PosterModal = ({onClick, posterId, modifydata}) => {
           tumnailImg: tumnailPosterInfo.imgUrl,
           skills:tumnailPosterInfo.skills,
         }).then((res) => {
-          alert('수정 완료')
+          alert('수정 완료');
+          history.push(`/poster/${posterId}/${nick}`)
         }).catch((error) => {
           console.log(error.response)
         })
@@ -218,6 +220,7 @@ const PosterModal = ({onClick, posterId, modifydata}) => {
         })
         .then((res) => {
           alert('저장 완료');
+          history.push(`/poster/${res.data.postId}/${res.data.nick}`)
           console.log(res.data);
         }).catch((error) => {
           console.log(error.response)

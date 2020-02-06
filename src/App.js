@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
-import {Board, About, Login, Home, Poster, Signup} from './pages';
+import {Board, About, Login, Home, Poster, Signup, Search} from './pages';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
 import {useDispatch} from 'react-redux';
@@ -27,6 +27,7 @@ useEffect(() => {
           <Route path="/poster/:id/:author" component={Poster} />
           <Route path="/Postting" component={Board} />
           <Route path="/Signup" exact component={Signup}/>
+          <Route path="/Search" component={Search} />
         </Switch>
       </div>
     </Router>

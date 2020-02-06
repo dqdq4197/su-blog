@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React  from 'react';
 import {Link} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {postShowRequest} from '../actions/posts';
 import TimeAgo from '../lib/TimeAgo';
 import styled from 'styled-components';
+import {Icon} from 'semantic-ui-react';
 
 const PosterWrap = styled.div`
     position:relative;
@@ -88,12 +89,17 @@ const PosterWrap = styled.div`
               line-height: 1.4;
           }
         };
+        .feed_reply {
+            padding:0 20px 5px 0;
+            text-align:right;
+            
+        }
     };
 
 
 `
 
-const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents}) => {
+const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents,replys}) => {
     const dispatch = useDispatch();
     const onclickPoster = () => {
         dispatch(postShowRequest(id));
@@ -111,10 +117,12 @@ const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents}
             <div className="feed_content">
                 <Link to={`/poster/${id}/${author}`}>
                     <h4>{title}</h4>
-                    {tags.match(',') ? tags.split(',').map( (res) => <span className="feed_tags">{res}</span>) : <span className="feed_tags">{tags}</span>}
+                    {tags.match(',') ? tags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{tags}</span>}
                     <img style={{width:520, marginTop:10}} src={tumnail} alt="thumnail" ></img>
                     <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
                 </Link>
+                    <hr style={{margin:10}}/>
+                <div className="feed_reply"><Icon name='comment outline'/>{replys}개의 댓글</div>
             </div>
         </PosterWrap>
     )

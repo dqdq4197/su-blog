@@ -20,7 +20,11 @@ router.post('/upload', (req,res,next) => {
             tumnailImg
         })
     }
-    res.json(outputData);
+    Post.findAll({
+        limit: 1,
+        order: [ [ 'createdAt', 'DESC' ]]
+    }).then( postId =>
+             res.json({ postId:postId[0].dataValues.id +1 , nick}))
 })
 
 router.post('/modify/:posterId', async(req,res,next) => {
@@ -31,7 +35,8 @@ router.post('/modify/:posterId', async(req,res,next) => {
         tumnailTitle,
         hashTags,
         skills,
-        tumnailImg},{where: {id: req.params.posterId}})
+        tumnailImg},{where: {id: req.params.posterId}}
+    ).then(() => res.send('수정완료'))
 })
 
 router.get('/:id/:author', (req,res) => {

@@ -1,10 +1,12 @@
-import React,{useEffect ,useState} from 'react';
+import React,{useEffect ,useState, useRef} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
-import {home_load_request, home_load_success} from '../actions/home';
+import SearchComponent from '../components/home/SearchComponent';
+import {home_load_request, home_load_success, home_more_request} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
+import {useHistory} from 'react-router-dom';
 
 
 const Content = styled.div`
@@ -14,10 +16,10 @@ const Content = styled.div`
     .categorieswrapper {
         position:relative;
         text-align:left;
-        margin-top:15px;
+        margin-top:50px;
         height:auto;
         .categories {
-            top:50px;
+            top:70px;
             position:sticky;
             position:-webkit-sticky;
             width:120px;
@@ -50,20 +52,7 @@ const Content = styled.div`
         }
     }
 `
-const PosterContainer = styled.div`
-    position:relative;
-    display:flex;
-    margin:15px auto 0;
-    width:1010px;
-    height:auto;
-    text-align:center;
-    .feed {
-        width:520px;
-        height:100%;
-        margin-left:130px;
-        padding-bottom:40px;
-    }
-`
+
 
 
 const Home = () => {
@@ -72,7 +61,7 @@ const Home = () => {
         "React",
         "Nodejs",
         "Css",
-        "Ui Design",
+        "Graphic Design",
         "Html",
         "User Experience",
         "Javascript",
@@ -80,50 +69,110 @@ const Home = () => {
         "Vue",
         "Jquery",
     ]
-    const isLoading = useSelector(state => state.home.isLoading);
+    const home = useSelector(state => state.home);
     const dispatch = useDispatch();
-
+    const prevRef = useRef(0);
+    const nextRef = useRef(4);
+    const loading = useRef('stop');
+    const cateValue = useRef('All');
+    const history = useHistory();
     const [posterId, setPosterId] = useState([]);
-    const [value, setValue] = useState('All');
+
+    const PosterContainer = styled.div`
+        position:relative;
+        display:flex;
+        margin:15px auto 0;
+        width:1010px;
+        height:auto;
+        text-align:center;
+        .feed {
+            width:520px;
+            height:100%;
+            margin-top:15px;
+            margin-left:130px;
+            padding-bottom:40px;
+        }
+        #${cateValue.current.replace(/ /gi, "")} {
+            font-size:1.06rem;
+            font-weight:700;
+            color:rgb(13, 72, 50);
+        }
+`
 
     useEffect(() => {
+        window.scrollTop=0;
         callPosts();
-        
-    },[value]);
-    
+        window.addEventListener('scroll', handleScroll,true);
+        return (() => { window.removeEventListener('scroll', handleScroll)})
+    },[cateValue.current]);
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
-        await axios.get('/home')
+        
+        await axios.post('/home', {value: cateValue.current})
         .then((res) => {
+            let test;
             dispatch(home_load_success());
             console.log(res.data);
-            res.data.map((post) => {
-                let result; 
-                value === 'All' ? result = true : result = post.skills.split(',').includes(value.toLowerCase());
-                result ? setPosterId((previd)=> [...previd,post]) : setPosterId((previd) => [...previd]);
+            test = res.data.slice(0,4);
+            test.map((post) => {
+                setPosterId((previd)=> [...previd,post])
+            loading.current = 'continue'
             })
         }).catch((err) => {
             console.log(err.res);
         })
+    };
+    
+    const handleScroll = () => {
+        
+        let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+        let clientHeight = document.documentElement.clientHeight;
+        
+        if((scrollTop + clientHeight >= scrollHeight) && scrollTop !==0 && loading.current==='continue') {
+            prevRef.current = prevRef.current+4;
+            nextRef.current = nextRef.current+4;
+            loading.current = 'stop'
+            axios.post('/home', {value :cateValue.current})
+                .then((res) => {
+                    let test;
+                    dispatch(home_load_success());
+                    test = res.data.slice(prevRef.current, nextRef.current) 
+                    test.map((post) => {
+                        setPosterId((previd)=> [...previd,post])
+                    })
+                    loading.current = 'continue';
+                }).catch((err) => {
+                    console.log(err.res);
+                })
+        }
     }
-
     const matchCategory = (key) => {
-        setValue(key);
+        if(key !== cateValue.current) {
+            setPosterId([]);
+            cateValue.current=key;
+            prevRef.current = 0;
+            nextRef.current = 4;
+        }
     }
+    
+    
+    
     return (
         <Content>
             <Header></Header>
+            
             <PosterContainer>
                 <div className="categorieswrapper">
                     <ul className="categories">
+                        <SearchComponent />
                         <h5>Categories</h5>
-                        {category.map(value => (<li onClick={() => matchCategory(value)} key={value}>{value}</li>))}
+                        {category.map(value => (<li id={value.replace(/ /gi, "") } onClick={() => matchCategory(value)} key={value}>{value}</li>))}
                     </ul>
                 </div>
-                
                 <div className="feed">
-                    {isLoading==='SUCCESS' ? (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index)=>
+                    {home.isLoading==='SUCCESS' ? (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index)=>
                         <Feed key ={index} 
                               id={info.id} 
                               num={index} 
@@ -135,6 +184,7 @@ const Home = () => {
                               tumnail={info.tumnailImg}
                               time={info.createdAt}
                               imgPath={info.user.profile_img}
+                              replys={info.comments.length}
                         />)) : "isLoading..."}
                 </div>
             </PosterContainer>

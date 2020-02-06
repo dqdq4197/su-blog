@@ -21,6 +21,12 @@ const CommentContainer = styled.div`
 const ReplyBox = styled.div`
     position:relative;
     margin-top:15px;
+    &.childReply {
+        margin-left:60px;
+        .like {
+            margin-left:23.5px;
+        }
+    }
     .profile {
         position:relative;
         display:inline-block;
@@ -50,6 +56,12 @@ const ReplyBox = styled.div`
         }
         display:inline-block;
         margin-left:10px;
+    }
+    .delete {
+        position:relative;
+        color:rgba(0,0,0,.5);
+        font-size:.8rem;
+        left:10px;
     }
     .comment {
         margin:10px 0 5px 45px;
@@ -99,7 +111,7 @@ const Comments = ({postId,data}) => {
     const [parentValue, setParentValue] = useState('');
     const [childValue, setChildValue] = useState('');
     const [reply, setReply] = useState(null);
-    
+
     const userInfo = storage.get('loginInfo');
 
     const onChangeParent = (e) => {
@@ -124,36 +136,58 @@ const Comments = ({postId,data}) => {
             e.preventDefault();
         }
     }
-
-    const onReplyChild = (e,userId) => {
+    
+    const onReplyChild = (e,replyId) => {
         e.preventDefault();
-        axios.post(`/comment/childReply/${userInfo.id}`, {
-            userId,
+        axios.post(`/comment/childReply/${userInfo.nick}`, {
+            replyId,
+            childValue,
+            postId
+        }).then(() => {
+            window.location.reload();
+            document.getElementById(replyId).focus();
         })
     }
+    
+
+    const test = (res) => {
+        return <ReplyBox className='childReply' key={res.id} path={res.profile_img}>
+            <div className="profile"></div>
+            <div className="profile_info">
+              <span className="author">{res.author}</span>
+              <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+            </div>
+            <div className="comment">{res.content}</div>
+            <span className="like"><Icon name="like"/>3 likes</span>
+            </ReplyBox>
+    }
+    
+
     return (
         <>
         <h3 style={{marginTop:30}}>{data.length} 답변</h3>
         <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
         {data[0] && data.map(
-            (res, i) => <ReplyBox key={res.id} path={res.profile_img}>
+            (res, i) => res.seq === 1 ? <ReplyBox id={res.id} key={res.id} path={res.profile_img}>
                         <div className="profile"></div>
                         <div className="profile_info">
                           <span className="author">{res.author}</span>
                           <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
                         </div>
+                        <span className="delete"><Icon name="trash alternate"/></span>
                         <div className="comment">{res.content}</div>
                         <span className="reply" onClick={()=>onClickReply(i)}><Icon name="reply" /> 댓글 달기</span>
-                        <span className="like"><Icon name="like"/>3 likes</span>
-        {reply && (i===reply -1 ) ?
-            <div className="replyBox">
-                <form>
-                    {userInfo ? <textarea onChange={onChangeChild} value={childValue}></textarea> : <textarea readOnly placeholder='로그인이 필요합니다.'></textarea>}
-                    <Button onClick={(event) => onReplyChild(event,res.userId)} width="70px" size='.85rem'>댓글 작성</Button>
-                </form>
-            </div> : null}
-            </ReplyBox>)
-        }
+                        <span className="like"><Icon name="like" />3 likes</span>
+                    {reply && (i===reply -1 ) ?
+                        <div className="replyBox">
+                        <form>
+                            {userInfo ? <textarea onChange={onChangeChild} value={childValue}></textarea> : <textarea readOnly placeholder='로그인이 필요합니다.'></textarea>}
+                            <Button onClick={(event) => onReplyChild(event,res.id)} width="70px" size='.85rem'>댓글 작성</Button>
+                        </form>
+                        </div> : null}
+                    </ReplyBox> : 
+                        test(res)
+        )}
         <CommentContainer>
             <hr />
             <form>

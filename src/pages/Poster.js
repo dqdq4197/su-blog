@@ -101,7 +101,6 @@ const Poster = ({match}) => {
         dispatch(posterLoadRequest());
         await axios.get(`/post/${match.params.id}/${match.params.author}`)
         .then((res) => {
-          console.log(res.data);
           dispatch(posterLoadSuccess());
           if(res.data) {
             const outdata = res.data.content.blocks.map((result)=>{
@@ -109,12 +108,18 @@ const Poster = ({match}) => {
             })
             setModifyData(res.data);
             jsonData(outdata)};
-            console.log(res.data)
         })
         await axios.get(`/comment/${match.params.id}`).then((res) =>{
-          console.log(res.data);
-          setComments(res.data);
+          let array=[]; 
+          let array1=[];
+
+          res.data.map((dap) => {!dap.parent && array.push(dap)});
+          array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
+          array1.map(dap2 => {
+            array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
+          setComments(array);
         })
+
       }
 
       useEffect(() => {

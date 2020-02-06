@@ -34,8 +34,6 @@ const VariousBtn = ({posterId, author,data}) => {
             alert(res.data);
             history.push('/home');
         })
-
-        console.log(posterId);
     }
     
     const onClickModify = () => {

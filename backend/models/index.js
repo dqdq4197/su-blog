@@ -13,5 +13,5 @@ db.Post = require('./post')(sequelize,Sequelize);
 db.Comment = require('./comment')(sequelize,Sequelize);
 db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
-
+db.Post.hasMany(db.Comment);
 module.exports = db;

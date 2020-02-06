@@ -24,7 +24,7 @@ router.get('/:id', async(req,res) => {
 
 router.post('/parentReply/:id', async(req,res,next) => {
     const {parentValue, postId} = req.body;
-    
+
     if(parentValue && postId && req.params.id) {
         await Comment.findAndCountAll({where:{postId}}).then(result => {
             db.Comment.create({
@@ -39,7 +39,14 @@ router.post('/parentReply/:id', async(req,res,next) => {
 })
 
 router.post('/childReply/:id', async(req,res,next) => {
-    const {userId} = req.body;
+    const {replyId,childValue, postId} = req.body;
+    await Comment.create({
+        seq:2,
+        content:childValue,
+        postId,
+        author:req.params.id,
+        parent:replyId
+    })
     res.json('success');    
 })
 

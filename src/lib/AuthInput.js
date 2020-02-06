@@ -7,15 +7,16 @@ export const Input = styled.input.attrs(props => ({
     placeholder : props.name === "email" ? "heesu@blog.com": props.name ,
   }))`
     color: palevioletred;
-    font-size: 1em;
+    font-size: ${props => props.size};
     border:2px solid white;
     border-radius: 10px;
     &:focus { outline:none;background-color: white; border : 2px solid rgba(13, 72, 50,.3) }
     &:hover { background-color: white; border : 2px solid rgba(13, 72, 50,.3)}
-    width:55%;
+    width:${props => props.width || '55%' };
     background-color:rgba(13, 72, 50,.08);
     margin: ${props => props.size};
     padding: ${props => props.size};
+    padding-left: ${props => props.padding}
     transition: border .6s;
   `;
 
