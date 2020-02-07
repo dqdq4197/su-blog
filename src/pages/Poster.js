@@ -28,16 +28,42 @@ hljs.registerLanguage('typescript', typescript);
 
 
 
-
+const SubTitleBox = styled.div`
+  position:fixed;
+  z-index:100;
+  top:200px;
+  right:0;
+  width:20%;
+    ul {
+      .commentView {
+        margin-top:20px;
+        font-weight:700;
+      }
+      li {
+        margin-bottom:3px;
+        a {
+          &:hover {
+            color:#008000;
+          }
+          color:rgba(13,72,50,.55);
+          text-decoration:none;
+        }
+        list-style:none;
+        font-size:.95rem;
+      }
+  }
+  
+ 
+`
 
 const PosterContainer= styled.div`
   .posterdiv {
     .col-md-8.blog-main {
       margin:0 auto;
-      padding:50px;
+      padding:8%;
       word-break:break-word;
       img {
-        max-width:720px;
+        max-width:100%;
       }
     }
   }
@@ -96,6 +122,7 @@ const Poster = ({match}) => {
   const {isLoadding} = useSelector(state => state.posts);
   const [comments, setComments] = useState({});
   const [modifyData, setModifyData] = useState({});
+  const [header, setHeader] = useState([{id:'',text:''}]);
 
       const posterShowRequest = async() => {
         dispatch(posterLoadRequest());
@@ -146,11 +173,12 @@ const Poster = ({match}) => {
 
       const jsonData = (json) => {
         var html = '';
-        json.forEach(function(block) {
+        json.forEach(function(block,i) {
           
           switch (block.type) {
             case 'header':
-              html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+              html += `<h${block.data.level} id='${i+'_'+block.data.text}'>${block.data.text}</h${block.data.level}>`;
+              setHeader((prev) => [...prev,{id:i+'_'+block.data.text,text:block.data.text}])
               break;
             case 'paragraph':
               html += `<p>${block.data.text}</p>`;
@@ -162,11 +190,20 @@ const Poster = ({match}) => {
               html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
               break;
             case 'list':
-              html += '<ul>';
-              block.data.items.forEach(function(li) {
-                html += `<li>${li}</li>`;
-              });
-              html += '</ul>';
+              if(block.data.style==='ordered') {
+                html += '<ol>';
+                block.data.items.forEach(function(li) {
+                  html += `<li>${li}</li>`;
+              })
+              html += '</ol>';
+            }else{ 
+                html += '<ul>';
+                block.data.items.forEach(function(li) {
+                  html += `<li>${li}</li>`;
+                });
+                html += '</ul>';
+              }
+              
               break;
             case 'embed':
               html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
@@ -176,6 +213,7 @@ const Poster = ({match}) => {
               const highlightedCode = hljs.highlightAuto(block.data.html).value
               html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
               break;
+
             default:
               console.log('Unknown block type', block.type);
               console.log(block);
@@ -186,11 +224,19 @@ const Poster = ({match}) => {
         });
       };
 
+      const SubTitle = () => {
+        return header ? <SubTitleBox>{<ul>{header.map(
+            (title) => {
+               return (<li><a href={'#'+title.id}>{title.text}</a></li>)
+            }
+        )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
+      }
       
 
     return (
       <>
           <Header />
+          <SubTitle />
           <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
           <PosterContainer>

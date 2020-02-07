@@ -1,6 +1,6 @@
 @import '~highlight.js/styles/atom-one-dark.css';
 .App {
-  height:100%;
+  height:auto;
 }
 body {
   box-sizing: border-box;

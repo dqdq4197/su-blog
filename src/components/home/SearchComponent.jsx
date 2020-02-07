@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {useHistory} from 'react-router-dom';
-
+import {Input} from "../../lib/AuthInput";
 const SearchComponent = () => {
     const [keyWord, setKeyWord] = useState('');
     const history = useHistory();
@@ -15,7 +15,7 @@ const SearchComponent = () => {
     }
     return (
         <>
-        <input type="text" onKeyDown={onEnter} onChange={onChangeKeyWord} value={keyWord} />
+            <Input width={'170px'} style={{height:40, marginLeft:0}} name="search" onKeyDown={onEnter} onChange={onChangeKeyWord} value={keyWord}/>
         </>
     );
 }

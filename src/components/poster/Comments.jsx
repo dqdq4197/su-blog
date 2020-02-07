@@ -5,6 +5,7 @@ import axios from 'axios';
 import {Icon} from 'semantic-ui-react';
 import storage from '../../lib/storage';
 import TimeAgo from '../../lib/TimeAgo';
+import {useHistory} from 'react-router-dom';
 
 const CommentContainer = styled.div`
     width:100%;
@@ -111,6 +112,7 @@ const Comments = ({postId,data}) => {
     const [parentValue, setParentValue] = useState('');
     const [childValue, setChildValue] = useState('');
     const [reply, setReply] = useState(null);
+    const history = useHistory();
 
     const userInfo = storage.get('loginInfo');
 
@@ -131,7 +133,8 @@ const Comments = ({postId,data}) => {
                 parentValue,
                 postId,
         }).then(() => {
-            window.location.reload()
+            //window.location.reload()
+            history.go(0);
         })} else {
             e.preventDefault();
         }
@@ -165,7 +168,7 @@ const Comments = ({postId,data}) => {
 
     return (
         <>
-        <h3 style={{marginTop:30}}>{data.length} 답변</h3>
+        <h3 id='commentView' style={{marginTop:30}}>{data.length} 답변</h3>
         <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
         {data[0] && data.map(
             (res, i) => res.seq === 1 ? <ReplyBox id={res.id} key={res.id} path={res.profile_img}>

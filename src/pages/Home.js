@@ -7,6 +7,7 @@ import {home_load_request, home_load_success, home_more_request} from '../action
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
 import {useHistory} from 'react-router-dom';
+import PosterView from '../components/poster/PosterView';
 
 
 const Content = styled.div`
@@ -130,9 +131,11 @@ const Home = () => {
         let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         let clientHeight = document.documentElement.clientHeight;
         
-        if((scrollTop + clientHeight >= scrollHeight) && scrollTop !==0 && loading.current==='continue') {
+        if((scrollTop + clientHeight >= scrollHeight-1) && scrollTop !==0 && loading.current==='continue') {
+            console.log('d>');
             prevRef.current = prevRef.current+4;
             nextRef.current = nextRef.current+4;
+            console.log(prevRef,nextRef);
             loading.current = 'stop'
             axios.post('/home', {value :cateValue.current})
                 .then((res) => {
@@ -156,13 +159,12 @@ const Home = () => {
             nextRef.current = 4;
         }
     }
-    
-    
+   
     
     return (
         <Content>
             <Header></Header>
-            
+            <PosterView />
             <PosterContainer>
                 <div className="categorieswrapper">
                     <ul className="categories">
