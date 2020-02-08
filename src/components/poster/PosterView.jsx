@@ -1,40 +1,12 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
-import axios from 'axios';
+import './posterView.css';
 
-const PosterView = () => {
-
-    useEffect(()=> {
-        
-    })
-    return(
-        <Modal trigger={<Button>Long Modal</Button>}>
-          <Modal.Header>Profile Picture</Modal.Header>
-          <Modal.Content image>
-            <Image wrapped size='medium' src='/images/wireframe/image.png' />
-            <Modal.Description>
-              <Header>Modal Header</Header>
-              <p>
-                This is an example of expanded content that will cause the modal's
-                dimmer to scroll
-              </p>
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-              <Image src='/images/wireframe/paragraph.png' />
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button primary>
-              Proceed <Icon name='right chevron' />
-            </Button>
-          </Modal.Actions>
-        </Modal>
-    )
-}
+const PosterView = ({id}) => (
+  <Modal trigger={<Button>Long Modal</Button>}>
+   
+        {/* <iframe style={{display:'block',height:'100vh', width:'100%'}} src={`/poster/${id}/null`}></iframe> */}
+  </Modal>
+)
 
 export default PosterView

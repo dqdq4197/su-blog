@@ -3,7 +3,7 @@ import * as types from '../actions/ActionTypes';
 const initialState = {
     isLoading : '',
     prevItem:0,
-    Items:2
+    Items:0,
 };
 
 export default function homeLoad(prevState=initialState, action) {
@@ -24,7 +24,7 @@ export default function homeLoad(prevState=initialState, action) {
             return {
                 ...prevState,
                 prevItem:action.prevItem,
-                Items:action.Items
+                Items:action.Items 
             }
         default :
             return prevState

@@ -3,12 +3,10 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
 import SearchComponent from '../components/home/SearchComponent';
-import {home_load_request, home_load_success, home_more_request} from '../actions/home';
+import {home_load_request, home_load_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
-import {useHistory} from 'react-router-dom';
-import PosterView from '../components/poster/PosterView';
-
+import {useHistory, useLocation} from 'react-router-dom';
 
 const Content = styled.div`
     width:100%;
@@ -77,8 +75,8 @@ const Home = () => {
     const loading = useRef('stop');
     const cateValue = useRef('All');
     const history = useHistory();
+    const location = useLocation();
     const [posterId, setPosterId] = useState([]);
-
     const PosterContainer = styled.div`
         position:relative;
         display:flex;
@@ -99,11 +97,11 @@ const Home = () => {
             color:rgb(13, 72, 50);
         }
 `
-
     useEffect(() => {
         window.scrollTop=0;
         callPosts();
         window.addEventListener('scroll', handleScroll,true);
+        
         return (() => { window.removeEventListener('scroll', handleScroll)})
     },[cateValue.current]);
     const callPosts = async() => {
@@ -114,7 +112,6 @@ const Home = () => {
         .then((res) => {
             let test;
             dispatch(home_load_success());
-            console.log(res.data);
             test = res.data.slice(0,4);
             test.map((post) => {
                 setPosterId((previd)=> [...previd,post])
@@ -130,12 +127,12 @@ const Home = () => {
         let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
         let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         let clientHeight = document.documentElement.clientHeight;
-        
+
         if((scrollTop + clientHeight >= scrollHeight-1) && scrollTop !==0 && loading.current==='continue') {
-            console.log('d>');
+            if(window.location.pathname.indexOf('poster')>-1) return false ; 
+            console.log('feed 추가');
             prevRef.current = prevRef.current+4;
             nextRef.current = nextRef.current+4;
-            console.log(prevRef,nextRef);
             loading.current = 'stop'
             axios.post('/home', {value :cateValue.current})
                 .then((res) => {
@@ -159,12 +156,9 @@ const Home = () => {
             nextRef.current = 4;
         }
     }
-   
-    
     return (
         <Content>
             <Header></Header>
-            <PosterView />
             <PosterContainer>
                 <div className="categorieswrapper">
                     <ul className="categories">
@@ -175,10 +169,12 @@ const Home = () => {
                 </div>
                 <div className="feed">
                     {home.isLoading==='SUCCESS' ? (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index)=>
+                    
                         <Feed key ={index} 
                               id={info.id} 
                               num={index} 
                               author={info.author}
+                              block={info}
                               contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
                               title={info.tumnailTitle}
                               tags={info.hashTags}

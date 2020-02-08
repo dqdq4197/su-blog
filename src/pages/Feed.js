@@ -1,10 +1,12 @@
 import React  from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {postShowRequest} from '../actions/posts';
 import TimeAgo from '../lib/TimeAgo';
 import styled from 'styled-components';
 import {Icon} from 'semantic-ui-react';
+import PosterView from '../components/poster/PosterView';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const PosterWrap = styled.div`
     position:relative;
@@ -99,14 +101,14 @@ const PosterWrap = styled.div`
 
 `
 
-const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents,replys}) => {
+const Feed = ({block,id,author,num,title,tags, skills, tumnail,time,imgPath, contents,replys}) => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const onclickPoster = () => {
         dispatch(postShowRequest(id));
     }
-    
     return (
-        <PosterWrap className="posterDetail" url={tumnail} profile_img={imgPath} onClick={onclickPoster}>
+        <PosterWrap className="posterDetail" id={id + '번'} url={tumnail} profile_img={imgPath} onClick={onclickPoster}>
             <div className="feed_Header">
                 <div className="feed_profile"></div>
                 <div className="feed_Header_text"> 
@@ -115,7 +117,7 @@ const Feed = ({id,author,num,title,tags, skills, tumnail,time,imgPath, contents,
                 </div>
             </div>
             <div className="feed_content">
-                <Link to={`/poster/${id}/${author}`}>
+            <Link to={{ pathname:`/poster/${id}/${author}`, state:{background:location, block}}}>
                     <h4>{title}</h4>
                     {tags.match(',') ? tags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{tags}</span>}
                     <img style={{width:520, marginTop:10}} src={tumnail} alt="thumnail" ></img>

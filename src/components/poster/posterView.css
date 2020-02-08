@@ -1,0 +1,4 @@
+.ui.modal.transition.visible.active {
+    height:100% !important;
+    width:80% !important;
+}

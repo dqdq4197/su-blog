@@ -16,3 +16,4 @@ export { default as Board} from './Board';
 export { default as Signup} from './Signup';
 export { default as Poster} from './Poster';
 export { default as Search} from './Search';
+export { default as PosterModal} from './PosterModal';

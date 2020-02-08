@@ -1,12 +1,12 @@
-import React, {useEffect,useState} from 'react';
-import Header from '../components/header/Header';
-import styled from 'styled-components';
-import VariousBtn from '../components/poster/VariousBtn'
-import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
+import React,{useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import ContentBox from '../components/poster/Comments';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
+import styled from 'styled-components'; 
 import axios from 'axios';
+import VariousBtn from '../components/poster/VariousBtn';
+import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
+import ContentBox from '../components/poster/Comments';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -25,16 +25,35 @@ hljs.registerLanguage('java', java);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('typescript', typescript);
 
-
-
+const ModalContainer = styled.div`
+    position: fixed;
+    z-index: 100000;scrollbor-color:white;
+    overflow: auto;
+    top: 0;
+    background: rgba(0,0,0,.8);
+    width: 100%;
+    left:0;
+    bottom:0;
+    right:0;
+    .modalBox {
+        
+        position:absolute;
+        top:60px;
+        border-radius:10px;
+        left:15%;
+        right:15%;
+        z-index:100000000;
+        color:black;
+        background-color:white;
+    }
+`
 
 const SubTitleBox = styled.div`
   position:fixed;
   z-index:100;
   top:200px;
   right:0;
-  width:20%;
-  
+  width:17%;
     ul {
       .commentView {
         margin-top:20px;
@@ -46,7 +65,7 @@ const SubTitleBox = styled.div`
           &:hover {
             color:#008000;
           }
-          color:rgba(13,72,50,.55);
+          color:white;
           text-decoration:none;
         }
         list-style:none;
@@ -58,10 +77,11 @@ const SubTitleBox = styled.div`
 `
 
 const PosterContainer= styled.div`
+
   .posterdiv {
     .col-md-8.blog-main {
-      margin:0 auto;
-      padding:8%;
+      background-coloR:#fafbfc;
+      margin:100px auto 0;
       word-break:break-word;
       img {
         max-width:100%;
@@ -113,53 +133,44 @@ const ScrolldownBtn = styled.div`
   }
 `
 
+const PosterModal = () => {
+
+    const history = useHistory();
+    const { id,author } = useParams();
+    const location = useLocation();
+    const userInfo = storage.get('loginInfo');
+    const dispatch = useDispatch();
+    const {isLoadding} = useSelector(state => state.posts);
+
+    const [comments, setComments] = useState({});
+    const [modifyData, setModifyData] = useState({});
+    const [header, setHeader] = useState([{id:'',text:''}]);
 
 
-const Poster = ({match}) => {
+    useEffect(() => {
+        document.getElementById('body').style.overflow='hidden';
+        getData();
+        return () => {document.getElementById('body').style.overflow='visible';}
+    },[])
+
+    const getData = async() => {
+        const outData = location.state.block.content.blocks.map((result)=>{
+            return result;
+          })
+          setModifyData(location.state.block);
+          jsonData(outData);
+        await axios.get(`/comment/${id}`).then((res) =>{
+            let array=[]; 
+            let array1=[];
   
-  const userInfo = storage.get('loginInfo');
-
-  const dispatch = useDispatch();
-  const {isLoadding} = useSelector(state => state.posts);
-  const [comments, setComments] = useState({});
-  const [modifyData, setModifyData] = useState({});
-  const [header, setHeader] = useState([{id:'',text:''}]);
-
-      const posterShowRequest = async() => {
-        dispatch(posterLoadRequest());
-        await axios.get(`/post/${match.params.id}/${match.params.author}`)
-        .then((res) => {
-          dispatch(posterLoadSuccess());
-          if(res.data) {
-            const outdata = res.data.content.blocks.map((result)=>{
-              return result;
-            })
-            setModifyData(res.data);
-            jsonData(outdata)};
-        })
-        await axios.get(`/comment/${match.params.id}`).then((res) =>{
-          let array=[]; 
-          let array1=[];
-
-          res.data.map((dap) => {!dap.parent && array.push(dap)});
-          array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
-          array1.map(dap2 => {
-            array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
-          setComments(array);
-        })
-
-      }
-
-      useEffect(() => {
-        posterShowRequest();
-        
-      },[]);
-
-      // function replaceAll(str, searchStr, replaceStr) {
-        // return str.split(searchStr).join(replaceStr);
-      // }
-
-      const scrollup = () => {
+            res.data.map((dap) => {!dap.parent && array.push(dap)});
+            array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
+            array1.map(dap2 => {
+              array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
+            setComments(array);
+          })
+    };
+    const scrollup = () => {
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
@@ -210,7 +221,6 @@ const Poster = ({match}) => {
               html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
               break;
             case 'raw':
-              //const a = replaceAll(block.data.html,"<","&lt")
               const highlightedCode = hljs.highlightAuto(block.data.html).value
               html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
               break;
@@ -228,19 +238,29 @@ const Poster = ({match}) => {
       const SubTitle = () => {
         return header ? <SubTitleBox>{<ul>{header.map(
             (title) => {
-               return (<li><a href={'#'+title.id}>{title.text}</a></li>)
+               return (<li key={title.id}><a href={'#'+title.id}>{title.text}</a></li>)
             }
         )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
       }
-      
+    const back = e => {
+        e.stopPropagation();
+        if (e.target !== e.currentTarget){
+             return ; 
+        }else {
+             history.goBack();
+        }
+        
+        
+      };
 
     return (
-      <>
-          <Header />
-          <SubTitle />
-          <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
+        <>
+        <ModalContainer onClick={back} >
+            <div className="modalBox">
+            <SubTitle />
+            <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
-          <PosterContainer>
+            <PosterContainer id='total'>
             <main role="main" className="posterdiv">
               <div className="row">
                 <div className="col-md-8 blog-main">
@@ -249,14 +269,17 @@ const Poster = ({match}) => {
                       ..isLoadding                  
                     </div>
                   </div>
-                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
-                    <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
-                  <ContentBox data={comments} postId={match.params.id}/>
+                  {(userInfo ? (userInfo.nick === author || userInfo.nick === ' Operator') : false ) ? 
+                    <VariousBtn data={modifyData} posterId={id} author={author}/> : ''}
+                  <ContentBox data={comments} postId={id}/>
                 </div>
               </div>
             </main>
         </PosterContainer>
-      </>
+            </div>
+        </ModalContainer>
+        </>
     )
 }
-export default Poster;
+
+export default PosterModal;

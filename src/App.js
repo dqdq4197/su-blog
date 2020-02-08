@@ -1,13 +1,14 @@
 import React,{useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
 import './App.css';
-import {Board, About, Login, Home, Poster, Signup, Search} from './pages';
+import {Board, About, Login, Home, Poster, Signup, Search ,PosterModal} from './pages';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
 import {useDispatch} from 'react-redux';
 
 function App() {
   const dispatch = useDispatch();
+  
   const userInfo = async() => {
     const loginInfo = storage.get('loginInfo');
     await dispatch(login_info_save(loginInfo));
@@ -19,7 +20,18 @@ useEffect(() => {
   return (
     <Router>
       <div className="App">
-        <Switch>
+        <AppSwitch />
+      </div>
+    </Router>
+  );
+}
+
+function AppSwitch() {
+        let location = useLocation();
+        let background = location.state && location.state.background;
+  return (
+      <>
+        <Switch location={background || location}>
           <Route path="/" exact component={Login}/>
           <Route path="/home/:nick" component={Home}/>
           <Route path="/home" exact component={Home}/>
@@ -29,9 +41,10 @@ useEffect(() => {
           <Route path="/Signup" exact component={Signup}/>
           <Route path="/Search" component={Search} />
         </Switch>
-      </div>
-    </Router>
-  );
+        {background && <Route path="/poster/:id/:author" component={PosterModal} />}
+        
+      </>
+  )
 }
 
 export default App;
