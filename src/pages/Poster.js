@@ -36,6 +36,7 @@ const SubTitleBox = styled.div`
   width:20%;
   
     ul {
+      margin:0;
       .commentView {
         margin-top:20px;
         font-weight:700;
@@ -147,9 +148,9 @@ const Poster = ({match}) => {
             array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
           setComments(array);
         })
-
       }
 
+      console.log(comments);
       useEffect(() => {
         posterShowRequest();
         
@@ -197,14 +198,13 @@ const Poster = ({match}) => {
                   html += `<li>${li}</li>`;
               })
               html += '</ol>';
-            }else{ 
-                html += '<ul>';
-                block.data.items.forEach(function(li) {
-                  html += `<li>${li}</li>`;
-                });
-                html += '</ul>';
-              }
-              
+            }else { 
+              html += '<ul>';
+              block.data.items.forEach(function(li) {
+                html += `<li>${li}</li>`;
+              });
+              html += '</ul>';
+            }
               break;
             case 'embed':
               html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
@@ -220,7 +220,6 @@ const Poster = ({match}) => {
               console.log(block);
               break;
           }
-          
           document.getElementById('content').innerHTML = html;
         });
       };
@@ -236,25 +235,25 @@ const Poster = ({match}) => {
 
     return (
       <>
-          <Header />
-          <SubTitle />
-          <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
-          <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
-          <PosterContainer>
-            <main role="main" className="posterdiv">
-              <div className="row">
-                <div className="col-md-8 blog-main">
-                  <div className="blog-post">
-                    <div id="content">
-                      ..isLoadding                  
-                    </div>
+        <Header />
+        <SubTitle />
+        <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
+        <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
+        <PosterContainer>
+          <main role="main" className="posterdiv">
+            <div className="row">
+              <div className="col-md-8 blog-main">
+                <div className="blog-post">
+                  <div id="content">
+                    ..isLoadding                  
                   </div>
-                  {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
-                    <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
-                  <ContentBox data={comments} postId={match.params.id}/>
                 </div>
+                {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
+                  <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
+                <ContentBox data={comments} postId={match.params.id}/>
               </div>
-            </main>
+            </div>
+          </main>
         </PosterContainer>
       </>
     )

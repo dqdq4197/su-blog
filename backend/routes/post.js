@@ -1,6 +1,5 @@
 const express = require('express');
-const {Post,Comment} = require('../models');
-const db = require('../models');
+const {Post} = require('../models');
 const router = express.Router();
 
 router.post('/upload', (req,res,next) => {

@@ -98,12 +98,13 @@ const Home = () => {
         }
 `
     useEffect(() => {
-        window.scrollTop=0;
         callPosts();
+        window.scrollTop=0;
         window.addEventListener('scroll', handleScroll,true);
         
         return (() => { window.removeEventListener('scroll', handleScroll)})
     },[cateValue.current]);
+    
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
@@ -115,13 +116,13 @@ const Home = () => {
             test = res.data.slice(0,4);
             test.map((post) => {
                 setPosterId((previd)=> [...previd,post])
-            loading.current = 'continue'
+            loading.current = 'continue';
             })
         }).catch((err) => {
             console.log(err.res);
         })
     };
-    
+    console.log(cateValue.current);
     const handleScroll = () => {
         
         let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -156,6 +157,7 @@ const Home = () => {
             nextRef.current = 4;
         }
     }
+    
     return (
         <Content>
             <Header></Header>
@@ -168,22 +170,13 @@ const Home = () => {
                     </ul>
                 </div>
                 <div className="feed">
-                    {home.isLoading==='SUCCESS' ? (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index)=>
-                    
+                    {home.isLoading==='SUCCESS' ?
+                     (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index) =>
                         <Feed key ={index} 
-                              id={info.id} 
-                              num={index} 
-                              author={info.author}
                               block={info}
                               contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
-                              title={info.tumnailTitle}
-                              tags={info.hashTags}
-                              skills={info.skills}
-                              tumnail={info.tumnailImg}
-                              time={info.createdAt}
-                              imgPath={info.user.profile_img}
-                              replys={info.comments.length}
-                        />)) : "isLoading..."}
+                        />)) 
+                    : "isLoading..."}
                 </div>
             </PosterContainer>
         </Content>

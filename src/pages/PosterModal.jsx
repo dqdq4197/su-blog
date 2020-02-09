@@ -2,9 +2,9 @@ import React,{useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
-import styled from 'styled-components'; 
-import axios from 'axios';
+import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn';
+import axios from 'axios';
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
 import ContentBox from '../components/poster/Comments';
 import storage from '../lib/storage';
@@ -27,7 +27,8 @@ hljs.registerLanguage('typescript', typescript);
 
 const ModalContainer = styled.div`
     position: fixed;
-    z-index: 100000;scrollbor-color:white;
+    z-index: 100000;
+    scrollbor-color:#e9e7e7;
     overflow: auto;
     top: 0;
     background: rgba(0,0,0,.8);
@@ -36,11 +37,14 @@ const ModalContainer = styled.div`
     bottom:0;
     right:0;
     .modalBox {
-        
+      -webkit-box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
+-moz-box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
+box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
         position:absolute;
         top:60px;
         border-radius:10px;
         left:15%;
+        min-Height:100%;
         right:15%;
         z-index:100000000;
         color:black;
@@ -80,7 +84,6 @@ const PosterContainer= styled.div`
 
   .posterdiv {
     .col-md-8.blog-main {
-      background-coloR:#fafbfc;
       margin:100px auto 0;
       word-break:break-word;
       img {
@@ -95,8 +98,8 @@ const ScrollupBtn = styled.div`
   width:50px;
   height:50px;
   border-radius:50px;
-  border:2px solid #e9e7e7;
-  left:83%
+  border:2px solid #6c757d;
+  left:90%
   bottom:120px;
   font-size:3em;
   color:#6c757d;
@@ -116,8 +119,8 @@ const ScrolldownBtn = styled.div`
   width:50px;
   height:50px;
   border-radius:50px;
-  border:2px solid #e9e7e7;
-  left:83%
+  border:2px solid #6c757d;
+  left:90%
   bottom: 50px;
   font-size:3em;
   color:#6c757d;
@@ -148,117 +151,114 @@ const PosterModal = () => {
 
 
     useEffect(() => {
-        document.getElementById('body').style.overflow='hidden';
-        getData();
-        return () => {document.getElementById('body').style.overflow='visible';}
+      document.getElementById('body').style.overflow='hidden';
+      getData();
+      return () => {document.getElementById('body').style.overflow='visible';}
     },[])
 
     const getData = async() => {
-        const outData = location.state.block.content.blocks.map((result)=>{
-            return result;
-          })
-          setModifyData(location.state.block);
-          jsonData(outData);
-        await axios.get(`/comment/${id}`).then((res) =>{
-            let array=[]; 
-            let array1=[];
-  
-            res.data.map((dap) => {!dap.parent && array.push(dap)});
-            array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
-            array1.map(dap2 => {
-              array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
-            setComments(array);
-          })
+      const outData = location.state.block.content.blocks.map((result)=>{
+        return result;
+      })
+      setModifyData(location.state.block);
+      jsonData(outData);
+    
+      await axios.get(`/comment/${location.state.block.id}`).then((res) =>{
+      let parrentArray=[]; 
+      let childArray=[];
+      
+      res.data.map((dap) => {!dap.parent && parrentArray.push(dap)});
+      childArray=res.data.filter(dap1 => dap1.parent !== null ).reverse();
+      childArray.map(dap2 => {
+        parrentArray.map((dap3,i) => dap2.parent === dap3.id ? parrentArray.splice(i+1,0,dap2) : null)})
+      setComments(parrentArray);
+      })
     };
     const scrollup = () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }
-      const scrolldown = () => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth'
-        });
-      }
+      document.getElementById('modalContainer').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    const scrolldown = () => {
+      document.getElementById('modalContainer').scrollTo({
+        top: document.getElementById('modalContainer').scrollHeight,
+        behavior: 'smooth'
+      });
+    }
 
-      const jsonData = (json) => {
-        var html = '';
-        json.forEach(function(block,i) {
-          
-          switch (block.type) {
-            case 'header':
-              html += `<h${block.data.level} id='${i+'_'+block.data.text}'>${block.data.text}</h${block.data.level}>`;
-              setHeader((prev) => [...prev,{id:i+'_'+block.data.text,text:block.data.text}])
-              break;
-            case 'paragraph':
-              html += `<p>${block.data.text}</p>`;
-              break;
-            case 'delimiter':
-              html += '<hr />';
-              break;
-            case 'image':
-              html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
-              break;
-            case 'list':
-              if(block.data.style==='ordered') {
-                html += '<ol>';
-                block.data.items.forEach(function(li) {
-                  html += `<li>${li}</li>`;
-              })
-              html += '</ol>';
-            }else{ 
-                html += '<ul>';
-                block.data.items.forEach(function(li) {
-                  html += `<li>${li}</li>`;
-                });
-                html += '</ul>';
-              }
-              
-              break;
-            case 'embed':
-              html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
-              break;
-            case 'raw':
-              const highlightedCode = hljs.highlightAuto(block.data.html).value
-              html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
-              break;
-
-            default:
-              console.log('Unknown block type', block.type);
-              console.log(block);
-              break;
+    const jsonData = (json) => {
+      var html = '';
+      json.forEach(function(block,i) {
+        
+        switch (block.type) {
+          case 'header':
+            html += `<h${block.data.level} id='${i+'_'+block.data.text}'>${block.data.text}</h${block.data.level}>`;
+            setHeader((prev) => [...prev,{id:i+'_'+block.data.text,text:block.data.text}])
+            break;
+          case 'paragraph':
+            html += `<p>${block.data.text}</p>`;
+            break;
+          case 'delimiter':
+            html += '<hr />';
+            break;
+          case 'image':
+            html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+            break;
+          case 'list':
+            if(block.data.style==='ordered') {
+              html += '<ol>';
+              block.data.items.forEach(function(li) {
+                html += `<li>${li}</li>`;
+            })
+            html += '</ol>';
+          }else { 
+              html += '<ul>';
+              block.data.items.forEach(function(li) {
+                html += `<li>${li}</li>`;
+              });
+              html += '</ul>';
           }
-          
-          document.getElementById('content').innerHTML = html;
-        });
-      };
-
-      const SubTitle = () => {
-        return header ? <SubTitleBox>{<ul>{header.map(
-            (title) => {
-               return (<li key={title.id}><a href={'#'+title.id}>{title.text}</a></li>)
-            }
-        )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
-      }
-    const back = e => {
-        e.stopPropagation();
-        if (e.target !== e.currentTarget){
-             return ; 
-        }else {
-             history.goBack();
+            break;
+          case 'embed':
+            html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
+            break;
+          case 'raw':
+            const highlightedCode = hljs.highlightAuto(block.data.html).value
+            html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
+            break;
+          default:
+            console.log('Unknown block type', block.type);
+            console.log(block);
+            break;
         }
-        
-        
-      };
+        document.getElementById('content').innerHTML = html;
+      });
+    };
 
+    const SubTitle = () => {
+      return header ? <SubTitleBox>{<ul>{header.map(
+          (title) => {
+             return (<li key={title.id}><a href={'#'+title.id}>{title.text}</a></li>)
+          }
+      )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
+    }
+
+    const back = e => {
+      e.stopPropagation();
+      if(e.target !== e.currentTarget){
+        return ; 
+      }else {
+        history.goBack();
+      }    
+    };
+    console.log(comments);
     return (
         <>
-        <ModalContainer onClick={back} >
-            <div className="modalBox">
-            <SubTitle />
-            <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
+        <ModalContainer onClick={back} id='modalContainer'>
+          <div className="modalBox">
+          <SubTitle />
+          <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
             <PosterContainer id='total'>
             <main role="main" className="posterdiv">
@@ -275,8 +275,8 @@ const PosterModal = () => {
                 </div>
               </div>
             </main>
-        </PosterContainer>
-            </div>
+            </PosterContainer>
+          </div>
         </ModalContainer>
         </>
     )

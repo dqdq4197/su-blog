@@ -5,8 +5,6 @@ import {postShowRequest} from '../actions/posts';
 import TimeAgo from '../lib/TimeAgo';
 import styled from 'styled-components';
 import {Icon} from 'semantic-ui-react';
-import PosterView from '../components/poster/PosterView';
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const PosterWrap = styled.div`
     position:relative;
@@ -101,30 +99,35 @@ const PosterWrap = styled.div`
 
 `
 
-const Feed = ({block,id,author,num,title,tags, skills, tumnail,time,imgPath, contents,replys}) => {
+const Feed = ({block, contents}) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const onclickPoster = () => {
-        dispatch(postShowRequest(id));
+        dispatch(postShowRequest(block.id));
     }
+
+    const hideScroll = () => {
+        document.getElementById('body').style.overflow='hidden';
+    }
+    
     return (
-        <PosterWrap className="posterDetail" id={id + '번'} url={tumnail} profile_img={imgPath} onClick={onclickPoster}>
+        <PosterWrap className="posterDetail" id={block.id + '번'} url={block.tumnailImg} profile_img={block.user.profile_img} onClick={onclickPoster}>
             <div className="feed_Header">
                 <div className="feed_profile"></div>
                 <div className="feed_Header_text"> 
-                    <span className="author">{author}</span>
-                    <span className="date"><TimeAgo date={time} locale="en" /></span>
+                    <span className="author">{block.author}</span>
+                    <span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>
                 </div>
             </div>
-            <div className="feed_content">
-            <Link to={{ pathname:`/poster/${id}/${author}`, state:{background:location, block}}}>
-                    <h4>{title}</h4>
-                    {tags.match(',') ? tags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{tags}</span>}
-                    <img style={{width:520, marginTop:10}} src={tumnail} alt="thumnail" ></img>
+            <div className="feed_content" onClick={hideScroll}>
+                <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}}>
+                    <h4>{block.tumnailTitle}</h4>
+                    {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{block.hashTags}</span>}
+                    <img style={{width:520, marginTop:10}} src={block.tumnailImg} alt="thumnail" ></img>
                     <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
                 </Link>
-                    <hr style={{margin:10}}/>
-                <div className="feed_reply"><Icon name='comment outline'/>{replys}개의 댓글</div>
+                <hr style={{margin:10}}/>
+                <div className="feed_reply"><Icon name='comment outline'/>{block.comments.length}개의 댓글</div>
             </div>
         </PosterWrap>
     )

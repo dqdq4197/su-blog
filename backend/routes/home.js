@@ -27,10 +27,9 @@ router.post('/', async(req,res) => {
                 model: User,
                 attributes:['profile_img'],
             },{
-                model: Comment
+                model: Comment,
             }
             ],
-
             order:[['createdAt','DESC']],
         }).then((posts) =>{
             res.json(posts);
