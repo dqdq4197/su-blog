@@ -5,6 +5,7 @@ import Header from '../components/header/Header';
 import styled from 'styled-components';
 import {Input} from '../lib/AuthInput';
 import {useHistory} from 'react-router-dom';
+import {Icon} from 'semantic-ui-react';
 
 const SearchBox = styled.div`
     width:100%;
@@ -17,37 +18,56 @@ const SearchBox = styled.div`
 `
 const FeedBox = styled.div`
     position:relative;
-    width:50%;
+    margin:0 auto 1px;
     text-align:left;
-    border-radius:30px;
-    height:auto;
-    margin:0 auto 30px auto;
-    cursor:pointer;
-    background-color:rgba(233,233,233,.3);
+    width:50%;
+    padding:10px;
+    color:black;
     .profile_box {
         display:flex;
-    }
-    .profile_pic {
-        position:relative;
-        width:50px;
-        height:50px;
-        left:0;
-        top:-20px;
-        margin-right:10px;
-        border-radius:50px;
-        background:url(${props => props.img});
-        background-position:center center;
-        background-size:cover;
-    }
-    .profile_author {
-        font-size:1.3rem;
-        position:relative;
-        top:-15px;
+        .profile_pic {
+            width:30px;
+            height:30px;
+            margin-right:5px;
+            background:url(${props => props.img});
+            background-size:cover;
+            background-position:center center;
+            border-radius:30px;
+        }
     }
     .poster_title {
-        font-weight:500;
-        font-size:2rem;
+        font-size:1.8rem;
+        font-weight:600;
+        margin-left:1%;
+        cursor:pointer;
     }
+    .poster_preview {
+        display:flex;
+        .poster_tumnail {
+            width:230px;
+            margin-right:2%;
+            img {
+                width:100%;
+            }
+        }
+        .poster_content {
+            flex:3;
+            p {
+                display: -webkit-box; display: -webkit-box; display: -ms-flexbox;
+                max-height:100px; 
+                overflow:hidden; 
+                vertical-align:top; 
+                text-overflow: ellipsis; 
+                word-break:break-all;
+                 -webkit-box-orient:vertical; 
+                 -webkit-line-clamp:5;
+                font-weight:500;
+
+            }
+        }
+        }
+    }
+    
 `
 const Search = ({location}) => {
 
@@ -93,12 +113,37 @@ const Search = ({location}) => {
         console.log(data);
         return data.map((search) => {
         return (
-            <FeedBox onClick={()=>{history.push(`/poster/${search.id}/${null}`)}} key={search.id} img={search.user.profile_img}>
+            <>
+            <FeedBox  key={search.id} url={search.tumnailImg} img={search.user.profile_img}>
+            <hr/>
+                
                 <div className="profile_box">
                     <div className="profile_pic"></div><div className='profile_author'>{search.author}</div>
                 </div>
-                <div className='poster_title'>{search.tumnailTitle}</div>
-            </FeedBox>)
+                <div className='poster_title' onClick={()=>{history.push(`/poster/${search.id}/${null}`)}}>{search.tumnailTitle}</div>
+                <div className='poster_preview'>
+                    {search.tumnailImg ? <div className="poster_tumnail"><img src={search.tumnailImg} /></div> : null}
+                    <div className='poster_content'>
+                    <p>{ search.content.blocks.map((block) => {
+                            switch (block.type) {
+                                case 'header': case 'paragraph':
+                                    return ( <>{block.data.text.replace(/&nbsp;|<b>|<\/b>/g,'')} <br/></> )
+                                case 'list' :
+                                    return block.data.items.map(item => item.replace(/&nbsp;|<b>|<\/b>/g,''));
+                                default :
+                                    return false;
+                            };
+                             
+                        })}
+                        </p>
+                        <Icon name='comment outline'/>{search.comments.length}개의 댓글
+                    </div>
+                    {console.log(search)}
+                </div>
+                
+            </FeedBox>
+            </>
+            )
         })
     };
     

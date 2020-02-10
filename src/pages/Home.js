@@ -174,7 +174,7 @@ const Home = () => {
                      (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index) =>
                         <Feed key ={index} 
                               block={info}
-                              contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text})}
+                              contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text.replace(/&nbsp;|<b>|<\/b>/g,'')})}
                         />)) 
                     : "isLoading..."}
                 </div>

@@ -227,7 +227,7 @@ const Poster = ({match}) => {
       const SubTitle = () => {
         return header ? <SubTitleBox>{<ul>{header.map(
             (title) => {
-               return (<li><a href={'#'+title.id}>{title.text}</a></li>)
+               return (<li key={title.id}><a href={'#'+title.id}>{title.text}</a></li>)
             }
         )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
       }

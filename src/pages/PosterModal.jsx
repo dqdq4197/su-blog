@@ -37,18 +37,18 @@ const ModalContainer = styled.div`
     bottom:0;
     right:0;
     .modalBox {
-      -webkit-box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
--moz-box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
-box-shadow: 0px 0px 82px -11px rgba(222,222,222,0.78);
-        position:absolute;
-        top:60px;
-        border-radius:10px;
-        left:15%;
-        min-Height:100%;
-        right:15%;
-        z-index:100000000;
-        color:black;
-        background-color:white;
+      -webkit-box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
+      -moz-box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
+      box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
+      position:absolute;
+      top:60px;
+      border-radius:10px;
+      left:15%;
+      min-Height:100%;
+      right:15%;
+      z-index:100000000;
+      color:black;
+      background-color:white;
     }
 `
 
@@ -83,10 +83,14 @@ const SubTitleBox = styled.div`
 const PosterContainer= styled.div`
 
   .posterdiv {
-    .col-md-8.blog-main {
-      margin:100px auto 0;
+    .col-md-10.blog-main {
+      padding:0 50px;
+      margin:50px auto 0;
       word-break:break-word;
       img {
+        left:0;
+        right:0;
+        margin:0 auto;
         max-width:100%;
       }
     }
@@ -263,7 +267,7 @@ const PosterModal = () => {
             <PosterContainer id='total'>
             <main role="main" className="posterdiv">
               <div className="row">
-                <div className="col-md-8 blog-main">
+                <div className="col-md-10 blog-main">
                   <div className="blog-post">
                     <div id="content">
                       ..isLoadding                  

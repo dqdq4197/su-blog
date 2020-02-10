@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {postShowRequest} from '../actions/posts';
 import TimeAgo from '../lib/TimeAgo';
 import styled from 'styled-components';
-import {Icon} from 'semantic-ui-react';
+import {Icon, Popup} from 'semantic-ui-react';
 
 const PosterWrap = styled.div`
     position:relative;
@@ -76,17 +76,23 @@ const PosterWrap = styled.div`
           };
           .feed_preview {
               padding:4px 16px;
-              max-height:200px;
-              overflow:hidden;
-              text-overflow: ellipsis;
-              white-space: normal;
-              word-wrap: break-word;
-              -webkit-line-clamp: 3;
+              
               display: -webkit-box
               font-family: Source Serif Pro,serif;
               font-weight: 400;
               font-size: 16px;
               line-height: 1.4;
+              p {
+                display: -webkit-box; display: -webkit-box; display: -ms-flexbox;
+                max-height:200px; 
+                overflow:hidden; 
+                vertical-align:top; 
+                text-overflow: ellipsis; 
+                word-break:break-all;
+                -webkit-box-orient:vertical; 
+                -webkit-line-clamp:5;
+                font-weight:500;
+              }
           }
         };
         .feed_reply {
@@ -110,13 +116,14 @@ const Feed = ({block, contents}) => {
         document.getElementById('body').style.overflow='hidden';
     }
     
+
     return (
         <PosterWrap className="posterDetail" id={block.id + '번'} url={block.tumnailImg} profile_img={block.user.profile_img} onClick={onclickPoster}>
             <div className="feed_Header">
                 <div className="feed_profile"></div>
                 <div className="feed_Header_text"> 
                     <span className="author">{block.author}</span>
-                    <span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>
+                    <Popup content='실험중' trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
                 </div>
             </div>
             <div className="feed_content" onClick={hideScroll}>
@@ -124,7 +131,7 @@ const Feed = ({block, contents}) => {
                     <h4>{block.tumnailTitle}</h4>
                     {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{block.hashTags}</span>}
                     <img style={{width:520, marginTop:10}} src={block.tumnailImg} alt="thumnail" ></img>
-                    <div className="feed_preview">{contents.length > 2 ? contents.slice(0,3) : 'contents'}...</div>
+                    <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
                 </Link>
                 <hr style={{margin:10}}/>
                 <div className="feed_reply"><Icon name='comment outline'/>{block.comments.length}개의 댓글</div>
