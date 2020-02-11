@@ -28,7 +28,7 @@ const PosterWrap = styled.div`
             width:40px;
             height:40px;
             border-radius:50%;
-            background:url(${props => props.profile_img});
+            background:url(${props => 'img/'+props.profile_img});
             background-size:cover;
             background-position:center center;
             background-color:rgba(0,0,0,.5);
@@ -120,7 +120,7 @@ const Feed = ({block, contents}) => {
     return (
         <PosterWrap className="posterDetail" id={block.id + '번'} url={block.tumnailImg} profile_img={block.user.profile_img} onClick={onclickPoster}>
             <div className="feed_Header">
-                <div className="feed_profile"></div>
+                <Link to={`/about/@${block.author}`}><div className="feed_profile"></div></Link>
                 <div className="feed_Header_text"> 
                     <span className="author">{block.author}</span>
                     <Popup content='실험중' trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
@@ -130,7 +130,7 @@ const Feed = ({block, contents}) => {
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}}>
                     <h4>{block.tumnailTitle}</h4>
                     {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{block.hashTags}</span>}
-                    <img style={{width:520, marginTop:10}} src={block.tumnailImg} alt="thumnail" ></img>
+                    <img style={{width:520, marginTop:10}} src={'img/'+block.tumnailImg} alt="thumnail" ></img>
                     <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
                 </Link>
                 <hr style={{margin:10}}/>

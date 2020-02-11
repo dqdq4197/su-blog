@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useCallback} from 'react';
 import styled from 'styled-components';
 import { logoutRequest } from '../../actions/authentication';
 import { useDispatch} from 'react-redux';
@@ -61,9 +61,9 @@ const ProfileTrigger = ({nick}) => {
     const history = useHistory();
 
 
-    const onClickProfile = () => {
+    const onClickProfile = useCallback(() => {
         setClick(!click);
-    }
+    });
 
     const onclicklogout = async(e) => {
         e.preventDefault();
@@ -80,11 +80,11 @@ const ProfileTrigger = ({nick}) => {
     }
     return (
         <>
-            <ProfileContainer onClick={onClickProfile} img={info.profile_img}></ProfileContainer>
+            <ProfileContainer onClick={onClickProfile} img={'img/'+info.profile_img}></ProfileContainer>
             <ProfileUtil show={click}>
                 <ul>
                     <li>Hello, {nick}!</li>
-                    <li><Link to="/about">Your Profile</Link></li>
+                    <li><Link to={`/about/@${nick}`}>Your Profile</Link></li>
                     <li>Settings</li>
                     <li onClick={resetState}><Link to="/postting">Write</Link></li>
                     <li onClick={onclicklogout}>Sign Out</li>

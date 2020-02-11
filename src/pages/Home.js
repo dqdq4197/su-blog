@@ -3,10 +3,12 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Feed from './Feed';
 import SearchComponent from '../components/home/SearchComponent';
-import {home_load_request, home_load_success} from '../actions/home';
+import {home_load_request, home_load_success, home_more_request, home_more_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
 import {useHistory, useLocation} from 'react-router-dom';
+import HomeFeed from '../components/loadingComponent/HomeFeed';
+import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 
 const Content = styled.div`
     width:100%;
@@ -74,8 +76,6 @@ const Home = () => {
     const nextRef = useRef(4);
     const loading = useRef('stop');
     const cateValue = useRef('All');
-    const history = useHistory();
-    const location = useLocation();
     const [posterId, setPosterId] = useState([]);
     const PosterContainer = styled.div`
         position:relative;
@@ -99,7 +99,7 @@ const Home = () => {
 `
     useEffect(() => {
         callPosts();
-        window.scrollTop=0;
+        window.scrollTo(0,0);
         window.addEventListener('scroll', handleScroll,true);
         
         return (() => { window.removeEventListener('scroll', handleScroll)})
@@ -116,34 +116,46 @@ const Home = () => {
             test = res.data.slice(0,4);
             test.map((post) => {
                 setPosterId((previd)=> [...previd,post])
-            loading.current = 'continue';
             })
+            if(res.data.length<=4) {
+                loading.current='stop';
+            }else {
+                loading.current='continue';
+            }
+            loading.current = 'continue';
         }).catch((err) => {
             console.log(err.res);
         })
     };
-    console.log(cateValue.current);
-    const handleScroll = () => {
+    const handleScroll = async() => {
         
         let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
         let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         let clientHeight = document.documentElement.clientHeight;
 
-        if((scrollTop + clientHeight >= scrollHeight-1) && scrollTop !==0 && loading.current==='continue') {
+        if((scrollTop + clientHeight >= scrollHeight-1) && scrollTop !==0 && loading.current==='continue' ) {
             if(window.location.pathname.indexOf('poster')>-1) return false ; 
+            dispatch(home_more_request());
+            loading.current = 'stop';
             console.log('feed 추가');
+            
             prevRef.current = prevRef.current+4;
             nextRef.current = nextRef.current+4;
-            loading.current = 'stop'
-            axios.post('/home', {value :cateValue.current})
+            await axios.post('/home', {value :cateValue.current})
                 .then((res) => {
                     let test;
-                    dispatch(home_load_success());
+                    dispatch(home_more_success());
+                    console.log(res.data.length,prevRef)
+                    if(res.data.length-2<=prevRef.current){
+                        loading.current = 'stop';
+                    } else {
+                        loading.current = 'continue';
+                    }
                     test = res.data.slice(prevRef.current, nextRef.current) 
+                    
                     test.map((post) => {
                         setPosterId((previd)=> [...previd,post])
                     })
-                    loading.current = 'continue';
                 }).catch((err) => {
                     console.log(err.res);
                 })
@@ -176,7 +188,8 @@ const Home = () => {
                               block={info}
                               contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text.replace(/&nbsp;|<b>|<\/b>/g,'')})}
                         />)) 
-                    : "isLoading..."}
+                    : <HomeFeed />}
+                    {home.moreIsLoading==='WAITING' ? <HomeFeedMore /> : null }
                 </div>
             </PosterContainer>
         </Content>

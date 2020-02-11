@@ -35,7 +35,7 @@ function AppSwitch() {
           <Route path="/" exact component={Login}/>
           <Route path="/home/:nick" component={Home}/>
           <Route path="/home" exact component={Home}/>
-          <Route path="/about" component={About}/>
+          <Route path="/about/:nick" component={About}/>
           <Route path="/poster/:id/:author" component={Poster} />
           <Route path="/Postting" component={Board} />
           <Route path="/Signup" exact component={Signup}/>

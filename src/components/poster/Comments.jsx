@@ -36,7 +36,7 @@ const ReplyBox = styled.div`
         top:10px;
         border-radius:20px;
         background-color:black;
-        background:url(${props => props.path});
+        background:url(${props =>'img/'+ props.path});
         background-position:center center;
         background-size:cover;
     }

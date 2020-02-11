@@ -13,9 +13,9 @@
 
 
 # Todo... 
-- About페이지 Add function , Poster페이지 로딩처리, 로그인페이지 
-- 수정, 저장 완료시 페이지 이동, 알림 창 띄우기 (수정하기 PosterModal 데이터 자동기입)
-- Home 페이지 무한스크롤 구현
+- About페이지,프로필 설정페이지 , Poster페이지 로딩처리, 로그인페이지 
+- 알림 창 띄우기 (수정하기 PosterModal 데이터 자동기입)
+
 
 
 - PostModal 해시태그 map반복문 key값 value로

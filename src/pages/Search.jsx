@@ -29,7 +29,7 @@ const FeedBox = styled.div`
             width:30px;
             height:30px;
             margin-right:5px;
-            background:url(${props => props.img});
+            background:url(${props =>'img/'+ props.img});
             background-size:cover;
             background-position:center center;
             border-radius:30px;
@@ -122,14 +122,14 @@ const Search = ({location}) => {
                 </div>
                 <div className='poster_title' onClick={()=>{history.push(`/poster/${search.id}/${null}`)}}>{search.tumnailTitle}</div>
                 <div className='poster_preview'>
-                    {search.tumnailImg ? <div className="poster_tumnail"><img src={search.tumnailImg} /></div> : null}
+                    {search.tumnailImg ? <div className="poster_tumnail"><img src={'img/' + search.tumnailImg} /></div> : null}
                     <div className='poster_content'>
                     <p>{ search.content.blocks.map((block) => {
                             switch (block.type) {
                                 case 'header': case 'paragraph':
-                                    return ( <>{block.data.text.replace(/&nbsp;|<b>|<\/b>/g,'')} <br/></> )
+                                    return ( <>{block.data.text.replace(/&nbsp;|<b>|<br>|<i>|<\/i>|<\/b>/g,'').replace(/&gt;/g,'<').replace(/&lt;/g,'>')} <br/></> )
                                 case 'list' :
-                                    return block.data.items.map(item => item.replace(/&nbsp;|<b>|<\/b>/g,''));
+                                    return block.data.items.map(item => item.replace(/&nbsp;|<b>|<br>|<i>|<\/i>|<\/b>/g,'').replace(/&gt;/g,'<').replace(/&lt;/g,'>'));
                                 default :
                                     return false;
                             };
