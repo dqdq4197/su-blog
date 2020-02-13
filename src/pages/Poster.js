@@ -60,10 +60,23 @@ const SubTitleBox = styled.div`
 
 const PosterContainer= styled.div`
   .posterdiv {
+    .row {
+      margin-left:0;
+    }
     .col-md-8.blog-main {
+      font-size:1.2rem;
+      
       margin:0 auto;
       padding:8%;
       word-break:break-word;
+      p {
+        line-height:200%;
+        letter-spacing: -1px;
+        margin-bottom:2rem;
+      }
+      li {
+        line-height:230%;
+      }
       img {
         max-width:100%;
       }
@@ -149,8 +162,6 @@ const Poster = ({match}) => {
           setComments(array);
         })
       }
-
-      console.log(comments);
       useEffect(() => {
         posterShowRequest();
         

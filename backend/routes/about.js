@@ -3,18 +3,20 @@ const {Post,User,Comment} = require('../models');
 
 const router = express.Router();
 
-router.get('/:nick', (req,res,next) => {
+router.get('/:nick', async(req,res,next) => {
     const nick = req.params.nick.slice(1,req.params.nick.length)
-    
-    Post.findAll({
+    const user = await User.findOne({where:{nick}})
+    const user1 = user.dataValues;
+    await Post.findAll({
         include: [{
             model:User
         },{
             model:Comment,
         }],
         where:{author:nick}
-    }).then((data) => 
-    res.json(data)
+    }).then((data) => {
+        user1.posters = data;
+        res.json(user1)}
     );
 });
 

@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
 import './App.css';
-import {Board, About, Login, Home, Poster, Signup, Search ,PosterModal} from './pages';
+import {Board, About, Login, Home, Poster, Signup, Search , PosterModal} from './pages';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
 import {useDispatch} from 'react-redux';
@@ -27,8 +27,8 @@ useEffect(() => {
 }
 
 function AppSwitch() {
-        let location = useLocation();
-        let background = location.state && location.state.background;
+        const location = useLocation();
+        const background = location.state && location.state.background;
   return (
       <>
         <Switch location={background || location}>

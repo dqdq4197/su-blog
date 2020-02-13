@@ -8,7 +8,7 @@ const FeedBox = styled.div`
     position:relative;
     margin:0 auto 1px;
     text-align:left;
-    width:50%;
+    width:100%;
     padding:10px;
     color:black;
     

@@ -84,9 +84,18 @@ const PosterContainer= styled.div`
 
   .posterdiv {
     .col-md-10.blog-main {
+      font-size:1.2rem;
       padding:0 50px;
       margin:50px auto 0;
       word-break:break-word;
+      p {
+        line-height:200%;
+        letter-spacing: -1px;
+        margin-bottom:2rem;
+      }
+      li {
+        line-height:230%;
+      }
       img {
         left:0;
         right:0;

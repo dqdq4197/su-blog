@@ -11,7 +11,7 @@ const PosterWrap = styled.div`
     display:inline-block;
     text-align:left;
     background-color:white;
-    width:520px;
+    width:100%;
     height:auto ;
     border-radius:4px;
     border:1px solid #e9e7e7;
@@ -126,11 +126,11 @@ const Feed = ({block, contents}) => {
                     <Popup content='실험중' trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
                 </div>
             </div>
-            <div className="feed_content" onClick={hideScroll}>
-                <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}}>
+            <div className="feed_content" >
+                <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >
                     <h4>{block.tumnailTitle}</h4>
                     {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{block.hashTags}</span>}
-                    <img style={{width:520, marginTop:10}} src={'img/'+block.tumnailImg} alt="thumnail" ></img>
+                    <img style={{width:'100%', marginTop:10}} src={'img/'+block.tumnailImg} alt="thumnail" ></img>
                     <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
                 </Link>
                 <hr style={{margin:10}}/>

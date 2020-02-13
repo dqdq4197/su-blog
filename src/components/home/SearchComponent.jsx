@@ -15,7 +15,7 @@ const SearchComponent = () => {
     }
     return (
         <>
-            <Input width={'170px'} style={{height:40, marginLeft:0}} name="search" onKeyDown={onEnter} onChange={onChangeKeyWord} value={keyWord}/>
+            <Input width={'100%'} style={{height:40, marginLeft:0}} name="search" onKeyDown={onEnter} onChange={onChangeKeyWord} value={keyWord}/>
         </>
     );
 }

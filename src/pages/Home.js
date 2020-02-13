@@ -9,6 +9,7 @@ import Header from '../components/header/Header';
 import {useHistory, useLocation} from 'react-router-dom';
 import HomeFeed from '../components/loadingComponent/HomeFeed';
 import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
+import ScrollTopBtn from '../components/home/ScrollTopBtn';
 
 const Content = styled.div`
     width:100%;
@@ -16,6 +17,7 @@ const Content = styled.div`
     background-color:#fafbfc;
     .categorieswrapper {
         position:relative;
+        width:25%;
         text-align:left;
         margin-top:50px;
         height:auto;
@@ -23,9 +25,9 @@ const Content = styled.div`
             top:70px;
             position:sticky;
             position:-webkit-sticky;
-            width:120px;
+            width:100%;
             list-style: none;
-            margin:0;
+            margin: 0;
             padding:0;
             h5{
                 font-weight:600;
@@ -34,9 +36,10 @@ const Content = styled.div`
             li {
                 margin-top:10px;
                 cursor:pointer;
+                font-size:1.10rem;
                 &::before {
                     content:'a';
-                    font-size:.7rem;
+                    font-size:0.8rem;
                     margin-right:5px;
                     color:transparent;
                     width:3px;
@@ -45,9 +48,6 @@ const Content = styled.div`
                 }
                 &:hover {
                     font-weight:600;
-                }
-                &:active {
-                    color:red;
                 }
             }
         }
@@ -77,24 +77,34 @@ const Home = () => {
     const loading = useRef('stop');
     const cateValue = useRef('All');
     const [posterId, setPosterId] = useState([]);
+    const [showScrollBtn, setShowScrollBtn] = useState(false);
+
     const PosterContainer = styled.div`
         position:relative;
         display:flex;
-        margin:15px auto 0;
-        width:1010px;
+        margin:15px auto;
+        width:80%;
         height:auto;
         text-align:center;
         .feed {
-            width:520px;
+            width:100%;
             height:100%;
-            margin-top:15px;
-            margin-left:130px;
+            margin:15px 5% 0;
             padding-bottom:40px;
         }
         #${cateValue.current.replace(/ /gi, "")} {
-            font-size:1.06rem;
+            font-size:1.15rem;
             font-weight:700;
             color:rgb(13, 72, 50);
+        }
+        .follow {
+            position:sticky;
+            top:70px;
+            width:25%;
+            height:200px;
+            margin-top:50px;
+            background-color:transparent;
+            
         }
 `
     useEffect(() => {
@@ -132,7 +142,11 @@ const Home = () => {
         let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
         let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
         let clientHeight = document.documentElement.clientHeight;
-
+        if(scrollTop > 300) {
+            setShowScrollBtn(true);
+        } else {
+            setShowScrollBtn(false);
+        }
         if((scrollTop + clientHeight >= scrollHeight-1) && scrollTop !==0 && loading.current==='continue' ) {
             if(window.location.pathname.indexOf('poster')>-1) return false ; 
             dispatch(home_more_request());
@@ -174,6 +188,7 @@ const Home = () => {
         <Content>
             <Header></Header>
             <PosterContainer>
+                {showScrollBtn ? <ScrollTopBtn /> : null }
                 <div className="categorieswrapper">
                     <ul className="categories">
                         <SearchComponent />
@@ -190,6 +205,9 @@ const Home = () => {
                         />)) 
                     : <HomeFeed />}
                     {home.moreIsLoading==='WAITING' ? <HomeFeedMore /> : null }
+                </div>
+                <div className="follow">
+
                 </div>
             </PosterContainer>
         </Content>

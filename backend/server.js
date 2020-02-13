@@ -29,8 +29,7 @@ app.use(morgan('dev'));
 
 //app.use(express.static(path.join(__dirname,'public')));
 app.use('*/img/', express.static(path.join(__dirname,'/profiles')));
-app.use('*/img/', express.static(path.join(__dirname,'/posterImage')));;
-
+app.use('*/img/', express.static(path.join(__dirname,'/posterImage')));
 app.use(cors());
 
 app.use(express.json());

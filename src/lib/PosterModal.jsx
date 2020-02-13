@@ -238,7 +238,7 @@ const PosterModal = ({onClick, posterId, modifydata}) => {
             <Image
               wrapped
               size='medium'
-              src={imgUrl}
+              src={'img/'+imgUrl}
             />
             <Modal.Description>
               <input type="text" id="editTitle" placeholder="  Enter Title" ref={titleRef} onChange={onChangeTitle}/>
