@@ -12,7 +12,7 @@ import Delimiter from "@editorjs/delimiter";
 import './markdown.css';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-import PosterModal from '../../lib/PosterModal';
+import SavePosterModal from '../../lib/SavePosterModal';
 import {posterOutputData} from '../../actions/posts';
 import Head from '../../components/header/Header';
 import styled from 'styled-components';
@@ -51,7 +51,7 @@ const MarkdownEditorjs = ({}) => {
                 return {
                   success: 1,
                   file: {
-                    url: res.data ,
+                    url: `img/${res.data}` ,
                     // any other image data you want to store, such as width, height, color, extension, etc
                   }
                 };
@@ -163,7 +163,7 @@ const outData = () => {
       <Head />
       <h1>Create posters</h1>
       <div id="markdownEditor"></div>
-      <PosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
+      <SavePosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
     </Canvas>
   )
 }

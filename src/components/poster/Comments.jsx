@@ -6,6 +6,7 @@ import {Icon} from 'semantic-ui-react';
 import storage from '../../lib/storage';
 import TimeAgo from '../../lib/TimeAgo';
 import {useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 const CommentContainer = styled.div`
     width:100%;
@@ -41,9 +42,12 @@ const ReplyBox = styled.div`
         background-size:cover;
     }
     .profile_info {
+        a {
+            color:black;
+        }
         .author {
             font-weight:500;
-            font-size:1.1em;
+            font-size:1rem;
         }
         .date {
             div {
@@ -68,6 +72,7 @@ const ReplyBox = styled.div`
         margin:10px 0 5px 45px;
         color:rgba(0, 0, 0, 0.54);
         font-weight:600;
+        word-break:keep-all;
     }
     .reply {
         margin:5px 0 0 22px;
@@ -153,17 +158,17 @@ const Comments = ({postId,data}) => {
     }
     
 
-    const test = (res) => {
-        return <ReplyBox className='childReply' key={res.id} path={res.profile_img}>
-            <div className="profile"></div>
+    const test = (res) => (
+         <ReplyBox className='childReply' key={res.id} path={res.profile_img}>
+            <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
             <div className="profile_info">
-              <span className="author">{res.author}</span>
+            <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
               <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
             </div>
             <div className="comment">{res.content}</div>
             <span className="like"><Icon name="like"/>3 likes</span>
             </ReplyBox>
-    }
+    )
     
 
     return (
@@ -172,10 +177,10 @@ const Comments = ({postId,data}) => {
         <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
         {data[0] && data.map(
             (res, i) => res.seq === 1 ? <ReplyBox id={res.id} key={res.id} path={res.profile_img}>
-                        <div className="profile"></div>
+                        <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
                         <div className="profile_info">
-                          <span className="author">{res.author}</span>
-                          <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                        <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
+                        <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
                         </div>
                         <span className="delete"><Icon name="trash alternate"/></span>
                         <div className="comment">{res.content}</div>

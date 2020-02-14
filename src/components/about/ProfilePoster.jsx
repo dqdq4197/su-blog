@@ -44,11 +44,19 @@ const TumnailBox = styled.div`
         }
 
     }
-    img {
+    .tumnailImg {
+        display:flex;
+        align-items:center;
+        justify-content:center;
         width:330px;
         height:240px;
-        text-align:center;
-    }
+        overflow:hidden;
+
+        img {
+            height:240px;
+            margin:0 auto;
+        }
+    } 
 `
 
 
@@ -57,15 +65,19 @@ const ProfilePoster = ({data}) => {
         <>
         
             {data.map((block) => {
-                return <Link to={`/poster/${block.id}/${block.author}`}><TumnailBox >
+                return <TumnailBox key={block.id}>
+                        <Link to={`/poster/${block.id}/${block.author}`}>
                         <div className='posterInfo'>
                             <b>{block.tumnailTitle}</b>
-            <p>{block.author}<text><Icon name="comment outline" />{block.comments.length}개의 댓글</text></p>
+            <p>{block.author}<Icon name="comment outline" />{block.comments.length}개의 댓글</p>
                             
                         </div>
-                        <img src={`img/${block.tumnailImg}`} />
+                        <div className="tumnailImg">
+                            <img src={`img/${block.tumnailImg}`} />
+                        </div>
+                        </Link>
                         </TumnailBox>
-            </Link>})}
+            })}
         </>
     )
 }

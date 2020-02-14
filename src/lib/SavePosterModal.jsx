@@ -116,7 +116,7 @@ const options = [
   { key: 'jquery', text: 'Jquery', value: 'jquery' },
 ];
 
-const PosterModal = ({onClick, posterId, modifydata}) => {
+const SavePosterModal = ({onClick, posterId, modifydata}) => {
 
   const {result} = useSelector(state => state.authentication);
   const {posterOutputData} = useSelector(state => state.posts)
@@ -283,4 +283,4 @@ const PosterModal = ({onClick, posterId, modifydata}) => {
     )
 }
 
-export default PosterModal;
+export default SavePosterModal;

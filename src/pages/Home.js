@@ -10,7 +10,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import HomeFeed from '../components/loadingComponent/HomeFeed';
 import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';
-
+import HashTags from '../components/home/HashTags';
 const Content = styled.div`
     width:100%;
     height:auto;
@@ -76,6 +76,7 @@ const Home = () => {
     const nextRef = useRef(4);
     const loading = useRef('stop');
     const cateValue = useRef('All');
+    const [hashTag, setHashTag] = useState([]);
     const [posterId, setPosterId] = useState([]);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
 
@@ -97,11 +98,11 @@ const Home = () => {
             font-weight:700;
             color:rgb(13, 72, 50);
         }
-        .follow {
+        .rightUtil {
             position:sticky;
             top:70px;
-            width:25%;
-            height:200px;
+            width:20%;
+            height:600px;
             margin-top:50px;
             background-color:transparent;
             
@@ -118,9 +119,9 @@ const Home = () => {
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
-        
         await axios.post('/home', {value: cateValue.current})
         .then((res) => {
+            res.data.map(tag =>tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
             let test;
             dispatch(home_load_success());
             test = res.data.slice(0,4);
@@ -206,8 +207,13 @@ const Home = () => {
                     : <HomeFeed />}
                     {home.moreIsLoading==='WAITING' ? <HomeFeedMore /> : null }
                 </div>
-                <div className="follow">
-
+                <div className="rightUtil">
+                    <div className="hashTagBox">
+                        <HashTags data={hashTag}/>
+                        <hr/>
+                    </div>
+                    <div className="findUser">
+                    </div>
                 </div>
             </PosterContainer>
         </Content>

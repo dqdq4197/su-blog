@@ -1,6 +1,11 @@
 ### FrontEnd
 - React Hooks
 - markdownEditor(editorjs)
+### Design  
++ styled-components
++ @material-ui
++ semantic-ui-react
+
 ### Redux + immer + thunk
 - React-redux를 통해 상태관리 
 ### Nodejs
@@ -62,3 +67,9 @@
 
 ### Home 페이지 Feed 무한 스크롤링 (구현 완료)
 - 버그 체크하기
+
+
+
+#### 버그 
+- 포스터썸네일 작업 해시태그 join
+- 메인 home feed 날짜 display block

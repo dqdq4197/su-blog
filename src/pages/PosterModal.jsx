@@ -4,9 +4,9 @@ import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn';
+import ToggleDial from '../components/poster/ToggleDial';
 import axios from 'axios';
-import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
-import ContentBox from '../components/poster/Comments';
+import CommentBox from '../components/poster/Comments';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -87,7 +87,13 @@ const PosterContainer= styled.div`
       font-size:1.2rem;
       padding:0 50px;
       margin:50px auto 0;
-      word-break:break-word;
+      word-break:keep-all;
+      #content {
+        a {
+          color:#008000;
+        }
+
+      }
       p {
         line-height:200%;
         letter-spacing: -1px;
@@ -112,7 +118,7 @@ const ScrollupBtn = styled.div`
   height:50px;
   border-radius:50px;
   border:2px solid #6c757d;
-  left:90%
+  left:86%
   bottom:120px;
   font-size:3em;
   color:#6c757d;
@@ -133,7 +139,7 @@ const ScrolldownBtn = styled.div`
   height:50px;
   border-radius:50px;
   border:2px solid #6c757d;
-  left:90%
+  left:86%
   bottom: 50px;
   font-size:3em;
   color:#6c757d;
@@ -265,12 +271,12 @@ const PosterModal = () => {
         history.goBack();
       }    
     };
-    console.log(comments);
     return (
         <>
         <ModalContainer onClick={back} id='modalContainer'>
           <div className="modalBox">
           <SubTitle />
+          <ToggleDial left={'15%'} width={0} id={id} author={author} />
           <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
             <PosterContainer id='total'>
@@ -284,7 +290,7 @@ const PosterModal = () => {
                   </div>
                   {(userInfo ? (userInfo.nick === author || userInfo.nick === ' Operator') : false ) ? 
                     <VariousBtn data={modifyData} posterId={id} author={author}/> : ''}
-                  <ContentBox data={comments} postId={id}/>
+                  <CommentBox data={comments} postId={id}/>
                 </div>
               </div>
             </main>

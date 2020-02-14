@@ -9,7 +9,7 @@ const ScrollupBtn = styled.div`
   border-radius:45px;
   border:2px solid #e9e7e7;
   right:20%;
-  bottom:120px;
+  bottom:50px;
   font-size:2rem;
   color:#6c757d;
   font-weight:200;
@@ -31,12 +31,11 @@ const scrollup = () => {
     });
   }
 
-const ScrollTopBtn = () => {
-    return (   
+const ScrollTopBtn = () => (
         <>
-            <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="chevron up"/></ScrollupBtn>
+          <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="chevron up"/></ScrollupBtn>
         </>  
-    )
-};
+)
+
 
 export default ScrollTopBtn;

@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
 import {useDispatch, useSelector} from 'react-redux';
-import ContentBox from '../components/poster/Comments';
+import CommentBox from '../components/poster/Comments';
+import ToggleDial from '../components/poster/ToggleDial';
 import {Icon} from 'semantic-ui-react';
 import axios from 'axios';
 import storage from '../lib/storage';
@@ -62,13 +63,19 @@ const PosterContainer= styled.div`
   .posterdiv {
     .row {
       margin-left:0;
+      margin-right:0;
     }
     .col-md-8.blog-main {
       font-size:1.2rem;
       
       margin:0 auto;
       padding:8%;
-      word-break:break-word;
+      word-break:keep-all;
+      #content {
+        a {
+          color:#008000;
+        }
+      }
       p {
         line-height:200%;
         letter-spacing: -1px;
@@ -164,12 +171,7 @@ const Poster = ({match}) => {
       }
       useEffect(() => {
         posterShowRequest();
-        
       },[]);
-
-      // function replaceAll(str, searchStr, replaceStr) {
-        // return str.split(searchStr).join(replaceStr);
-      // }
 
       const scrollup = () => {
         window.scrollTo({
@@ -242,12 +244,12 @@ const Poster = ({match}) => {
             }
         )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
       }
-      
-
+    
     return (
       <>
         <Header />
         <SubTitle />
+        <ToggleDial width={54} left={'18%'} id={match.params.id} author={match.params.author} />
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
         <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
         <PosterContainer>
@@ -261,7 +263,7 @@ const Poster = ({match}) => {
                 </div>
                 {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
                   <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
-                <ContentBox data={comments} postId={match.params.id}/>
+                <CommentBox data={comments} postId={match.params.id}/>
               </div>
             </div>
           </main>

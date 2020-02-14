@@ -6,7 +6,7 @@ const HomeFeed = () => (
     speed={3}
     width={'100%'}
     height={1160}
-    viewBox="0 0 100% 1200"
+    viewBox="0 0 800 1200"
     backgroundColor="#e1e1e1"
     foregroundColor="#d3d1d1"
     >

@@ -37,8 +37,11 @@ const PosterWrap = styled.div`
             width:100%;
             margin-left:10px;
         }
-        .author {
-            font-weight:500;
+        a{
+            color:black;
+            .author {
+                font-weight:500;
+            }
         }
         .date {
             color:rgba(0,0,0,.6);
@@ -122,14 +125,14 @@ const Feed = ({block, contents}) => {
             <div className="feed_Header">
                 <Link to={`/about/@${block.author}`}><div className="feed_profile"></div></Link>
                 <div className="feed_Header_text"> 
-                    <span className="author">{block.author}</span>
-                    <Popup content='실험중' trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
+                    <Link to={`/about/@${block.author}`}><span className="author">{block.author}</span></Link>
+                    <Popup content={block.createdAt} trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
                 </div>
             </div>
             <div className="feed_content" >
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >
                     <h4>{block.tumnailTitle}</h4>
-                    {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{res}</span>) : <span className="feed_tags">{block.hashTags}</span>}
+                    {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{'#'+res}</span>) : <span className="feed_tags">${ "#" + block.hashTags}</span>}
                     <img style={{width:'100%', marginTop:10}} src={'img/'+block.tumnailImg} alt="thumnail" ></img>
                     <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
                 </Link>
