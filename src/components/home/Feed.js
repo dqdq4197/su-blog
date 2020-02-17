@@ -1,10 +1,11 @@
 import React  from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import {postShowRequest} from '../actions/posts';
-import TimeAgo from '../lib/TimeAgo';
+import {postShowRequest} from '../../actions/posts';
+import TimeAgo from '../../lib/TimeAgo';
 import styled from 'styled-components';
 import {Icon, Popup} from 'semantic-ui-react';
+import postTumnail from '../../lib/basicTumnail/postTumnail.png';
 
 const PosterWrap = styled.div`
     position:relative;
@@ -47,25 +48,7 @@ const PosterWrap = styled.div`
             color:rgba(0,0,0,.6);
         }
     }
-    .feed_tags {
-        position:relative;
-        width:auto;
-        background-color:transparent;
-        border:1px solid #E1E7EB;
-        border-radius:5px;
-        padding: 3px 8px;
-        margin:0 0 30px 5px;
-        font-weight:500;
-        color:#90A4AE
-        transition:.2s;
-        &:hover {
-            border-color:#008000;
-            color:#008000
-        }
-        &:nth-child(2) {
-            margin-left:15px;
-        }
-    }
+    
     .feed_content {
         a { 
           text-decoration:none;
@@ -97,7 +80,32 @@ const PosterWrap = styled.div`
                 font-weight:500;
               }
           }
-        };
+        }
+        .feed_tags {
+            position:relative;
+            width:auto;
+            background-color:transparent;
+            border:1px solid #E1E7EB;
+            border-radius:5px;
+            padding: 3px 8px;
+            margin:0 0 30px 5px;
+            font-weight:500;
+            transition:.2s;
+            &:hover {
+                border-color:#008000;
+            }
+            a {
+                color:#90A4AE;
+                &:hover {
+                    
+                    color:#008000
+                }
+            }
+            
+            &:nth-child(2) {
+                margin-left:15px;
+            }
+        }
         .feed_reply {
             padding:0 20px 5px 0;
             text-align:right;
@@ -118,10 +126,12 @@ const Feed = ({block, contents}) => {
     const hideScroll = () => {
         document.getElementById('body').style.overflow='hidden';
     }
+    const removeOnClick = (e) => {
+        e.stopPropagation();
+    }
     
-
     return (
-        <PosterWrap className="posterDetail" id={block.id + '번'} url={block.tumnailImg} profile_img={block.user.profile_img} onClick={onclickPoster}>
+        <PosterWrap className="posterDetail" id={block.id + '번'} profile_img={block.user.profile_img} onClick={onclickPoster}>
             <div className="feed_Header">
                 <Link to={`/about/@${block.author}`}><div className="feed_profile"></div></Link>
                 <div className="feed_Header_text"> 
@@ -132,10 +142,17 @@ const Feed = ({block, contents}) => {
             <div className="feed_content" >
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >
                     <h4>{block.tumnailTitle}</h4>
-                    {block.hashTags.match(',') ? block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags">{'#'+res}</span>) : <span className="feed_tags">${ "#" + block.hashTags}</span>}
-                    <img style={{width:'100%', marginTop:10}} src={'img/'+block.tumnailImg} alt="thumnail" ></img>
+                </Link>
+                {block.hashTags===null ? null :(block.hashTags.match(',') ?
+                    block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags" ><Link to={`hashtags/${res}`} >{'#'+res}</Link></span>) 
+                    : <span className="feed_tags"><Link to={`hashtags/${block.hashTags}`}>{ "#" + block.hashTags}</Link></span>)}
+                <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >  
+                    <img style={{width:'100%', marginTop:10}} src={block.tumnailImg ? 'img/'+block.tumnailImg : postTumnail} alt="thumnail" ></img>
+                </Link>  
+                <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >  
                     <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
                 </Link>
+                
                 <hr style={{margin:10}}/>
                 <div className="feed_reply"><Icon name='comment outline'/>{block.comments.length}개의 댓글</div>
             </div>

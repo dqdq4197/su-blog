@@ -17,3 +17,5 @@ export { default as Signup} from './Signup';
 export { default as Poster} from './Poster';
 export { default as Search} from './Search';
 export { default as PosterModal} from './PosterModal';
+export { default as TagList} from './TagList';
+export { default as OneTag} from './OneTag';

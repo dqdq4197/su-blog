@@ -77,6 +77,7 @@ const PosterContainer= styled.div`
         }
       }
       p {
+        word-break:break-all;
         line-height:200%;
         letter-spacing: -1px;
         margin-bottom:2rem;

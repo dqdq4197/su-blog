@@ -1,7 +1,7 @@
 import React,{useEffect ,useState, useRef} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import Feed from './Feed';
+import Feed from '../components/home/Feed';
 import SearchComponent from '../components/home/SearchComponent';
 import {home_load_request, home_load_success, home_more_request, home_more_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
@@ -104,14 +104,13 @@ const Home = () => {
             width:20%;
             height:600px;
             margin-top:50px;
-            background-color:transparent;
             
         }
 `
     useEffect(() => {
         callPosts();
         window.scrollTo(0,0);
-        window.addEventListener('scroll', handleScroll,true);
+        window.addEventListener('scroll', handleScroll);
         
         return (() => { window.removeEventListener('scroll', handleScroll)})
     },[cateValue.current]);
@@ -121,7 +120,7 @@ const Home = () => {
         dispatch(home_load_request());
         await axios.post('/home', {value: cateValue.current})
         .then((res) => {
-            res.data.map(tag =>tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
+            res.data.map(tag =>tag.hashTags=== null ? null : tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
             let test;
             dispatch(home_load_success());
             test = res.data.slice(0,4);
@@ -209,8 +208,7 @@ const Home = () => {
                 </div>
                 <div className="rightUtil">
                     <div className="hashTagBox">
-                        <HashTags data={hashTag}/>
-                        <hr/>
+                        <HashTags data={hashTag} loading={home.isLoading}/>
                     </div>
                     <div className="findUser">
                     </div>

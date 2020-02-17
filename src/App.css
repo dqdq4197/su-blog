@@ -10,6 +10,7 @@
 .App {
   height:100%;
   
+  background-color:#fafbfc;
 }
 body {
   box-sizing: border-box;

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import PostTumnail from '../lib/basicTumnail/postTumnail.png'
 
 
 const TagsBox = styled.div`
@@ -123,11 +124,11 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
   const [open,setOpen] = useState(false);
   const [dimmer, setDimmer] = useState(null);
   const [tags, setTags] = useState([]);
-  const [imgUrl, setImgUrl] = useState('https://cdn.pixabay.com/photo/2019/11/23/11/26/steel-mill-4646843__480.jpg');
+  const [imgUrl, setImgUrl] = useState(PostTumnail);
   const [tumnailPosterInfo, setTumnailPosterInfo] = useState(
       [{
         title: '',
-        imgUrl:'https://cdn.pixabay.com/photo/2019/11/23/11/26/steel-mill-4646843__480.jpg',
+        imgUrl:PostTumnail,
         tags:'',
         skills:'',
       }]
@@ -136,6 +137,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
   const tagnames= useRef();
   const titleRef = useRef();
   const show = (dimmer) => () => {
+    
     onClick();
     setDimmer(dimmer);
     setOpen(true);
@@ -186,45 +188,51 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
       console.log(err.res);
     })
   }; 
+  console.log(tumnailPosterInfo);
   const onClickSave = () => {
-    const userId= result.id;
-    const nick = result.nick;
-    console.log(posterOutputData)
-    console.log(tumnailPosterInfo);
-    if(posterId) {
-      axios.post(`/post/modify/${posterId}`,
-        {
-          outputData:posterOutputData,
-          userId,       
-          nick,
-          tumnailTitle:tumnailPosterInfo.title,
-          hashTags: tumnailPosterInfo.tags.join(','),
-          tumnailImg: tumnailPosterInfo.imgUrl,
-          skills:tumnailPosterInfo.skills,
-        }).then((res) => {
-          alert('수정 완료');
-          history.push(`/poster/${posterId}/${nick}`)
-        }).catch((error) => {
-          console.log(error.response)
-        })
+    if(tumnailPosterInfo.skills === "" || tumnailPosterInfo.title === "" || tumnailPosterInfo.skills=== undefined || tumnailPosterInfo.title === undefined) {
+       return alert('Title과 카테고리를 선택 해 주세요')
     }else {
-      axios.post('/post/upload',
-        {
-          outputData:posterOutputData,
-          userId,       
-          nick,
-          tumnailTitle:tumnailPosterInfo.title,
-          hashTags: tumnailPosterInfo.tags.join(','),
-          tumnailImg: tumnailPosterInfo.imgUrl,
-          skills:tumnailPosterInfo.skills,
-        })
-        .then((res) => {
-          alert('저장 완료');
-          history.push(`/poster/${res.data.postId}/${res.data.nick}`)
-          console.log(res.data);
-        }).catch((error) => {
-          console.log(error.response)
-        });
+      const userId= result.id;
+      const nick = result.nick;
+      console.log(posterOutputData)
+      console.log(tumnailPosterInfo);
+      if(posterId) {
+        axios.post(`/post/modify/${posterId}`,
+          {
+            outputData:posterOutputData,
+            userId,       
+            nick,
+            tumnailTitle:tumnailPosterInfo.title,
+            hashTags: tumnailPosterInfo.tags ? tumnailPosterInfo.tags.join(',') : null,
+            tumnailImg: tumnailPosterInfo.imgUrl,
+            skills:tumnailPosterInfo.skills,
+          }).then((res) => {
+            alert('수정 완료');
+            history.push(`/poster/${posterId}/${nick}`)
+          }).catch((error) => {
+            console.log(error.response)
+          })
+      }else {
+        axios.post('/post/upload',
+          {
+            outputData:posterOutputData,
+            userId,       
+            nick,
+            tumnailTitle:tumnailPosterInfo.title,
+            hashTags: tumnailPosterInfo.tags ? tumnailPosterInfo.tags.join(',') : null,
+            tumnailImg: tumnailPosterInfo.imgUrl,
+            skills:tumnailPosterInfo.skills,
+          })
+          .then((res) => {
+            alert('저장 완료');
+            history.push(`/poster/${res.data.postId}/${res.data.nick}`)
+            console.log(res.data);
+          }).catch((error) => {
+            console.log(error.response)
+          });
+      }
+
     }
   }
   
@@ -238,7 +246,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
             <Image
               wrapped
               size='medium'
-              src={'img/'+imgUrl}
+              src={imgUrl ===PostTumnail ? imgUrl : 'img/' +imgUrl}
             />
             <Modal.Description>
               <input type="text" id="editTitle" placeholder="  Enter Title" ref={titleRef} onChange={onChangeTitle}/>

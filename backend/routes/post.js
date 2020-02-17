@@ -5,9 +5,7 @@ const router = express.Router();
 router.post('/upload', (req,res,next) => {
     const {outputData, userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
     //var sysdate = new Date(outputData.time);
-    const data = outputData.blocks.map((res)=> {
-        return res;
-    })
+    
     if(userId){
         Post.create({
             content:outputData,
@@ -17,13 +15,13 @@ router.post('/upload', (req,res,next) => {
             hashTags,
             skills,
             tumnailImg
-        })
+        }).then(() => {Post.findAll({
+            limit: 1,
+            order: [ [ 'createdAt', 'DESC' ]]
+        }).then( postId =>
+                 res.json({ postId:postId[0].dataValues.id , nick}))})
+                
     }
-    Post.findAll({
-        limit: 1,
-        order: [ [ 'createdAt', 'DESC' ]]
-    }).then( postId =>
-             res.json({ postId:postId[0].dataValues.id +1 , nick}))
 })
 
 router.post('/modify/:posterId', async(req,res,next) => {
@@ -39,8 +37,9 @@ router.post('/modify/:posterId', async(req,res,next) => {
 })
 
 router.get('/:id/:author', (req,res) => {
-    const post_content = Post.findOne({where: {id: req.params.id},attribute:['id']});
+    const post_content = Post.findOne({where: {id: req.params.id}});
     post_content.then((response) => {
+        console.log(response);
         res.json(response.dataValues);
     })
 })

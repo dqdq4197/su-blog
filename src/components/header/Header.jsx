@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import styled from 'styled-components';
-import ProfileTrigger from './ProfileTrigger';
 import {Link} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
 import storage from '../../lib/storage';
+import ProfileFaker from './ProfileFaker';
 
 
 const Header = () => {
@@ -56,11 +56,6 @@ const Header = () => {
                 border-radius:25px;
                 background-color:black;
             }
-            .searchUtil { 
-                margin-left:15px;
-                font-size:1.2rem;
-                color:rgba(0,0,0,.7);
-            }
         }
     `
     //let a;
@@ -86,8 +81,7 @@ const Header = () => {
             <HeaderContainer>
                 <div className="logo"><Link to='/home'>Su_blog</Link></div>
                 <div className="util">
-                    {userinfo ? <ProfileTrigger nick={userinfo.nick}/>: <span className="loginBtn"><Link to="/">로그인</Link></span>} 
-                    <div className="searchUtil" ><Icon name="search" /></div>
+                    {userinfo ? <ProfileFaker info={userinfo}/> : <span className="loginBtn"><Link to="/">로그인</Link></span>}
                 </div>
             </HeaderContainer >
         </>
