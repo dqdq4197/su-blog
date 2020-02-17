@@ -5,46 +5,63 @@ import {Link} from 'react-router-dom';
 
 const Tag = styled.div`
     height:250px;
-    border:1px solid #008000;
+    color:#90A4AE;
     width:100%;
-    border-radius:5px;
     overflow:hidden;
+    text-align:left;
+    hr{
+        margin-top:0;
+    }
+    h3 {
+        margin:0;
+    }
+    .moreTag a{
+        color:#333;
+    }
+    .moreTag {
+        margin-top:10px;
+    }
+    
     ul {
         margin:0;
         padding:0;
         li {
+            margin-top:8px;
             list-style:none;
             a {
-                background-color:black;
-                color:white;
+                text-decoration:none;
+                padding:3px 8px;
+                border-radius:5px;
+                background-color:#008000;
+                color:#fafbfc;
+                &:hover {
+                    color:#008000;
+                    background-color:#fafbfc;
+                    border:1px solid #008000;
+                    transition:background,color .3s;
+                }
             }
         }
     }
 `
 
-const HashTags = ({data}) => {
-    const [change, setChange] = useState(false);
+const HashTags = ({data, loading}) => {
 
     useEffect(() => {
         GetPriTags()
-    },[change])
+    },[])
 
-    const onRefresh = () => {
-        setChange(!change);
-    } 
 
     const GetPriTags = () =>{
-        const priTags =data.filter((value, index) => {return data.indexOf(value) === index})
-        const NaNsu = Math.floor(Math.random() * 10) +1 ;
-        return <Tag><ul>{priTags.slice(NaNsu, NaNsu+5).map(a => <li key={a}><Link to='/home'>{a}</Link></li>)}</ul></Tag>
+        const priTags =data.filter((value, index) => {return data.map((v)=>v.toUpperCase()).indexOf(value.toUpperCase()) === index})
+        return <Tag><h3>태그</h3><hr/><ul>{priTags.slice(0,6).map(a => <li key={a}><Link to={`/hashtags/${a}`}># {a.toLowerCase()}</Link></li>)}
+        <p className="moreTag"><Link to='/hashtags'>더보기..</Link></p></ul></Tag>
     }
 
     return (
         <>  
-            <Icon name="refresh" onClick={onRefresh}></Icon>      
-            <GetPriTags />
+            {loading === 'SUCCESS' ? <GetPriTags /> : null}
         </>
     )
 }
-// 리셋 버튼 누르면 useEffect 되게 useState만들고 GetPriTags에서 난수로 랜덤돌려 화면에 뿌려주자
 export default HashTags;

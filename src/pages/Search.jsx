@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useRef} from 'react';
+import React,{useState, useEffect, useRef, useCallback} from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
 import Header from '../components/header/Header';
@@ -7,12 +7,29 @@ import {Input} from '../lib/AuthInput';
 import {useHistory} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
 
+
 const SearchBox = styled.div`
     width:100%;
     height:100vh;
     text-align:center;
     .searchInput {
-        margin:50px 0;
+        margin:0 0 5px 0;
+    }
+    .numposter {
+        font-size:1.2rem;
+        width:45%;
+        margin:0 auto;
+        text-align:right;
+        color:#90A4AE;
+        b {
+            color:rgb(100, 100, 100);
+        }
+    }
+    .explanation {
+        display:inherit;
+        margin:50px 0 0 0;
+        font-size:.9rem;
+        color:#90A4AE;
     }
     
 `
@@ -57,12 +74,14 @@ const FeedBox = styled.div`
                 max-height:100px; 
                 overflow:hidden; 
                 vertical-align:top; 
-                text-overflow: ellipsis; 
+                text-overflow: ellipsis;
+                font-size:1.1rem;
+                line-height:150%;
                 word-break:break-all;
                  -webkit-box-orient:vertical; 
-                 -webkit-line-clamp:5;
+                 -webkit-line-clamp:4;
                 font-weight:500;
-
+                color:rgb(83, 79, 79);
             }
         }
         }
@@ -76,6 +95,7 @@ const Search = ({location}) => {
     const [keyWord, setKeyWord] = useState(query.key);
     const [posts, setPosts] = useState('');
     const inputFocus = useRef();
+    const numPoster = useRef();
     const history = useHistory();
 
     useEffect(() => {
@@ -83,6 +103,7 @@ const Search = ({location}) => {
         getData();
     },[])
     const getData = () => {
+        console.log('asd');
         axios.post('/home').then((res) => {
             setPosts(res.data);
         })
@@ -91,7 +112,10 @@ const Search = ({location}) => {
     const onchangeValue = (e) => {
         setKeyWord(e.target.value);
     }
-    const searchComponent = (data) => {
+
+    const searchComponent = useCallback((data) => {
+        if(keyWord === '') {data = []; numPoster.current=0;}
+        else {
         data = data.filter((search) => { 
             return search.content.blocks.map((text) => {
                 switch( text.type ) {
@@ -108,12 +132,10 @@ const Search = ({location}) => {
                         return false;
                 };
             }  ).find(element => element > 0 ) > 0
-            
-        })
-        console.log(data);
+        })} 
+        numPoster.current = data.length
         return data.map((search) => {
         return (
-            <>
             <FeedBox  key={search.id} url={search.tumnailImg} img={search.user.profile_img}>
             <hr/>
                 
@@ -127,33 +149,38 @@ const Search = ({location}) => {
                     <p>{ search.content.blocks.map((block) => {
                             switch (block.type) {
                                 case 'header': case 'paragraph':
-                                    return ( <>{block.data.text.replace(/&nbsp;|<b>|<br>|<i>|<\/i>|<\/b>/g,'').replace(/&gt;/g,'<').replace(/&lt;/g,'>')} <br/></> )
+                                    return block.data.text.replace(/&nbsp;|<b>|<br>|<i>|<\/i>|<\/b>/g,'').replace(/&gt;/g,'<').replace(/&lt;/g,'>') ;
                                 case 'list' :
                                     return block.data.items.map(item => item.replace(/&nbsp;|<b>|<br>|<i>|<\/i>|<\/b>/g,'').replace(/&gt;/g,'<').replace(/&lt;/g,'>'));
                                 default :
                                     return false;
                             };
-                             
                         })}
                         </p>
                         <Icon name='comment outline'/>{search.comments.length}개의 댓글
                     </div>
-                    {console.log(search)}
                 </div>
                 
             </FeedBox>
-            </>
             )
         })
-    };
+    },[keyWord]);
+    const Detail = useCallback(() => {
+        return (
+            <h4 className='numposter'>
+                <b>{numPoster.current}</b>개의 포스트
+            </h4>)
+    },[numPoster])
     
     return (
         <>
-        <Header />
-        <SearchBox >
-            <Input className="searchInput" ref={inputFocus} name={'# 키워드를 입력해주세요'} padding={'1.5%'} width={'45%'} size={'1.2rem'} onChange={onchangeValue} value={keyWord} />
-            {posts ? searchComponent(posts) : null}
-        </SearchBox>
+            <Header />
+            <SearchBox >
+            <p className="explanation">KeyWord로 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다. 해당 KeyWord는 포스트의 제목 또는 내용에 매치됩니다.</p>
+                <Input className="searchInput" ref={inputFocus} name={'# 키워드를 입력해주세요'} padding={'1.5%'} width={'45%'} size={'1.2rem'} onChange={onchangeValue} value={keyWord} />
+                <Detail />
+                {posts ? searchComponent(posts) : null}
+            </SearchBox>
         </>
     )
 }

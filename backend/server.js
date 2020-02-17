@@ -14,6 +14,7 @@ const postRouter = require('./routes/post');
 const homeRouter = require('./routes/home');
 const commentRouter = require('./routes/comment');
 const posttingRouter = require('./routes/postting');
+const tagRouter = require('./routes/tag');
 const cors = require('cors');
 
 const {sequelize} =require('./models');
@@ -55,6 +56,7 @@ app.use('/home', homeRouter);
 app.use('/postting', posttingRouter);
 app.use('/comment', commentRouter);
 app.use('/about', aboutRouter);
+app.use('/tag', tagRouter);
 
 
 //app.use((req, res, next) => {
