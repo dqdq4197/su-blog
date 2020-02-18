@@ -1,4 +1,4 @@
-import React,{useState,useEffect, useCallback} from 'react';
+import React,{useState,useEffect, useCallback, useRef} from 'react';
 import {Input} from '../../lib/AuthInput';
 import stlyed from 'styled-components';
 import axios from 'axios';
@@ -87,11 +87,13 @@ const SearchTag = ({data}) => {
 
     const [tagKey, setTagKey] = useState('');
     const [getTag, setGetTag] = useState([]);
+    const focus = useRef();
     const onChangeTag = (e) => {
         setTagKey(e.target.value);
     }
 
     useEffect(() => {
+        focus.current.focus();
         getTags();
     },[])
     
@@ -127,7 +129,7 @@ const SearchTag = ({data}) => {
         <>  
             <InputBox >
                 <p className="explanation">Tag를 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다.</p>
-                <Input name="# Tag를 입력하세요" className="input" onChange={onChangeTag} value={tagKey}></Input>
+                <Input name="# Tag를 입력하세요" className="input" onChange={onChangeTag} value={tagKey} ref={focus}></Input>
             </InputBox>
             <ListContainer >
                 <ul><MatchTag /></ul>

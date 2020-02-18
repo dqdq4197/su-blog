@@ -129,7 +129,7 @@ const GetFeed = ({block,contents}) => {
                     <h4>{block.tumnailTitle}</h4>
                 </Link>
                     {block.hashTags ===null ? null : block.hashTags.match(',') ?
-                         block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags" ><Link to={`hashtags/${res}`} >{'#'+res}</Link></span>) 
+                         block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags" ><Link to={`/hashtags/${res}`} >{'#'+res}</Link></span>) 
                          : <span className="feed_tags"><Link to={`hashtags/${block.hashTags}`}>${ "#" + block.hashTags}</Link></span>}
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`}} >  
                     <img style={{width:'100%', marginTop:10}} src={block.tumnailImg ? 'img/'+block.tumnailImg : postTumnail } alt="thumnail" ></img>

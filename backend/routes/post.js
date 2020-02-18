@@ -1,5 +1,5 @@
 const express = require('express');
-const {Post} = require('../models');
+const {Post,User} = require('../models');
 const router = express.Router();
 
 router.post('/upload', (req,res,next) => {
@@ -37,9 +37,13 @@ router.post('/modify/:posterId', async(req,res,next) => {
 })
 
 router.get('/:id/:author', (req,res) => {
-    const post_content = Post.findOne({where: {id: req.params.id}});
-    post_content.then((response) => {
-        console.log(response);
+    Post.findOne({
+        include:[{
+            model : User,
+            attributes:['profile_img']
+        }],
+        where: {id: req.params.id}})
+        .then((response) => {
         res.json(response.dataValues);
     })
 })

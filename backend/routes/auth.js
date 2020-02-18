@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 const smtpTransporter = require('nodemailer-smtp-transport');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const {User} = require('../models');
@@ -34,8 +36,15 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
           console.log('continue')
         );
       }
+      console.log();
       return (
-        res.json(user)
+        res.json({
+          id:user.id,
+          email:user.email,
+          nick:user.nick,
+          profile_img:user.profile_img,
+          createdAt:user.createdAt,
+        })
       )
     })
   })(req,res,next);
@@ -57,21 +66,30 @@ router.get('/facebook/callback',
 var smtpTransport = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-      user: "dqdq4197@gmail.com",
-      pass: "Zlffj3240a!"
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD,
   }
 });
-var mailOptions,link;
+let mailOptions,link;
 
 router.post('/signup', async(req,res) => {
 
   const {email,password,Nickname} = req.body;
 
-  const validate = await User.findOne({where:{email:email, verify:true}})
-  console.log(validate)
-  if(validate) {
-    res.send('already')
-  } else {
+  const validate = 
+    await User.findOne({
+      where:{
+        [Op.or] :[
+          {
+            email,
+            verify:true
+          },{
+            verify:true,
+            nick:Nickname,
+          }
+        ]
+      }})
+  if(!validate) {
     let key_one=crypto.randomBytes(256).toString('hex').substr(100, 5);
     let key_two=crypto.randomBytes(256).toString('base64').substr(50, 5);
     let key_for_verify=key_one+key_two;
@@ -82,7 +100,8 @@ router.post('/signup', async(req,res) => {
     mailOptions={
       to : email,
       subject : "su_blog 회원 가입 인증메일",
-      html : "<div><h1>su_blog회원 가입요청에 감사드립니다.</h1><br><h3>가입을 원하신다면 아래 동의함을 클릭해주세요!</h3> <br><a style='color:white; font-weight:900; text-decoration: none;' href="+link+"><div style='background-color:rgba(13,72,50); padding:15px ;border-radius:7px;height:20px;width:20%;text-align:center;font-size:2em'> 동의함</div></div></a>"
+      html : 
+      "<div><h1>su_blog회원 가입요청에 감사드립니다.</h1><br><h3>가입을 원하신다면 아래 동의함을 클릭해주세요!</h3> <br><a style='color:white; font-weight:900; text-decoration: none;' href="+link+"><div style='background-color:rgb(13,72,50); padding:15px; border-radius:7px;height:25px;width:20%;text-align:center;font-size:2em'> 동의함</div></div></a>"
     }
   
     console.log(mailOptions);
@@ -104,14 +123,23 @@ router.post('/signup', async(req,res) => {
             key_verify:key_for_verify,
           })
         } else {
-          User.update({password: hash,nick:Nickname,key_verify:key_for_verify},{where: {email}})
+          User.update({
+            password: hash,
+            nick:Nickname,
+            key_verify:key_for_verify,
+          },{
+            where: {email}
+          })
         }
         console.log("Message sent: " + response.message);
         res.end("sent");
          }
       });
+  }else if(validate.dataValues.email === email) {
+    res.json({massage:'이미 존재하는 이메일주소입니다.'})
+  } else if(validate.dataValues.nick === Nickname) {
+    res.json({massage:'이미 존재하는 닉네임입니다.'})
   }
-
 });
 
 router.get('/verify',async(req,res) => {
@@ -141,7 +169,7 @@ router.get('/logout', (req,res) => {
   res.send('logout');
 });
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'profiles/')
   },
@@ -152,7 +180,7 @@ var storage = multer.diskStorage({
   limits: { fileSize: 5 * 1024 * 1024 },
 })
 
-var upload = multer({ storage })
+let upload = multer({ storage })
 
 router.post('/profile/img',upload.single('img'), (req, res) => {
   console.log(req.file);

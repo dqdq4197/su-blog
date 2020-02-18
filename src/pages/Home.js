@@ -11,6 +11,7 @@ import HomeFeed from '../components/loadingComponent/HomeFeed';
 import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';
 import HashTags from '../components/home/HashTags';
+
 const Content = styled.div`
     width:100%;
     height:auto;

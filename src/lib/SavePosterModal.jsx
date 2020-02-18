@@ -1,12 +1,12 @@
 import React, {useState, useRef} from 'react';
-import { Button, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
+import { Button, Image, Modal, Icon, Dropdown,Radio} from 'semantic-ui-react';
 import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import PostTumnail from '../lib/basicTumnail/postTumnail.png'
-
+import {Input} from './AuthInput';
 
 const TagsBox = styled.div`
 position:absolute;
@@ -49,6 +49,9 @@ const TagKeyBox = styled.div`
   display:inline;
   margin-top:30px;
   top:60%;
+  .toggle {
+    left:100%;
+  }
   .tagKey {
     position:relative;
     width:70px;
@@ -249,13 +252,16 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
               src={imgUrl ===PostTumnail ? imgUrl : 'img/' +imgUrl}
             />
             <Modal.Description>
-              <input type="text" id="editTitle" placeholder="  Enter Title" ref={titleRef} onChange={onChangeTitle}/>
-              <Dropdown placeholder='Skills' fluid multiple selection scrolling onChange={getSKills} options={options} />
+              <Input type="text" style={{margin:0, fontSize:'1.1rem', padding:'10px'}}
+              id="editTitle" width="100%" name=" 포스트 제목을 입력해주세요." ref={titleRef} onChange={onChangeTitle}/>
+
+              <Dropdown placeholder='카테고리를 선택해주세요.' fluid multiple selection scrolling onChange={getSKills} options={options} />
               <div>
                 <TagsBox>
                   <Icon className="tag_icon" name='tags' />
                   <input id="tagBox" type="text" ref={tagnames} onKeyDown={e => onEnter(e)} placeholder=" Enter tags" ></input>
                   <Icon className="plusBtn" name="plus circle"></Icon>
+                  <Radio toggle />
                 </TagsBox>
                 <TagKeyBox >{tags.map(
                               (value,i) => 
@@ -265,6 +271,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
                                 </div>
                             )}
                 </TagKeyBox>
+                
               </div>
             </Modal.Description>
           </Modal.Content>

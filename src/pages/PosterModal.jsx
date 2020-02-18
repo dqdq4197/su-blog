@@ -92,6 +92,37 @@ const PosterContainer= styled.div`
         a {
           color:#008000;
         }
+        #Title_postTitle {
+          font-size:3rem;
+          font-weight:bold;
+          margin-bottom:20px;
+        }
+        #Title_profileImg {
+          cursor:pointer;
+          display:inline-block;
+          width:50px;
+          height:50px;
+          border-radius:50px;
+          margin-right:7px;
+          background:url(${props => props.profile_img});
+          background-size:cover;
+          background-position:center center;
+        }
+        #Title_author {
+          cursor:pointer;
+          display:inline-block;
+          font-weight:500;
+          vertical-align: middle;
+          margin-bottom:30px;
+          &:hover {
+            text-decoration:underline;
+          }
+        }
+        #Title_date {
+          display:inline-block;
+          vertical-align:middle;
+          font-size:1.2rem;
+        }
 
       }
       p {
@@ -161,7 +192,6 @@ const PosterModal = () => {
     const { id,author } = useParams();
     const location = useLocation();
     const userInfo = storage.get('loginInfo');
-    const dispatch = useDispatch();
     const {isLoadding} = useSelector(state => state.posts);
 
     const [comments, setComments] = useState({});
@@ -180,6 +210,7 @@ const PosterModal = () => {
         return result;
       })
       setModifyData(location.state.block);
+      console.log(location.state.block)
       jsonData(outData);
     
       await axios.get(`/comment/${location.state.block.id}`).then((res) =>{
@@ -207,7 +238,9 @@ const PosterModal = () => {
     }
 
     const jsonData = (json) => {
-      var html = '';
+      let html = `<h1 id="Title_postTitle">${location.state.block.tumnailTitle}</h1>
+          <div id='Title_profileImg'></div><div id="Title_author">${location.state.block.author}</div>
+          <p id="Title_date">· ${location.state.block.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일</p>`;
       json.forEach(function(block,i) {
         
         switch (block.type) {
@@ -252,6 +285,8 @@ const PosterModal = () => {
             break;
         }
         document.getElementById('content').innerHTML = html;
+        document.getElementById('Title_profileImg').onclick=function(){ history.push(`/about/@${location.state.block.author}`)}
+        document.getElementById('Title_author').onclick=function(){ history.push(`/about/@${location.state.block.author}`)}
       });
     };
 
@@ -279,7 +314,7 @@ const PosterModal = () => {
           <ToggleDial left={'15%'} width={0} id={id} author={author} />
           <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
-            <PosterContainer id='total'>
+            <PosterContainer id='total' profile_img={'img/'+location.state.block.user.profile_img}>
             <main role="main" className="posterdiv">
               <div className="row">
                 <div className="col-md-10 blog-main">

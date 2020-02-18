@@ -11,7 +11,7 @@ router.post('/getPost', (req,res) => {
     Post.findAll({
         include: [{
             model: User,
-                attributes:['profile_img'],
+            attributes:['profile_img'],
         },{
             model: Comment
         }],

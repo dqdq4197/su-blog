@@ -40,7 +40,7 @@ function AppSwitch() {
           <Route path="/Signup" exact component={Signup}/>
           <Route path="/Search" component={Search} />
           <Route path="/hashtags" exact component={TagList} />
-          <Route path="/hashtags/:tag"  component={OneTag} />
+          <Route path="/hashtags/:tag" component={OneTag} />
         </Switch>
         {background && <Route path="/poster/:id/:author" component={PosterModal} />}
         

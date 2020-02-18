@@ -1,6 +1,7 @@
 ### FrontEnd
 - React Hooks
 - markdownEditor(editorjs)
+
 ### Design  
 + styled-components
 + @material-ui
@@ -8,9 +9,11 @@
 
 ### Redux + immer + thunk
 - React-redux를 통해 상태관리 
-### Nodejs
+
+### Nodejs + Mysql
 - backend
-- passport를 이용한 로그인 구현
+- DB ORM (sequelize사용)
+- passport를 이용한 로그인 구현 (local + Oouth)
 - 회원가입 인증메일 (nodemailer)
 
 
@@ -57,6 +60,7 @@
   + 버전 업데이트 (이로 인한 이슈 고치기)
   + 배포!
 
+### 카테고리 주소로 바꾸자 /home/react 
 
 ### 검색기능 (완료)
 - 해시태그 또는 포스터 내용으로 검색가능하게 match
@@ -65,16 +69,16 @@
 - 수정또는 작성 끝내고 해당 url로 이동하기.
 
 ### Home 페이지 Feed 무한 스크롤링 (구현 완료)
-- 버그 체크하기
+- 버그 체크하기 (완료)
 
-### 카테고리 주소로 바꾸자 /home/react 
 
-#### 버그 
-- 포스터썸네일 작업 해시태그 join
+### 버그 
+- 포스터썸네일 작업 해시태그 join (해결완료)
 - 메인 home feed 날짜 display block
 
+### 회원가입 validate (구현 완료)
 
 ### 메인 basic tumnail 지정끝.
-- 한줄만 작성 가능
+- 한줄만 작성 가능 (완료)
 - 저장하기 눌렀을때 content가 없으면 모달창으로 안넘어가게 하자
 - 메인에 hashtag 문제 해결하고 포스팅 마무리하자

@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import styled from 'styled-components';
 import {useHistory} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
-
+import postTumnail from '../../lib/basicTumnail/postTumnail.png';
 
 const FeedBox = styled.div`
     position:relative;
@@ -60,7 +60,7 @@ const ProfileFeed = ({data}) => {
             <hr/>
                 <div className='poster_title' onClick={()=>{history.push(`/poster/${info.id}/${null}`)}}>{info.tumnailTitle}</div>
                 <div className='poster_preview'>
-                    {info.tumnailImg ? <div className="poster_tumnail"><img src={'img/'+info.tumnailImg} /></div> : null}
+                    {info.tumnailImg ? <div className="poster_tumnail"><img src={info.tumnailImg ? 'img/'+info.tumnailImg : postTumnail } /></div> : null}
                     <div className='poster_content'>
                     <p>{ info.content.blocks.map((block) => {
                             switch (block.type) {

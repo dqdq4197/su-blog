@@ -93,13 +93,12 @@ const PosterWrap = styled.div`
             transition:.2s;
             &:hover {
                 border-color:#008000;
+                a {
+                    color:#008000;
+                }
             }
             a {
                 color:#90A4AE;
-                &:hover {
-                    
-                    color:#008000
-                }
             }
             
             &:nth-child(2) {
@@ -136,7 +135,8 @@ const Feed = ({block, contents}) => {
                 <Link to={`/about/@${block.author}`}><div className="feed_profile"></div></Link>
                 <div className="feed_Header_text"> 
                     <Link to={`/about/@${block.author}`}><span className="author">{block.author}</span></Link>
-                    <Popup content={block.createdAt} trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
+                    <Popup content={`
+                        ${block.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일`} trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
                 </div>
             </div>
             <div className="feed_content" >

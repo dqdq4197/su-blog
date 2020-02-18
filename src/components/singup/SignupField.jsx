@@ -43,6 +43,11 @@ const SignupField = () => {
 
     const mailTest = async(e) => {
       e.preventDefault();
+      let exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+      if(exptext.test(email)==false){
+        alert("이메일형식이 올바르지 않습니다.");
+        return false;
+      }
       await axios.post('/auth/signup', {
         email,
         password,
@@ -50,8 +55,8 @@ const SignupField = () => {
       }).then((res) => {
         if(res.data === 'sent') {
           setVerify(true);
-        } else if(res.data === 'already') {
-          alert('이미 존재하는 이메일 주소입니다.');
+        } else if(res.data.massage) {
+          alert(res.data.massage);
         } else if(res.data === 'error') {
           alert('이메일을 다시한번 확인해주세요!');
         }
@@ -66,7 +71,7 @@ const SignupField = () => {
               <Icon name="envelope open outline"></Icon>입력하신 메일주소로 인증메일을 요청했습니다.<br/> 해당 메일에서 인증을 완료해주세요!
              
             </Verifybox>: <form onSubmit={mailTest}>
-               <Input name="email" value={email} onChange={onChangeHandler}/>
+               <Input type="email" name="email" value={email} onChange={onChangeHandler}/>
                <Input type="password" name="password" value={password} onChange={onChangeHandler}/>
                <Input name="Nickname" value={Nickname} onChange={onChangeHandler}/>
                <Form.Field>

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import postTumnail from '../../lib/basicTumnail/postTumnail.png';
 
 const TumnailBox = styled.div`
     position:relative;
@@ -73,7 +74,7 @@ const ProfilePoster = ({data}) => {
                             
                         </div>
                         <div className="tumnailImg">
-                            <img src={`img/${block.tumnailImg}`} />
+                            <img src={block.tumnailImg ? `img/${block.tumnailImg}` : postTumnail} />
                         </div>
                         </Link>
                         </TumnailBox>

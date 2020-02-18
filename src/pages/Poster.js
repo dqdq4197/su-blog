@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState ,useRef} from 'react';
 import Header from '../components/header/Header';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
@@ -8,6 +8,7 @@ import CommentBox from '../components/poster/Comments';
 import ToggleDial from '../components/poster/ToggleDial';
 import {Icon} from 'semantic-ui-react';
 import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -25,7 +26,6 @@ hljs.registerLanguage('json', json);
 hljs.registerLanguage('java', java);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('typescript', typescript);
-
 
 
 
@@ -66,6 +66,7 @@ const PosterContainer= styled.div`
       margin-right:0;
     }
     .col-md-8.blog-main {
+      
       font-size:1.2rem;
       
       margin:0 auto;
@@ -74,6 +75,37 @@ const PosterContainer= styled.div`
       #content {
         a {
           color:#008000;
+        }
+        #Title_postTitle {
+          font-size:3rem;
+          font-weight:bold;
+          margin-bottom:20px;
+        }
+        #Title_profileImg {
+          cursor:pointer;
+          display:inline-block;
+          width:50px;
+          height:50px;
+          border-radius:50px;
+          margin-right:7px;
+          background:url(${props => props.profile_img});
+          background-size:cover;
+          background-position:center center;
+        }
+        #Title_author {
+          cursor:pointer;
+          display:inline-block;
+          font-weight:500;
+          vertical-align: middle;
+          margin-bottom:30px;
+          &:hover {
+            text-decoration:underline;
+          }
+        }
+        #Title_date {
+          display:inline-block;
+          vertical-align:middle;
+          font-size:1.2rem;
         }
       }
       p {
@@ -146,6 +178,8 @@ const Poster = ({match}) => {
   const [comments, setComments] = useState({});
   const [modifyData, setModifyData] = useState({});
   const [header, setHeader] = useState([{id:'',text:''}]);
+  const title = useRef({title:'', profile_img:'', author:'', date:''});
+  const history = useHistory();
 
       const posterShowRequest = async() => {
         dispatch(posterLoadRequest());
@@ -157,6 +191,16 @@ const Poster = ({match}) => {
               return result;
             })
             setModifyData(res.data);
+            console.log(outdata);
+            console.log(res.data)
+            
+            title.current.title=res.data.tumnailTitle;
+            title.current.profile_img = res.data.user.profile_img;
+            title.current.author = res.data.author;
+            title.current.date = res.data.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ');
+            title.current.categorie = res.data.skills;
+            title.current.tags = res.data.hashTags;
+        
             jsonData(outdata)};
         })
         await axios.get(`/comment/${match.params.id}`).then((res) =>{
@@ -186,9 +230,9 @@ const Poster = ({match}) => {
           behavior: 'smooth'
         });
       }
-
+      console.log(modifyData.tumnailTitle);
       const jsonData = (json) => {
-        var html = '';
+        let html = `<h1 id="Title_postTitle">${title.current.title}</h1><div id='Title_profileImg'></div><div id="Title_author">${title.current.author}</div>  <p id="Title_date">· ${title.current.date}일</p>`;
         json.forEach(function(block,i) {
           
           switch (block.type) {
@@ -224,7 +268,7 @@ const Poster = ({match}) => {
               html += `<embed src="${block.data.embed}" width="${block.data.width}" height="${block.data.height}"><br /><em>${block.data.caption}</em>`
               break;
             case 'raw':
-              //const a = replaceAll(block.data.html,"<","&lt")
+              
               const highlightedCode = hljs.highlightAuto(block.data.html).value
               html += `<pre><code class="hljs" style="max-height:700px">${highlightedCode}</code></pre>`
               break;
@@ -235,6 +279,8 @@ const Poster = ({match}) => {
               break;
           }
           document.getElementById('content').innerHTML = html;
+          document.getElementById('Title_profileImg').onclick=function(){ history.push(`/about/@${title.current.author}`)}
+          document.getElementById('Title_author').onclick=function(){ history.push(`/about/@${title.current.author}`)}
         });
       };
 
@@ -245,7 +291,7 @@ const Poster = ({match}) => {
             }
         )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
       }
-    
+    console.log(title.current.profile_img)
     return (
       <>
         <Header />
@@ -253,7 +299,7 @@ const Poster = ({match}) => {
         <ToggleDial width={54} left={'18%'} id={match.params.id} author={match.params.author} />
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
         <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
-        <PosterContainer>
+        <PosterContainer profile_img={'img/'+title.current.profile_img}>
           <main role="main" className="posterdiv">
             <div className="row">
               <div className="col-md-8 blog-main">

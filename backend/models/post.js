@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes ) => (
             type:DataTypes.STRING(200),
             allowNull:true,
         },
+        isHide: {
+            type:DataTypes.BOOLEAN,
+            allowNull:true,
+        },
     },{
         timestemps:true,
         paranoid:true,
