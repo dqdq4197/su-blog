@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Button} from '../../lib/AuthInput';
 import axios from 'axios';
@@ -113,13 +113,18 @@ const ReplyBox = styled.div`
 `
 
 
-const Comments = ({postId,data}) => {
+const Comments = ({postId}) => {
     const [parentValue, setParentValue] = useState('');
     const [childValue, setChildValue] = useState('');
     const [reply, setReply] = useState(null);
+    const [comments, setComments] = useState('');
     const history = useHistory();
 
     const userInfo = storage.get('loginInfo');
+
+    useEffect(() => {
+        getComment()
+    },[])
 
     const onChangeParent = (e) => {
         setParentValue(e.target.value)
@@ -131,6 +136,20 @@ const Comments = ({postId,data}) => {
     const onClickReply = (index) => {
         reply === index+1 ? setReply( null ) :setReply(index + 1) ;
     }
+
+    const getComment = () => {
+         axios.get(`/comment/${postId}`).then((res) =>{
+            let array=[]; 
+            let array1=[];
+  
+            res.data.map((dap) => {!dap.parent && array.push(dap)});
+            array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
+            array1.map(dap2 => {
+              array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
+            setComments(array);
+          })
+        }
+
     const onReplyParent = (e) => {
         e.preventDefault();
         if(parentValue) {
@@ -138,8 +157,8 @@ const Comments = ({postId,data}) => {
                 parentValue,
                 postId,
         }).then(() => {
-            //window.location.reload()
-            history.go(0);
+            getComment();
+            setParentValue('');
         })} else {
             e.preventDefault();
         }
@@ -152,7 +171,8 @@ const Comments = ({postId,data}) => {
             childValue,
             postId
         }).then(() => {
-            window.location.reload();
+            getComment();
+            setChildValue('');
             document.getElementById(replyId).focus();
         })
     }
@@ -173,14 +193,14 @@ const Comments = ({postId,data}) => {
 
     return (
         <>
-        <h3 id='commentView' style={{marginTop:30}}>{data.length} 답변</h3>
+        <h3 id='commentView' style={{marginTop:30}}>{comments.length} 답변</h3>
         <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
-        {data[0] && data.map(
+        {comments[0] && comments.map(
             (res, i) => res.seq === 1 ? <ReplyBox id={res.id} key={res.id} path={res.profile_img}>
                         <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
                         <div className="profile_info">
-                        <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
-                        <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                            <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
+                            <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
                         </div>
                         <span className="delete"><Icon name="trash alternate"/></span>
                         <div className="comment">{res.content}</div>

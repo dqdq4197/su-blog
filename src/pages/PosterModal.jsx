@@ -193,9 +193,7 @@ const PosterModal = () => {
     const { id,author } = useParams();
     const location = useLocation();
     const userInfo = storage.get('loginInfo');
-    const {isLoadding} = useSelector(state => state.posts);
 
-    const [comments, setComments] = useState({});
     const [modifyData, setModifyData] = useState({});
     const [header, setHeader] = useState([{id:'',text:''}]);
 
@@ -214,16 +212,6 @@ const PosterModal = () => {
       console.log(location.state.block)
       jsonData(outData);
     
-      await axios.get(`/comment/${location.state.block.id}`).then((res) =>{
-      let parrentArray=[]; 
-      let childArray=[];
-      
-      res.data.map((dap) => {!dap.parent && parrentArray.push(dap)});
-      childArray=res.data.filter(dap1 => dap1.parent !== null ).reverse();
-      childArray.map(dap2 => {
-        parrentArray.map((dap3,i) => dap2.parent === dap3.id ? parrentArray.splice(i+1,0,dap2) : null)})
-      setComments(parrentArray);
-      })
     };
     const scrollup = () => {
       document.getElementById('modalContainer').scrollTo({
@@ -326,7 +314,7 @@ const PosterModal = () => {
                   </div>
                   {(userInfo ? (userInfo.nick === author || userInfo.nick === ' Operator') : false ) ? 
                     <VariousBtn data={modifyData} posterId={id} author={author}/> : ''}
-                  <CommentBox data={comments} postId={id}/>
+                  <CommentBox postId={id}/>
                 </div>
               </div>
             </main>

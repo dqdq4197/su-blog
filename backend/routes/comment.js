@@ -16,6 +16,7 @@ router.get('/:id', async(req,res) => {
                     })  
                 }))
             .then((dd) => {
+                console.log('aaaa');
                 res.json(object);
             })
         })

@@ -175,7 +175,6 @@ const Poster = ({match}) => {
 
   const dispatch = useDispatch();
   const {isLoadding} = useSelector(state => state.posts);
-  const [comments, setComments] = useState({});
   const [modifyData, setModifyData] = useState({});
   const [header, setHeader] = useState([{id:'',text:''}]);
   const title = useRef({title:'', profile_img:'', author:'', date:''});
@@ -203,16 +202,7 @@ const Poster = ({match}) => {
         
             jsonData(outdata)};
         })
-        await axios.get(`/comment/${match.params.id}`).then((res) =>{
-          let array=[]; 
-          let array1=[];
-
-          res.data.map((dap) => {!dap.parent && array.push(dap)});
-          array1=res.data.filter(dap1 => dap1.parent !== null ).reverse();
-          array1.map(dap2 => {
-            array.map((dap3,i) => dap2.parent === dap3.id ? array.splice(i+1,0,dap2) : null)})
-          setComments(array);
-        })
+      
       }
       useEffect(() => {
         posterShowRequest();
@@ -310,7 +300,7 @@ const Poster = ({match}) => {
                 </div>
                 {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
                   <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
-                <CommentBox data={comments} postId={match.params.id}/>
+                <CommentBox postId={match.params.id}/>
               </div>
             </div>
           </main>
