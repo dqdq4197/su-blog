@@ -6,7 +6,6 @@ import SearchComponent from '../components/home/SearchComponent';
 import {home_load_request, home_load_success, home_more_request, home_more_success} from '../actions/home';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../components/header/Header';
-import {useHistory, useLocation} from 'react-router-dom';
 import HomeFeed from '../components/loadingComponent/HomeFeed';
 import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';

@@ -5,6 +5,7 @@ import {Board, About, Login, Home, Poster, Signup, TagList, Search ,OneTag, Post
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
 import {useDispatch} from 'react-redux';
+import ScrollToTop from './components/useHooks/ScrollToTop';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ useEffect(() => {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <AppSwitch />
       </div>
@@ -31,6 +33,7 @@ function AppSwitch() {
         const background = location.state && location.state.background;
   return (
       <>
+      
         <Switch location={background || location}>
           <Route path="/" exact component={Login}/>
           <Route path="/home" exact component={Home}/>

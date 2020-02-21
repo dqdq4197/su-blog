@@ -15,7 +15,15 @@ router.post('/', async(req,res) => {
                 model: Comment
             }
             ],
-            where:{skills: {[Op.like] : '%' + value.toLowerCase() + '%'}},
+            where:{
+                [Op.and] : [{
+                    skills: {[Op.like] : '%' + value.toLowerCase() + '%'},
+                },{
+                    isHide: false,
+                }]
+                
+               
+            },
 
             order:[['createdAt','DESC']],
         }).then((posts) =>{
@@ -30,6 +38,9 @@ router.post('/', async(req,res) => {
                 model: Comment,
             }
             ],
+            where:{
+              isHide: false,  
+            },
             order:[['createdAt','DESC']],
         }).then((posts) =>{
             res.json(posts);

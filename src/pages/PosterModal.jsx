@@ -89,6 +89,7 @@ const PosterContainer= styled.div`
       margin:50px auto 0;
       word-break:keep-all;
       #content {
+        word-break:break-all; 
         a {
           color:#008000;
         }

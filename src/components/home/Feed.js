@@ -125,9 +125,6 @@ const Feed = ({block, contents}) => {
     const hideScroll = () => {
         document.getElementById('body').style.overflow='hidden';
     }
-    const removeOnClick = (e) => {
-        e.stopPropagation();
-    }
     
     return (
         <PosterWrap className="posterDetail" id={block.id + '번'} profile_img={block.user.profile_img} onClick={onclickPoster}>

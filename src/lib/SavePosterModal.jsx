@@ -1,70 +1,82 @@
 import React, {useState, useRef} from 'react';
-import { Button, Image, Modal, Icon, Dropdown,Radio} from 'semantic-ui-react';
+import { Button, Image, Modal, Icon, Dropdown} from 'semantic-ui-react';
 import './modal.css';
 import styled from 'styled-components';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import PostTumnail from '../lib/basicTumnail/postTumnail.png'
+import PostTumnail from '../lib/basicTumnail/postTumnail.png';
 import {Input} from './AuthInput';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import SelectInput from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+}));
 
 const TagsBox = styled.div`
-position:absolute;
-border-radius:100px;
-border:1px solid rgba(0,0,0,.8);
-height:30px;
-width:150px;
-bottom:30%;
-#tagBox {
-  border:none;
-  width:80px;
-  margin-left:12px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  &:focus {
-    outline:none;
-  }
-}
-
-.plusBtn {
-  position:absolute;
-  right:5px;
-  background-color:transparent;
-  top:50%;
+  position:relative;
+  border-radius:6px;
+  border:1px solid rgba(0,0,0,.8);
+  height:30px;
+  width:150px;
+  bottom:30%;
+  overflow:hidden;
+  #tagBox {
+    border:none;
+    width:110px;
+    margin-left:12px;
+    position: absolute;
+    top: 50%;
     transform: translateY(-50%);
-  &:before{
-    position:absolute
-    left: 0px;
-    top: -50%;
-    transform: translateY(25%);
-    cursor:pointer;
+    &:focus {
+      outline:none;
+    }
   }
-}
+
+  .plusBtn {
+    position:absolute;
+    right:5px;
+    background-color:transparent;
+    top:50%;
+      transform: translateY(-50%);
+    &:before{
+      position:absolute
+      left: 0px;
+      top: -50%;
+      transform: translateY(25%);
+      cursor:pointer;
+    }
+  }
 
 `
 
 const TagKeyBox = styled.div`
-  position:absolute;
   display:inline;
-  margin-top:30px;
-  top:60%;
   .toggle {
     left:100%;
   }
   .tagKey {
     position:relative;
-    width:70px;
+    cursor:pointer;
+    top:-25px;
+    width:auto;
     font-size:.88rem;
-    height:23px;
-    margin:13px 0 0 5px;
-    bottom:0;
-    padding:0 6px;
-    border-radius:20px;
-    background-color: rgba(241, 237, 237, .3);
-    border:1px solid rgba(0,0,0,.3);
-    display: inline-block;
-    &:before { margin-left:5px;}
+    margin:2px 0 0 5px;
+    padding:5px 10px;
+    font-weight:500;
+    border-radius:10px;
+    background-color: rgba(13,72,50,.08);
+    display:inline-block;
   }
   .deleteIcon {
     position:absolute;
@@ -76,10 +88,8 @@ const TagKeyBox = styled.div`
 const UploadBtn = styled.div`
   position: relative;
   text-align:center;
-  left: 21px;
-  bottom:5%
   border-radius: 15px;
-  background-color: transparent;
+  margin-top:10px;
   border: 1px solid rgba(0,0,0,.8);
   width: 75px;
   height: 22px;
@@ -122,11 +132,13 @@ const options = [
 
 const SavePosterModal = ({onClick, posterId, modifydata}) => {
 
+  const classes = useStyles();
   const {result} = useSelector(state => state.authentication);
   const {posterOutputData} = useSelector(state => state.posts)
   const [open,setOpen] = useState(false);
   const [dimmer, setDimmer] = useState(null);
   const [tags, setTags] = useState([]);
+  const [scope, setScope] = useState('');
   const [imgUrl, setImgUrl] = useState(PostTumnail);
   const [tumnailPosterInfo, setTumnailPosterInfo] = useState(
       [{
@@ -155,7 +167,8 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
 
   const onEnter = async(event) =>{
     if(event.keyCode === 13) {
-      if(tagnames.current.value === '') return ;
+      if(tagnames.current.value === '' || (tags.indexOf(tagnames.current.value) !== -1) ) { return tagnames.current.value='';}
+      console.log(tags, tagnames.current.value)
       await Promise.resolve().then(() => {
         setTags((prevState) => [...prevState, tagnames.current.value])
       })
@@ -193,8 +206,14 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
   }; 
   console.log(tumnailPosterInfo);
   const onClickSave = () => {
-    if(tumnailPosterInfo.skills === "" || tumnailPosterInfo.title === "" || tumnailPosterInfo.skills=== undefined || tumnailPosterInfo.title === undefined) {
-       return alert('Title과 카테고리를 선택 해 주세요')
+    if(tumnailPosterInfo.title === "" || tumnailPosterInfo.title === undefined) {
+       return alert('포스트 제목을 입력해주세요')
+    }else if(tumnailPosterInfo.skills === "" || tumnailPosterInfo.skills=== undefined ) {
+      return alert('카테고리를 선택해주세요.')
+    }else if(scope === ''){
+      return alert('공개 범위를 선택해주세요');
+    }else if(posterOutputData === undefined) {
+      return alert('포스트 내용이 없습니다.');
     }else {
       const userId= result.id;
       const nick = result.nick;
@@ -210,6 +229,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
             hashTags: tumnailPosterInfo.tags ? tumnailPosterInfo.tags.join(',') : null,
             tumnailImg: tumnailPosterInfo.imgUrl,
             skills:tumnailPosterInfo.skills,
+            isHide:scope,
           }).then((res) => {
             alert('수정 완료');
             history.push(`/poster/${posterId}/${nick}`)
@@ -226,6 +246,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
             hashTags: tumnailPosterInfo.tags ? tumnailPosterInfo.tags.join(',') : null,
             tumnailImg: tumnailPosterInfo.imgUrl,
             skills:tumnailPosterInfo.skills,
+            isHide:scope,
           })
           .then((res) => {
             alert('저장 완료');
@@ -238,36 +259,54 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
 
     }
   }
-  
+  const handleChange =(e) => {
+    setScope(e.target.value)
+  }
+
+  const Scope = () => (
+      <FormControl className={classes.formControl}>
+        <InputLabel htmlFor="grouped-native-select">공개범위</InputLabel>
+        <Select native  value={scope} input={<SelectInput id="grouped-native-select" />} onChange={handleChange}>
+            <option value="" />
+            <option value={false}>전체공개</option>
+            <option value={true}>나만보기</option>
+        </Select>
+      </FormControl>
+  )
     return (
       <>
         <Button onClick={show("blurring")}>저장하기</Button>
         <Button>임시저장</Button>
         <Modal dimmer={dimmer} open={open} onClose={close}>
-          <Modal.Header>Select a Thumnail</Modal.Header>
+          <Modal.Header>포스트 썸네일 설정<Scope /></Modal.Header>
           <Modal.Content image>
-            <Image
-              wrapped
-              size='medium'
-              src={imgUrl ===PostTumnail ? imgUrl : 'img/' +imgUrl}
-            />
-            <Modal.Description>
+            <div style={{textAlign:'center',postion:'relative'}}>
+              <Image
+                wrapped
+                size='medium'
+                src={imgUrl ===PostTumnail ? imgUrl : 'img/' +imgUrl}
+              />
+              <div style={{height:'22px'}}>
+                <UploadBtn>
+                  <label htmlFor="upFile">Upload</label>
+                  <input type="file" onChange={onTumnail} name="poster" id="upFile" accept="image/*"></input>
+                </UploadBtn>
+              </div>
+            </div>
+            <Modal.Description style={{position:'relative'}}>
               <Input type="text" style={{margin:0, fontSize:'1.1rem', padding:'10px'}}
-              id="editTitle" width="100%" name=" 포스트 제목을 입력해주세요." ref={titleRef} onChange={onChangeTitle}/>
+              id="editTitle" width="310px" name=" 포스트 제목을 입력해주세요." ref={titleRef} onChange={onChangeTitle}/>
 
               <Dropdown placeholder='카테고리를 선택해주세요.' fluid multiple selection scrolling onChange={getSKills} options={options} />
-              <div>
+              <div className="tagBox" style={{position:'absolute',height:'100px'}}>
                 <TagsBox>
                   <Icon className="tag_icon" name='tags' />
                   <input id="tagBox" type="text" ref={tagnames} onKeyDown={e => onEnter(e)} placeholder=" Enter tags" ></input>
-                  <Icon className="plusBtn" name="plus circle"></Icon>
-                  <Radio toggle />
                 </TagsBox>
                 <TagKeyBox >{tags.map(
                               (value,i) => 
-                                <div key={i} className="tagKey">
-                                  <Icon name="tag" />{value}
-                                  <div className="deleteIcon" onClick={() => onDeleteTag(i)} ><Icon name="cancel"/></div>
+                                <div key={i} className="tagKey" onClick={() => onDeleteTag(i)}>
+                                  {value}
                                 </div>
                             )}
                 </TagKeyBox>
@@ -275,10 +314,7 @@ const SavePosterModal = ({onClick, posterId, modifydata}) => {
               </div>
             </Modal.Description>
           </Modal.Content>
-          <UploadBtn>
-              <label htmlFor="upFile">Upload</label>
-              <input type="file" onChange={onTumnail} name="poster" id="upFile" accept="image/*"></input>
-          </UploadBtn>
+          
           <Modal.Actions>
             
             <Button color='black' onClick={close}>

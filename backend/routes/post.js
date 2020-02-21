@@ -3,7 +3,7 @@ const {Post,User} = require('../models');
 const router = express.Router();
 
 router.post('/upload', (req,res,next) => {
-    const {outputData, userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
+    const {outputData, userId, isHide,nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
     //var sysdate = new Date(outputData.time);
     
     if(userId){
@@ -14,7 +14,8 @@ router.post('/upload', (req,res,next) => {
             tumnailTitle,
             hashTags,
             skills,
-            tumnailImg
+            tumnailImg,
+            isHide
         }).then(() => {Post.findAll({
             limit: 1,
             order: [ [ 'createdAt', 'DESC' ]]
@@ -25,14 +26,18 @@ router.post('/upload', (req,res,next) => {
 })
 
 router.post('/modify/:posterId', async(req,res,next) => {
-    const {outputData, userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
-    await Post.update({content:outputData,
+    const {outputData, isHide,userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
+    console.log(isHide)
+    await Post.update({
+        content:outputData,
         userId,
         author:nick,
         tumnailTitle,
         hashTags,
         skills,
-        tumnailImg},{where: {id: req.params.posterId}}
+        tumnailImg,
+        isHide
+    },{where: {id: req.params.posterId}}
     ).then(() => res.send('수정완료'))
 })
 

@@ -1,9 +1,26 @@
 .ui.modal.transition.visible.active {
-    height: 45%;
+    height: 430px;
     width:700px;
     transform: translate(-50%,-50%);
     left:50%;
     top:50% ;
+}
+.tagBox {
+    top:200px;
+}
+#scope {
+    position:absolute;
+    -webkit-appearance: none;  /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 10px;
+    height:35px;
+    font-size:1rem;
+    padding:5px 10px;
+    right:20px;
+}
+.description {
+    margin-left:20px;
 }
 .actions {
     position: absolute;
@@ -12,6 +29,7 @@
     width: 100%;
     transform: translateX(-50%);
 }
+
 i.icon.tags:before {
     top: 50%;
     transform: translateY(-50%);
@@ -42,13 +60,23 @@ i.icon.tags:before {
 }
 @media (max-width: 767px) {
     .ui.modal.transition.visible.active {
-        height: 70%;
-        width:500px;
+        height: 660px;
+        width:400px;
+    }
+    .tagBox {
+        top:220px;
+    }
+    .MuiFormControl-root.makeStyles-formControl-1 {
+        margin:0;
     }
 }
 @media (max-width: 550px) {
     .ui.modal.transition.visible.active {
-        height: 70%;
-        width:400px;
+        height: 600px;
+        width:350px;
+    }
+    .ui.medium.image {
+        width: 240px;
+        height: 160px;
     }
 }
