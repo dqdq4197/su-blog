@@ -3,26 +3,52 @@ import {Input} from '../../lib/AuthInput';
 import stlyed from 'styled-components';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {device} from '../../lib/MediaStyled';
 
 const InputBox = stlyed.div`
     .explanation {
-        text-align:left;
         display:inherit;
-        margin:50px 0 0 23%;
+        margin:30px auto 0;
+        width:900px;
+        @media ${device.laptopL} {
+            width:750px;
+        }
+        @media ${device.laptop} {
+            width:550px;
+        }
+        @media ${device.tablet} {
+            width:70%
+            font-size:.7rem;
+        }
         font-size:.9rem;
         color:#90A4AE;
+        p{
+            text-align:left;
+            margin-left:7px;
+        }
     }
     .input {
+        width:900px;
         margin:0 auto;
         display:block;
+        @media ${device.laptopL} {
+            width:750px;
+        }
+        @media ${device.laptop} {
+            width:550px;
+        }
+        @media ${device.tablet} {
+            width:70%
+        }
     }
 `
 const ListContainer = stlyed.div`
     display:flex;
     margin:50px auto;
     height:auto;
+    padding:0 20px;
     text-align:center;
-    width:1200px;
+    
     h5 {
         text-align:left;
         color:black;
@@ -38,7 +64,7 @@ const ListContainer = stlyed.div`
         }
         li {
             position:relative;
-            width:300px;
+            width:25%;
             height:100px;
             font-size:1.4rem;
             font-weight:500;
@@ -47,6 +73,13 @@ const ListContainer = stlyed.div`
             background-color:transparent;
             list-style: none;
             display:inline-block;
+            @media ${device.tablet} {
+                width:33.33%;
+                font-size:1.15rem;
+            }
+            @media ${device.mobileL} {
+                width:50%;
+            }
             &:hover {
                 &::before {
                     height:50px;
@@ -75,6 +108,9 @@ const ListContainer = stlyed.div`
             .num {
                 font-size:1rem;
                 margin-left:10px;
+                @media ${device.tablet} {
+                    font-size:0.9rem;
+                }
                 
                 b {
                     color:rgb(100,100,100);
@@ -128,7 +164,7 @@ const SearchTag = ({data}) => {
     return (
         <>  
             <InputBox >
-                <p className="explanation">Tag를 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다.</p>
+                <div className="explanation"><p>Tag를 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다.</p></div>
                 <Input name="# Tag를 입력하세요" className="input" onChange={onChangeTag} value={tagKey} ref={focus}></Input>
             </InputBox>
             <ListContainer >

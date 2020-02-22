@@ -4,16 +4,23 @@ import {Link} from 'react-router-dom';
 import {Icon,Popup} from 'semantic-ui-react';
 import TimeAgo from '../../lib/TimeAgo';
 import postTumnail from '../../lib/basicTumnail/postTumnail.png';
+import {device} from '../../lib/MediaStyled';
 
 const PosterWrap = styled.div`
     position:relative;
     display:inline-block;
     text-align:left;
     background-color:white;
-    width:60%;
+    width:720px;
     height:auto ;
     border-radius:4px;
     border:1px solid #e9e7e7;
+    @media ${device.laptopL} {
+        width:680px
+    }
+    @media ${device.tablet} {
+        width:95%;
+    }
     &:not(:first-child) {
         margin-top:12px;
     };
@@ -22,6 +29,9 @@ const PosterWrap = styled.div`
         width:100%;
         height:82px;
         padding:16px;
+        @media ${device.laptop} {
+            height:65px;
+        }
         
         .feed_profile{
             width:40px;

@@ -1,14 +1,24 @@
 import React,{useEffect, useState} from 'react';
 import styled from 'styled-components';
 import SearchTag from './SearchTag';
-import axios from 'axios';
+import {device} from '../../lib/MediaStyled';
 
 
 const ListContainer = styled.div`
-    width:100%;
+    width:1200px;
+    margin:0 auto;
     height:100%;
     background-color:#fafbfc;
     text-align:center;
+    @media ${device.laptopL} {
+        width:1024px;   
+    }
+    @media ${device.laptop} {
+        width:767px;
+    }
+    @media ${device.tablet} {
+        width:95%;
+    }
 `
 const HashTagList = () => {
 

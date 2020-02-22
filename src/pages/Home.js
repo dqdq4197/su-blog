@@ -4,19 +4,52 @@ import styled from 'styled-components';
 import Feed from '../components/home/Feed';
 import SearchComponent from '../components/home/SearchComponent';
 import {home_load_request, home_load_success, home_more_request, home_more_success} from '../actions/home';
+import {device} from '../lib/MediaStyled';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import Header from '../components/header/Header';
 import HomeFeed from '../components/loadingComponent/HomeFeed';
 import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';
 import HashTags from '../components/home/HashTags';
+import Category from '../components/home/Category';
 
 const Content = styled.div`
+
     width:100%;
     height:auto;
     background-color:#fafbfc;
+    .topBar {
+        display:none;
+        width:100%;
+        padding:0 5%;
+        margin:0 auto;
+        align-items:center;
+        justify-content: space-between;
+        @media ${device.tablet} {
+            display:flex;
+        }
+        @media ${device.mobileL} {
+            padding:0;
+        }
+        .mTags {
+            width:50px;
+        }
+        .mCategories {
+            background-color:rgba(13,72,50,.8);
+            border-radius:5px;
+            margin-top:5px;
+            padding:8px;
+            @media ${device.mobileL} {
+                padding:3px;
+            }
+        }
+    }
     .categorieswrapper {
         position:relative;
+        @media ${device.tablet} {
+            display:none;
+          }
         width:25%;
         text-align:left;
         margin-top:50px;
@@ -56,7 +89,7 @@ const Content = styled.div`
 
 
 
-const Home = () => {
+const Home = ({match}) => {
     const category = [
         "All",
         "React",
@@ -75,31 +108,50 @@ const Home = () => {
     const prevRef = useRef(0);
     const nextRef = useRef(4);
     const loading = useRef('stop');
-    const cateValue = useRef('All');
     const [hashTag, setHashTag] = useState([]);
     const [posterId, setPosterId] = useState([]);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
-
+    const history = useHistory();
+    
     const PosterContainer = styled.div`
-        position:relative;
         display:flex;
         margin:15px auto;
-        width:80%;
+        width:1250px;
+        
         height:auto;
-        text-align:center;
+        @media ${device.laptopL} {
+            width:1024px;
+        }
+        @media ${device.laptop} {
+            width:94%;
+        }
+        @media ${device.tablet} {
+            width:100%;
+            margin:0 auto;
+        }
         .feed {
             width:100%;
             height:100%;
             margin:15px 5% 0;
             padding-bottom:40px;
+            @media ${device.tablet} {
+                margin-top:5px;
+            }
+            @media ${device.mobileL} {
+                margin:5px 0;
+            }
+            
         }
-        #${cateValue.current.replace(/ /gi, "")} {
+        #${match.params.categories.replace(/ /gi, "")} {
             font-size:1.15rem;
             font-weight:700;
             color:rgb(13, 72, 50);
         }
         .rightUtil {
             position:sticky;
+            @media ${device.laptop} {
+                display:none;
+              }
             top:70px;
             width:20%;
             height:600px;
@@ -113,12 +165,12 @@ const Home = () => {
         window.addEventListener('scroll', handleScroll);
         
         return (() => { window.removeEventListener('scroll', handleScroll)})
-    },[cateValue.current]);
+    },[match.params.categories]);
     
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
-        await axios.post('/home', {value: cateValue.current})
+        await axios.post('/home', {value:match.params.categories})
         .then((res) => {
             res.data.map(tag =>tag.hashTags=== null ? null : tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
             let test;
@@ -155,7 +207,7 @@ const Home = () => {
             
             prevRef.current = prevRef.current+4;
             nextRef.current = nextRef.current+4;
-            await axios.post('/home', {value :cateValue.current})
+            await axios.post('/home', {value :match.params.categories})
                 .then((res) => {
                     let test;
                     dispatch(home_more_success());
@@ -176,17 +228,19 @@ const Home = () => {
         }
     }
     const matchCategory = (key) => {
-        if(key !== cateValue.current) {
-            setPosterId([]);
-            cateValue.current=key;
-            prevRef.current = 0;
-            nextRef.current = 4;
-        }
+        history.push(`/${key}`);
+        prevRef.current = 0;
+        nextRef.current = 4;
     }
     
     return (
         <Content>
             <Header></Header>
+            <div className="topBar">
+                <div className="mTags"></div>
+                <div className="mCategories"><Category /></div>
+            </div>
+            
             <PosterContainer>
                 {showScrollBtn ? <ScrollTopBtn /> : null }
                 <div className="categorieswrapper">

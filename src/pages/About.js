@@ -5,7 +5,9 @@ import Profile from '../components/about/Profile';
 const About = ({match}) => {
     
     useEffect(()=> {
-        window.scrollTo(0,0)
+        document.getElementById('body').style.overflow='hidden';
+        
+        return () => {document.getElementById('body').style.overflow='visible';}
     },[])
     const {result} = useSelector(state => state.authentication)
     return (

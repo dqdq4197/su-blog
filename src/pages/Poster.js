@@ -286,7 +286,7 @@ const Poster = ({match}) => {
       <>
         <Header />
         <SubTitle />
-        <ToggleDial width={54} left={'18%'} id={match.params.id} author={match.params.author} />
+        <ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo.nick} author={match.params.author} />
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
         <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
         <PosterContainer profile_img={'img/'+title.current.profile_img}>

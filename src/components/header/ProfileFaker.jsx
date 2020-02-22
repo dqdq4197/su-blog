@@ -5,9 +5,23 @@ import { logoutRequest } from '../../actions/authentication';
 import { useDispatch} from 'react-redux';
 import storage from '../../lib/storage';
 import {useHistory} from 'react-router-dom';
+import styled from 'styled-components';
+import {device} from '../../lib/MediaStyled';
 
-
-
+const Profile_box = styled.span`
+  font-size:1.1rem;
+  .ui.avatar.image {
+    width:35px;
+    height:35px;
+  }
+  @media ${device.laptop} {
+    font-size:1rem;
+    .ui.avatar.image {
+      width:28px;
+      height:28px;
+    }
+  }
+`
 const ProfileFaker = ({info}) => {
 
     const dispatch = useDispatch();
@@ -15,9 +29,9 @@ const ProfileFaker = ({info}) => {
 
     
     const trigger = (
-        <span>
+        <Profile_box>
           <Image avatar src={'img/' + info.profile_img} /> {info.nick}
-        </span>
+        </Profile_box>
     )
 
     const goAbout =() => {

@@ -25,9 +25,6 @@ const ReplyBox = styled.div`
     margin-top:15px;
     &.childReply {
         margin-left:60px;
-        .like {
-            margin-left:23.5px;
-        }
     }
     .profile {
         position:relative;
@@ -64,6 +61,7 @@ const ReplyBox = styled.div`
     }
     .delete {
         position:relative;
+        cursor:pointer;
         color:rgba(0,0,0,.5);
         font-size:.8rem;
         left:10px;
@@ -83,22 +81,7 @@ const ReplyBox = styled.div`
             color:rgba(0,0,0,.9);
         }
     }
-    .like {
-        cursor: pointer;
-        &:hover {
-            i {
-                color:red;
-            }
-            color:rgba(0,0,0,.8);
-        }
-        i {
-            margin-right:3px;
-        }
-        transition: .3s;
-        margin-left:5px;
-        color:rgba(0,0,0,0.54);
-        font-size: .9em;
-    }
+    
     .replyBox {
         text-align:right;
         width:100%;
@@ -118,7 +101,6 @@ const Comments = ({postId}) => {
     const [childValue, setChildValue] = useState('');
     const [reply, setReply] = useState(null);
     const [comments, setComments] = useState('');
-    const history = useHistory();
 
     const userInfo = storage.get('loginInfo');
 
@@ -182,14 +164,22 @@ const Comments = ({postId}) => {
          <ReplyBox className='childReply' key={res.id} path={res.profile_img}>
             <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
             <div className="profile_info">
-            <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
-              <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
+                <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
             </div>
+            <span className="delete" onClick={() => onDelteReply(res.id,res.author)} ><Icon name="trash alternate"/></span>
             <div className="comment">{res.content}</div>
-            <span className="like"><Icon name="like"/>3 likes</span>
-            </ReplyBox>
+        </ReplyBox>
     )
     
+    const onDelteReply = (id,author) => {
+        if(userInfo.nick !== author){ 
+            alert('삭제할 권한이 없습니다.');
+        } else {
+            axios.post('/comment/delete', {id}).then(() => getComment())
+        }
+    }
+
 
     return (
         <>
@@ -202,10 +192,9 @@ const Comments = ({postId}) => {
                             <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
                             <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
                         </div>
-                        <span className="delete"><Icon name="trash alternate"/></span>
+                        <span className="delete" onClick={() => onDelteReply(res.id,res.author)} ><Icon name="trash alternate"/></span>
                         <div className="comment">{res.content}</div>
                         <span className="reply" onClick={()=>onClickReply(i)}><Icon name="reply" /> 댓글 달기</span>
-                        <span className="like"><Icon name="like" />3 likes</span>
                     {reply && (i===reply -1 ) ?
                         <div className="replyBox">
                         <form>
