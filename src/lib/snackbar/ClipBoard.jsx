@@ -4,7 +4,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-export default function ClipBoard({ok}) {
+export default function ClipBoard({ok, message}) {
   const [open, setOpen] = React.useState(ok);
 
     
@@ -18,7 +18,7 @@ export default function ClipBoard({ok}) {
   };
   return (
     <div>
-      <Snackbar
+      <Snackbar style={{marginLeft:'20px'}}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -26,9 +26,9 @@ export default function ClipBoard({ok}) {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="주소를 클립보드에 복사하였습니다."
+        message={message}
         action={
-          <React.Fragment>
+          <React.Fragment >
             <Button color="secondary" size="small" onClick={handleClose}>
               UNDO
             </Button>

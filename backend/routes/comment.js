@@ -2,7 +2,8 @@ const express = require('express');
 const {Post,Comment,User} = require('../models');
 const db = require('../models');
 const router = express.Router();
-
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 router.get('/:id', async(req,res) => {
     if(req.params.id) {
         let object;
@@ -51,4 +52,17 @@ router.post('/childReply/:id', async(req,res,next) => {
     res.json('success');    
 })
 
-module.exports = router;
+router.post('/delete', (req,res) => {
+    const {id} = req.body;
+    Comment.destroy({
+        where: {
+            [Op.or] :[{
+                id,
+            },{
+                parent:id,
+            }]
+        }
+    }).then(()=> res.send('success'))
+})
+
+module.exports = router;    
