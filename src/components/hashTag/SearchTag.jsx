@@ -4,6 +4,8 @@ import stlyed from 'styled-components';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import {device} from '../../lib/MediaStyled';
+import {tagSearchAPI} from '../../lib/api/tagSearch';
+import {useHistory} from 'react-router-dom';
 
 const InputBox = stlyed.div`
     .explanation {
@@ -55,7 +57,7 @@ const ListContainer = stlyed.div`
         right:0;
     }
     ul {
-        width:auto;
+        width:100%;
         padding:0;
         margin:0;
         text-align:left;
@@ -124,6 +126,8 @@ const SearchTag = ({data}) => {
     const [tagKey, setTagKey] = useState('');
     const [getTag, setGetTag] = useState([]);
     const focus = useRef();
+    const history = useHistory();
+
     const onChangeTag = (e) => {
         setTagKey(e.target.value);
     }
@@ -134,8 +138,8 @@ const SearchTag = ({data}) => {
     },[])
     
     const getTags = () => {
-        axios.get('/tag/getTags').
-        then((res) => {
+        tagSearchAPI.get({history})
+        .then((res) => {
             res.data.map(tag =>tag.hashTags ===null ? null: tag.hashTags.split(',').map( res => setGetTag((prev) => [...prev,res])));
             
             // const priTags =searchTag.filter((value, index) => {return prikey.map((v)=>v.toUpperCase()).indexOf(value.toUpperCase()) === index}

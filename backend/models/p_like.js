@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     u_Id: DataTypes.STRING
   }, {});
   p_like.associate = function(models) {
-    // associations can be defined here
+    p_like.belongsTo(models.post, {
+      foreignKey: "postId"
+    })
   };
   return p_like;
 };

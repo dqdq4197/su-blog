@@ -1,5 +1,4 @@
 import React,{useEffect ,useState, useRef} from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import Feed from '../components/home/Feed';
 import SearchComponent from '../components/home/SearchComponent';
@@ -8,17 +7,29 @@ import {device} from '../lib/MediaStyled';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import Header from '../components/header/Header';
-import HomeFeed from '../components/loadingComponent/HomeFeed';
-import HomeFeedMore from '../components/loadingComponent/HomeFeedMore';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';
 import HashTags from '../components/home/HashTags';
 import Category from '../components/home/Category';
+import {homeAPI} from '../lib/api/home';
+import DeskTop from '../lib/skeleton/Home/DeskTop';
+import LaptopL from '../lib/skeleton/Home/LaptopL';
 
 const Content = styled.div`
 
     width:100%;
     height:auto;
     background-color:#fafbfc;
+    .laptopL {
+        display:none;
+        @media ${device.laptopL} {
+            display:block;
+        }
+    }
+    .desktop {
+        @media ${device.laptopL} {
+            display:none;
+        }
+    }
     .topBar {
         display:none;
         width:100%;
@@ -72,7 +83,7 @@ const Content = styled.div`
                 font-size:1.10rem;
                 &::before {
                     content:'a';
-                    font-size:0.8rem;
+                    font-size:0.6rem;
                     margin-right:5px;
                     color:transparent;
                     width:3px;
@@ -112,7 +123,7 @@ const Home = ({match}) => {
     const [posterId, setPosterId] = useState([]);
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const history = useHistory();
-    
+
     const PosterContainer = styled.div`
         display:flex;
         margin:15px auto;
@@ -142,7 +153,7 @@ const Home = ({match}) => {
             }
             
         }
-        #${match.params.categories.replace(/ /gi, "")} {
+        #${match.params.categories && match.params.categories.replace(/ /gi, "") || 'All'} {
             font-size:1.15rem;
             font-weight:700;
             color:rgb(13, 72, 50);
@@ -170,9 +181,11 @@ const Home = ({match}) => {
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
-        await axios.post('/home', {value:match.params.categories})
+        // await axios.get(`/home/${match.params.categories}`)
+        homeAPI.get({page:match.params.categories,history:history})
         .then((res) => {
             res.data.map(tag =>tag.hashTags=== null ? null : tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
+            console.log(res.data);
             let test;
             dispatch(home_load_success());
             test = res.data.slice(0,4);
@@ -189,6 +202,7 @@ const Home = ({match}) => {
             console.log(err.res);
         })
     };
+    
     const handleScroll = async() => {
         
         let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -207,7 +221,7 @@ const Home = ({match}) => {
             
             prevRef.current = prevRef.current+4;
             nextRef.current = nextRef.current+4;
-            await axios.post('/home', {value :match.params.categories})
+            homeAPI.get({page:match.params.categories,history:history})
                 .then((res) => {
                     let test;
                     dispatch(home_more_success());
@@ -228,7 +242,7 @@ const Home = ({match}) => {
         }
     }
     const matchCategory = (key) => {
-        history.push(`/${key}`);
+        history.push(`/home/${key}`);
         prevRef.current = 0;
         nextRef.current = 4;
     }
@@ -242,11 +256,11 @@ const Home = ({match}) => {
             </div>
             
             <PosterContainer>
-                {showScrollBtn ? <ScrollTopBtn /> : null }
+                {/* {showScrollBtn ? <ScrollTopBtn /> : null } */}
                 <div className="categorieswrapper">
                     <ul className="categories">
                         <SearchComponent />
-                        <h5>Categories</h5>
+                        {/* <h5>Categories</h5> */}
                         {category.map(value => (<li id={value.replace(/ /gi, "") } onClick={() => matchCategory(value)} key={value}>{value}</li>))}
                     </ul>
                 </div>
@@ -257,8 +271,15 @@ const Home = ({match}) => {
                               block={info}
                               contents={info.content.blocks.filter((data) => data.type ==='paragraph').map((content) => { return content.data.text.replace(/&nbsp;|<b>|<\/b>/g,'')})}
                         />)) 
-                    : <HomeFeed />}
-                    {home.moreIsLoading==='WAITING' ? <HomeFeedMore /> : null }
+                    : <>
+                        <div className="desktop"><DeskTop /></div>
+                        <div className="laptopL"><LaptopL /></div>
+                      </>}
+
+                    {home.moreIsLoading==='WAITING' ? <>
+                        <div className="desktop"><DeskTop /></div>
+                        <div className="laptopL"><LaptopL /></div>
+                      </> : null }
                 </div>
                 <div className="rightUtil">
                     <div className="hashTagBox">

@@ -9,6 +9,7 @@ import ToggleDial from '../components/poster/ToggleDial';
 import {Icon} from 'semantic-ui-react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
+import {device} from '../lib/MediaStyled';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -66,12 +67,20 @@ const PosterContainer= styled.div`
       margin-right:0;
     }
     .col-md-8.blog-main {
-      
+      img {
+        display:block;
+      }
       font-size:1.2rem;
-      
       margin:0 auto;
       padding:8%;
       word-break:keep-all;
+      @media ${device.laptop} {
+        padding:0;
+        padding-top:8%;
+      }
+      @media ${device.tablet} {
+        padding:8%;
+      }
       #content {
         a {
           color:#008000;
@@ -87,6 +96,11 @@ const PosterContainer= styled.div`
           width:50px;
           height:50px;
           border-radius:50px;
+          @media ${device.tablet} {
+            width:40px;
+            height:40px;
+            border-radius:40px;
+          }
           margin-right:7px;
           background:url(${props => props.profile_img});
           background-size:cover;
@@ -106,6 +120,9 @@ const PosterContainer= styled.div`
           display:inline-block;
           vertical-align:middle;
           font-size:1.2rem;
+          @media ${device.tablet} {
+            font-size:1rem;
+          }
         }
       }
       p {
@@ -135,6 +152,9 @@ const ScrollupBtn = styled.div`
   font-size:3em;
   color:#6c757d;
   transition:.3s;
+  @media ${device.tablet} {
+    display:none;
+  }
   &:hover {
     color:rgba(13,72,50,.8);
     border-color:rgba(13,72,50,.5);
@@ -156,6 +176,9 @@ const ScrolldownBtn = styled.div`
   font-size:3em;
   color:#6c757d;
   transition:.3s;
+  @media ${device.tablet} {
+    display:none;
+  }
   &:hover {
     color:rgba(13,72,50,.8);
     border-color:rgba(13,72,50,.5);
@@ -286,7 +309,7 @@ const Poster = ({match}) => {
       <>
         <Header />
         <SubTitle />
-        <ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo.nick} author={match.params.author} />
+        <ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo && userInfo.nick} author={match.params.author} />
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
         <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
         <PosterContainer profile_img={'img/'+title.current.profile_img}>

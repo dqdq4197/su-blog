@@ -4,9 +4,9 @@ const {Post,User,Comment} = require('../models');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
 
-router.post('/getPost', (req,res) => {
+router.get('/getPost/:tag', (req,res) => {
     
-    const {tag} = req.body;
+    const tag = req.params.tag;
     
     Post.findAll({
         include: [{

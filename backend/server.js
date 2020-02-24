@@ -7,7 +7,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 require('dotenv').config();
 const passportConfig = require('./passport');
-
+// const apicache =require('apicache');
 const aboutRouter = require('./routes/about');
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
@@ -16,7 +16,7 @@ const commentRouter = require('./routes/comment');
 const posttingRouter = require('./routes/postting');
 const tagRouter = require('./routes/tag');
 const cors = require('cors');
-
+// let cache = apicache.middleware
 const {sequelize} =require('./models');
 
 const app = express();
@@ -27,7 +27,11 @@ passportConfig(passport);
 app.set('port', process.env.PORT || 5000);
 app.use(morgan('dev'));
 
-
+// app.use(cache('5 minutes'))
+ 
+// app.get('/will-be-cached', (req, res) => {
+//   res.json({ success: true })
+// })
 //app.use(express.static(path.join(__dirname,'public')));
 app.use('*/img/', express.static(path.join(__dirname,'/profiles')));
 app.use('*/img/', express.static(path.join(__dirname,'/posterImage')));

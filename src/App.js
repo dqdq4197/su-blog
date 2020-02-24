@@ -37,14 +37,14 @@ function AppSwitch() {
         <Switch location={background || location}>
           <Route path="/" exact component={Login}/>
           <Route path="/home" exact component={Home}/>
-          <Route path="/:categories" exact component={Home} />
+          <Route path="/Search" component={Search} />
           <Route path="/about/:nick" component={About}/>
           <Route path="/poster/:id/:author" component={Poster} />
           <Route path="/Postting" component={Board} />
           <Route path="/Signup" exact component={Signup}/>
-          <Route path="/Search" component={Search} />
           <Route path="/hashtags" exact component={TagList} />
           <Route path="/hashtags/:tag" component={OneTag} />
+          <Route path="/home/:categories" exact component={Home} />
         </Switch>
         {background && <Route path="/poster/:id/:author" component={PosterModal} />}
         

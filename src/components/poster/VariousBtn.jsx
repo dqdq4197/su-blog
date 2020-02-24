@@ -29,7 +29,7 @@ const VariousBtn = ({posterId, author,data}) => {
     const dispatch = useDispatch();
 
     const deleteOnclick = async() => {
-        await axios.post(`/post/delete/${posterId}/${author}`)
+        await axios.delete(`/post/delete/${posterId}/${author}`)
         .then((res) => {
             alert(res.data);
             history.push('/home');

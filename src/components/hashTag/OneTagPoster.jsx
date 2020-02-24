@@ -2,10 +2,12 @@ import React,{useEffect, useState} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import GetFeed from './GetFeed';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useHistory} from 'react-router-dom';
 import {Popup, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import {device} from '../../lib/MediaStyled';
+import {tagFeedAPI} from '../../lib/api/tagSearch';
+
 
 const TagContainer = styled.div`
     width:1200px;
@@ -76,13 +78,14 @@ const OneTagPoster = ({tag}) => {
     
     const [post,setPost] = useState([]);
     const location = useLocation();
+    const history = useHistory();
 
     useEffect(() => {
         getPost();
       },[location.pathname])
   
     const getPost = () => {
-        axios.post('/tag/getPost', {tag})
+        tagFeedAPI.get({page:tag,history})
         .then((res) => {
           setPost(res.data);
         })

@@ -91,6 +91,9 @@ const PosterContainer= styled.div`
 
   .posterdiv {
     .col-md-10.blog-main {
+      img {
+        display:block;
+      }
       font-size:1.2rem;
       padding:0 50px;
       margin:50px auto 0;
@@ -313,7 +316,7 @@ const PosterModal = () => {
         <ModalContainer onClick={back} id='modalContainer'>
           <div className="modalBox">
           <SubTitle />
-          <ToggleDial left={'15%'} width={0} id={id} author={author} user={userInfo.nick} />
+          <ToggleDial left={'15%'} width={0} id={id} author={author} user={userInfo && userInfo.nick} />
           <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
             <PosterContainer id='total' profile_img={'img/'+location.state.block.user.profile_img}>

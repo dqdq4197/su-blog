@@ -24,7 +24,7 @@ router.get('/:id', async(req,res) => {
     }
 });
 
-router.post('/parentReply/:id', async(req,res,next) => {
+router.put('/parentReply/:id', async(req,res,next) => {
     const {parentValue, postId} = req.body;
 
     if(parentValue && postId && req.params.id) {
@@ -40,7 +40,7 @@ router.post('/parentReply/:id', async(req,res,next) => {
     res.send('success');
 })
 
-router.post('/childReply/:id', async(req,res,next) => {
+router.put('/childReply/:id', async(req,res,next) => {
     const {replyId,childValue, postId} = req.body;
     await Comment.create({
         seq:2,
@@ -52,8 +52,8 @@ router.post('/childReply/:id', async(req,res,next) => {
     res.json('success');    
 })
 
-router.post('/delete', (req,res) => {
-    const {id} = req.body;
+router.delete('/delete/:id', (req,res) => {
+    const id = req.params.id;
     Comment.destroy({
         where: {
             [Op.or] :[{

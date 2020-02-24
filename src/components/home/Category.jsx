@@ -34,7 +34,7 @@ export default function Category() {
   const handleClose = (option) => {
     setAnchorEl(null);
     if(typeof option === 'string')
-        history.push(`/${option}`);
+        history.push(`/home/${option}`);
   };
   
   return (

@@ -161,7 +161,7 @@ const outData = () => {
   return (
     <Canvas>
       <Head />
-      <h1>Create posters</h1>
+      <h1>Create Post</h1>
       <div id="markdownEditor"></div>
       <SavePosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
     </Canvas>

@@ -135,7 +135,7 @@ const Comments = ({postId}) => {
     const onReplyParent = (e) => {
         e.preventDefault();
         if(parentValue) {
-            axios.post(`/comment/parentReply/${userInfo.nick}`, {
+            axios.put(`/comment/parentReply/${userInfo.nick}`, {
                 parentValue,
                 postId,
         }).then(() => {
@@ -148,7 +148,7 @@ const Comments = ({postId}) => {
     
     const onReplyChild = (e,replyId) => {
         e.preventDefault();
-        axios.post(`/comment/childReply/${userInfo.nick}`, {
+        axios.put(`/comment/childReply/${userInfo.nick}`, {
             replyId,
             childValue,
             postId
@@ -176,7 +176,7 @@ const Comments = ({postId}) => {
         if(userInfo.nick !== author){ 
             alert('삭제할 권한이 없습니다.');
         } else {
-            axios.post('/comment/delete', {id}).then(() => getComment())
+            axios.delete(`/comment/delete/${id}`).then(() => getComment())
         }
     }
 

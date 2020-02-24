@@ -6,18 +6,38 @@ import styled from 'styled-components';
 import {Input} from '../lib/AuthInput';
 import {useHistory} from 'react-router-dom';
 import {Icon} from 'semantic-ui-react';
-
+import {device} from '../lib/MediaStyled';
 
 const SearchBox = styled.div`
-    width:100%;
+    width:1200px;
     height:100vh;
     text-align:center;
+    margin:0 auto;
+    @media ${device.laptopL} {
+        width:1024px;
+    }
+    @media ${device.laptop} {
+        width:100%;
+    }
     .searchInput {
+        width:900px;
         margin:0 0 5px 0;
+        @media ${device.laptopL} {
+            width:700px
+        }
+        @media ${device.laptopL} {
+            width:90%;
+        }
     }
     .numposter {
         font-size:1.2rem;
-        width:45%;
+        width:900px
+        @media ${device.laptopL} {
+            width:700px
+        }
+        @media ${device.laptopL} {
+            width:90%;
+        }
         margin:0 auto;
         text-align:right;
         color:#90A4AE;
@@ -27,9 +47,28 @@ const SearchBox = styled.div`
     }
     .explanation {
         display:inherit;
-        margin:50px 0 0 0;
+        width:1200px;
+        margin:50px auto 0;
         font-size:.9rem;
         color:#90A4AE;
+        @media ${device.laptopL} {
+            width:1024px
+        }
+        @media ${device.laptopL} {
+            width:100%;
+        }
+        p {
+            width:900px;
+            text-align:left;
+            margin:0 auto;
+            padding-left:10px;
+            @media ${device.laptopL} {
+                width:700px
+            }
+            @media ${device.laptopL} {
+                width:90%;
+            }
+        }
     }
     
 `
@@ -37,7 +76,13 @@ const FeedBox = styled.div`
     position:relative;
     margin:0 auto 1px;
     text-align:left;
-    width:50%;
+    width:900px;
+    @media ${device.laptopL} {
+        width:700px
+    }
+    @media ${device.laptopL} {
+        width:90%;
+    }
     padding:10px;
     color:black;
     .profile_box {
@@ -57,15 +102,25 @@ const FeedBox = styled.div`
         font-weight:600;
         margin-left:1%;
         cursor:pointer;
+        @media ${device.mobileL} {
+            font-size:1.6rem;
+        }
     }
     .poster_preview {
         display:flex;
+        @media ${device.tablet} {
+            display:block;
+        }
         .poster_tumnail {
             width:230px;
             margin-right:2%;
+            @media ${device.tablet} {
+                width:100%;
+            }
             img {
                 width:100%;
             }
+            
         }
         .poster_content {
             flex:3;
@@ -82,6 +137,9 @@ const FeedBox = styled.div`
                  -webkit-line-clamp:4;
                 font-weight:500;
                 color:rgb(83, 79, 79);
+                @media ${device.mobileL} {
+                    font-size:1rem;
+                }
             }
         }
         }
@@ -104,7 +162,7 @@ const Search = ({location}) => {
     },[])
     const getData = () => {
         console.log('asd');
-        axios.post('/home').then((res) => {
+        axios.get('/home/undefined').then((res) => {
             setPosts(res.data);
         })
     }
@@ -176,10 +234,12 @@ const Search = ({location}) => {
         <>
             <Header />
             <SearchBox >
-            <p className="explanation">KeyWord로 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다. 해당 KeyWord는 포스트의 제목 또는 내용에 매치됩니다.</p>
-                <Input className="searchInput" ref={inputFocus} name={'# 키워드를 입력해주세요'} padding={'1.5%'} width={'45%'} size={'1.2rem'} onChange={onchangeValue} value={keyWord} />
+            <div className="explanation"><p>KeyWord로 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다. 해당 KeyWord는 포스트의 제목 또는 내용에 매치됩니다.</p></div>
+                <Input className="searchInput" ref={inputFocus} name={'# 키워드를 입력해주세요'} onChange={onchangeValue} value={keyWord} />
                 <Detail />
+                <div>
                 {posts ? searchComponent(posts) : null}
+                </div>
             </SearchBox>
         </>
     )

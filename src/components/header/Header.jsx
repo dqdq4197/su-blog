@@ -1,14 +1,16 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import storage from '../../lib/storage';
 import ProfileFaker from './ProfileFaker';
 import {device} from '../../lib/MediaStyled';
+import {Icon} from 'semantic-ui-react';
 
 const Header = () => {
     
     const userinfo = storage.get('loginInfo');
     const [scrollFix, setScrollFix] = useState(true);
+    const history = useHistory();
 
     const HeaderContainer = styled.div`
         z-index:100;
@@ -51,11 +53,19 @@ const Header = () => {
             display:flex;
             justify-content:center;
             align-items:center;
-            cursor:pointer;
             .loginBtn {
                 a {
                     font-weight: 700;
                     color: rgba(0,0,0,.63);
+                }
+            }
+            .search {
+                display:none;
+                font-size:1.5rem;
+                color:rgba(0,0,0,.7);
+                cursor:pointer;
+                @media ${device.tablet} {
+                    display:inline-block;
                 }
             }
         }
@@ -77,13 +87,16 @@ const Header = () => {
     //    a = window.scrollY;
     // }
 
-    
+    const goSearch =() => {
+        history.push('/search?key=');
+    }
     return (
         <>
             <HeaderContainer>
                 <div className="nav_util">
                     <div className="logo"><Link to='/home'>Su_blog</Link></div>
                     <div className="util">
+                        <span className="search" onClick={goSearch}><Icon name="search" /></span>
                         {userinfo ? <ProfileFaker info={userinfo}/> : <span className="loginBtn"><Link to="/">로그인</Link></span>}
                     </div>
                 </div>

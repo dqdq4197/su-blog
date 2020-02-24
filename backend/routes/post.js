@@ -54,7 +54,7 @@ router.get('/:id/:author', (req,res) => {
     })
 })
 
-router.post('/delete/:id/:author', async(req,res,next) => {
+router.delete('/delete/:id/:author', async(req,res,next) => {
     try {
         await Post.destroy({where:{id:req.params.id}})
         .then(() => {

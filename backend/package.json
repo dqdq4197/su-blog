@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon cross-env LOGGER_LEVEL=info node server.js"
   },
   "author": "heesu",
   "license": "ISC",
   "dependencies": {
+    "apicache": "^1.5.3",
     "bcrypt": "^3.0.6",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",

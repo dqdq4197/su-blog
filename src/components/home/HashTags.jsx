@@ -10,11 +10,12 @@ const Tag = styled.div`
     overflow:hidden;
     text-align:left;
     hr{
-        margin-top:0;
+        margin-top:2px;
     }
     h3 {
-        font-size:1.5rem;
+        font-size:1.2rem;
         margin:0;
+        
     }
     .moreTag a{
         color:#333;
@@ -33,8 +34,8 @@ const Tag = styled.div`
                 text-decoration:none;
                 padding:3px 8px;
                 border-radius:5px;
-                background-color:#008000;
-                color:#fafbfc;
+                color:black;
+                
                 &:hover {
                     color:#008000;
                     background-color:#fafbfc;
