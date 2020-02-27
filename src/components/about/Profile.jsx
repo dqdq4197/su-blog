@@ -1,6 +1,5 @@
 import React,{useEffect, useState, useCallback} from 'react';
 import ProfileChange from './ProfileChange';
-import Header from '../header/Header';
 import {profile_img_change} from '../../actions/authentication';
 import {useDispatch, useSelector} from 'react-redux';
 import ProfileEdit from './ProfileEdit';
@@ -94,11 +93,11 @@ const ProfileContainer = styled.div`
                 color:black;
             }
             width:100%;
-            overflow-y:auto;
             padding:20px 0 0 3%;
             background-color:transparent;
             margin-left:20px;
             border-radius:5px;
+            height:auto;
             .basic {
                 color:${props => props.pathCase ? 'black' : null}
             }
@@ -167,7 +166,6 @@ const Profile = ({profile,nick}) => {
     }
     return (
         <>
-            <Header />
             {info ? <>
             <ProfileContainer img={'img/'+info.profile_img} pathCase={activeTap}>
                 <div className="profile_box">
@@ -219,7 +217,7 @@ const Profile = ({profile,nick}) => {
                 <div className="FeedBox">
                     <div className="util"> 
                         <Link to={`/about/@${info.nick}`}><span className="basic">글</span></Link>
-                        <Link to={`${location.pathname}/timeline`}><span className="time">타임라인</span></Link>
+                        <Link to={`@${info.nick}/timeline`}><span className="time">타임라인</span></Link>
                     </div>
                     <hr/>
                     <Switch>

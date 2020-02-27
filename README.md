@@ -1,3 +1,5 @@
+- As a web/mobile developer, you can start a blog to share your knowledge with others who want to make big in this industry.
+
 ### FrontEnd
 - React Hooks
 - markdownEditor(editorjs)

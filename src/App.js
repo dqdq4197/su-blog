@@ -1,19 +1,20 @@
 import React,{useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, useLocation, Redirect} from 'react-router-dom';
 import './App.css';
 import {Board, About, Login, Home, Poster, Signup, TagList, Search ,OneTag, PosterModal} from './pages';
+import Header from './components/header/Header';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import ScrollToTop from './components/useHooks/ScrollToTop';
 
 function App() {
   const dispatch = useDispatch();
-  
   const userInfo = async() => {
     const loginInfo = storage.get('loginInfo');
     await dispatch(login_info_save(loginInfo));
   }
+
 useEffect(() => {
   userInfo();
 },[]);
@@ -22,6 +23,7 @@ useEffect(() => {
     <Router>
       <ScrollToTop />
       <div className="App">
+        
         <AppSwitch />
       </div>
     </Router>
@@ -30,12 +32,15 @@ useEffect(() => {
 
 function AppSwitch() {
         const location = useLocation();
+        const isLoggin = storage.get('loginInfo');
         const background = location.state && location.state.background;
   return (
       <>
-      
+        {location.pathname==='/' ? null : <Header />}  
         <Switch location={background || location}>
-          <Route path="/" exact component={Login}/>
+          <Route path="/" exact component={Login}>
+            {isLoggin ? <Redirect to='/home' />: null}
+          </Route>
           <Route path="/home" exact component={Home}/>
           <Route path="/Search" component={Search} />
           <Route path="/about/:nick" component={About}/>

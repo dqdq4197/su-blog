@@ -11,7 +11,8 @@ import {
 import axios from 'axios';
 
 //  LOGIN
-export function loginRequest(email,password) {
+export function loginRequest(email,password,history) {
+
     return async(dispatch) => {
         dispatch(login());
         return await axios.post('/auth/login', {email,password})
@@ -22,6 +23,7 @@ export function loginRequest(email,password) {
             dispatch(loginSuccess(id,email,nick,profile_img_path));
             console.log(response.data);
             storage.set('loginInfo',response.data);
+            history.push('/home');
         }).catch((error) => {
             dispatch(loginFailure());
             alert(error.response.data.message);

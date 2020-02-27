@@ -38,9 +38,8 @@ const Tag = styled.div`
                 
                 &:hover {
                     color:#008000;
-                    background-color:#fafbfc;
-                    border:1px solid #008000;
-                    transition:background,color .3s;
+                    font-weight:700;
+                    transition:.3s;
                 }
             }
         }

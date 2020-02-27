@@ -14,7 +14,6 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import SavePosterModal from '../../lib/SavePosterModal';
 import {posterOutputData} from '../../actions/posts';
-import Head from '../../components/header/Header';
 import styled from 'styled-components';
 
 const Canvas = styled.div`
@@ -160,7 +159,6 @@ const outData = () => {
 
   return (
     <Canvas>
-      <Head />
       <h1>Create Post</h1>
       <div id="markdownEditor"></div>
       <SavePosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>

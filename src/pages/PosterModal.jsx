@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn';
 import ToggleDial from '../components/poster/ToggleDial';
 import {device} from '../lib/MediaStyled';
+import Backbutton from '../components/poster/Backbutton';
 import CommentBox from '../components/poster/Comments';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
@@ -31,27 +32,41 @@ const ModalContainer = styled.div`
     scrollbor-color:#e9e7e7;
     overflow: auto;
     top: 0;
-    background: rgba(0,0,0,.8);
+    background: rgba(0,0,0,.9);
     width: 100%;
     left:0;
     bottom:0;
     right:0;
+    .modalClose {
+      width:20px;
+      height:20px;
+      color:white;
+      float:right;
+
+    }
+    .dial {
+      @media ${device.laptop} {
+        display:none;
+      }
+    }
     .modalBox {
       -webkit-box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
       -moz-box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
       box-shadow: 0px 0px 73px -19px rgba(0,0,0,1);
       position:absolute;
       top:60px;
-      border-radius:10px;
       left:15%;
       min-Height:100%;
       right:15%;
       z-index:100000000;
       color:black;
       background-color:white;
+      
       @media ${device.laptop} {
         left:0;
         right:0;
+        top:0;
+        border-radius:0;
       }
     }
 `
@@ -72,6 +87,7 @@ const SubTitleBox = styled.div`
       }
       li {
         margin-bottom:3px;
+        
         a {
           &:hover {
             color:#008000;
@@ -83,18 +99,44 @@ const SubTitleBox = styled.div`
         font-size:.95rem;
       }
   }
-  
  
 `
 
 const PosterContainer= styled.div`
 
   .posterdiv {
+    .row {
+      @media ${device.laptop} {
+        margin-right:0;
+      }
+    }
     .col-md-10.blog-main {
       img {
         display:block;
       }
       font-size:1.2rem;
+      @media ${device.laptop} {
+        margin-top:75px;
+      } 
+     
+      @media ${device.mobileL} {
+        h5 {
+          font-size:1rem;
+        }
+        h4 {
+          font-size:1.15rem;
+        }
+        h3 {
+          font-size: 1.3rem;
+        }
+        h2 {
+          font-size:1.45rem;
+        }
+        h1 {
+          font-size:1.7rem;
+        }
+        font-size:1.1rem;
+      }
       padding:0 50px;
       margin:50px auto 0;
       word-break:keep-all;
@@ -104,6 +146,12 @@ const PosterContainer= styled.div`
           color:#008000;
         }
         #Title_postTitle {
+          @media ${device.tablet} {
+            font-size:2.4rem;
+          }
+          @media ${device.mobileL} {
+            font-size:2rem;
+          }
           font-size:3rem;
           font-weight:bold;
           margin-bottom:20px;
@@ -111,9 +159,9 @@ const PosterContainer= styled.div`
         #Title_profileImg {
           cursor:pointer;
           display:inline-block;
-          width:50px;
-          height:50px;
-          border-radius:50px;
+          width:40px;
+          height:40px;
+          border-radius:40px;
           margin-right:7px;
           background:url(${props => props.profile_img});
           background-size:cover;
@@ -125,6 +173,7 @@ const PosterContainer= styled.div`
           font-weight:500;
           vertical-align: middle;
           margin-bottom:30px;
+          font-size:1.1rem;
           &:hover {
             text-decoration:underline;
           }
@@ -132,7 +181,7 @@ const PosterContainer= styled.div`
         #Title_date {
           display:inline-block;
           vertical-align:middle;
-          font-size:1.2rem;
+          font-size:1rem;
         }
 
       }
@@ -294,7 +343,7 @@ const PosterModal = () => {
         document.getElementById('Title_author').onclick=function(){ history.push(`/about/@${location.state.block.author}`)}
       });
     };
-
+console.log(location.state.block.author);
     const SubTitle = () => {
       return header ? <SubTitleBox>{<ul>{header.map(
           (title) => {
@@ -313,13 +362,15 @@ const PosterModal = () => {
     };
     return (
         <>
-        <ModalContainer onClick={back} id='modalContainer'>
+        <ModalContainer onClick={back} id='modalContainer' imgPath={'img/'+location.state.block.user.profile_img}>
+          <span className="modalClose"><Icon name="close" /></span>
           <div className="modalBox">
           <SubTitle />
-          <ToggleDial left={'15%'} width={0} id={id} author={author} user={userInfo && userInfo.nick} />
+          <div className="dial"><ToggleDial  left={'15%'} width={0} id={id} author={author} user={userInfo && userInfo.nick} /></div>
           <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
           <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
             <PosterContainer id='total' profile_img={'img/'+location.state.block.user.profile_img}>
+            <Backbutton />
             <main role="main" className="posterdiv">
               <div className="row">
                 <div className="col-md-10 blog-main">
@@ -328,6 +379,7 @@ const PosterModal = () => {
                       ..isLoadding                  
                     </div>
                   </div>
+                  
                   {(userInfo ? (userInfo.nick === author || userInfo.nick === ' Operator') : false ) ? 
                     <VariousBtn data={modifyData} posterId={id} author={author}/> : ''}
                     <CommentBox postId={id}/>

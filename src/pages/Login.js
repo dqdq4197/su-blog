@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import '../components/loggin/Loggin.css';
-import {Link,Redirect} from 'react-router-dom';
+import {Link,Redirect, useHistory} from 'react-router-dom';
 import HomeButton from '../components/loggin/HomeButton';
 import {loginRequest, login_info_save} from '../actions/authentication';
 import { useDispatch, useSelector} from 'react-redux';
@@ -55,11 +55,13 @@ const Loggin = () => {
       active:"signin"
     }
   );
+  const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(state => state.authentication);
 
   const onSubmitHandler = async(email,password) => {
-    await dispatch(loginRequest(email,password));
+    
+    await dispatch(loginRequest(email,password,history));
     const loginInfo = storage.get('loginInfo');
     dispatch(login_info_save(loginInfo));
   }   
@@ -135,7 +137,6 @@ const Loggin = () => {
 
   return (
     <AuthContainer>
-       {user.status.isLoggedIn ? <Redirect to="/Home" /> : null}
       <Switch className="switch">
         <div className="signinWrapper">
           <h1>Welcome to my blog</h1>

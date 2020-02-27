@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect,useRef} from 'react';
 import styled from 'styled-components';
 import {Link, useHistory} from 'react-router-dom';
 import storage from '../../lib/storage';
@@ -13,8 +13,9 @@ const Header = () => {
     const history = useHistory();
 
     const HeaderContainer = styled.div`
+        transition:top .3s;
         z-index:100;
-        position:relative;
+        position:fixed;
         top:0;
         display:flex;
         width:100%;
@@ -22,6 +23,7 @@ const Header = () => {
         background-color:white;
         border-bottom:1px solid rgba(207, 201, 201,.5);
         box-shadow: 0px 12px 55px -7px rgba(0,0,0,0.12);
+        
         .nav_util {
             width:1250px;
             margin:0 auto;
@@ -70,29 +72,34 @@ const Header = () => {
             }
         }
     `
-    //let a;
 
-    // useEffect (() => {
-    //     document.addEventListener('scroll', handleScroll)
+    useEffect (() => {
+        let prevScrollpos = window.pageYOffset;
+        document.addEventListener('scroll',
+                function() { 
+                    if(window.scrollY >120){
+                    let currentScrollPos = window.pageYOffset;
+                    if (prevScrollpos > currentScrollPos) {
+                      document.getElementById("head").style.top = "0";
+                    } else {
+                      document.getElementById("head").style.top = "-60px";
+                    }
+                    console.log(prevScrollpos,currentScrollPos)
+                    prevScrollpos = currentScrollPos
+                }});
 
-    //     return () => {document.removeEventListener('scroll', handleScroll)
-    // }})
-
-    // const handleScroll = () => {
-    //     if(a > window.scrollY){
-    //        setScrollFix(true)
-    //    } else if(a < window.scrollY ){ 
-    //        setScrollFix(false);
-    //    }
-    //    a = window.scrollY;
-    // }
-
+        return () => {document.removeEventListener('scroll', handleScroll)
+    }})
+    const handleScroll = (prevScrollpos) => {
+        
+        
+        }
     const goSearch =() => {
         history.push('/search?key=');
     }
     return (
         <>
-            <HeaderContainer>
+            <HeaderContainer id='head'>
                 <div className="nav_util">
                     <div className="logo"><Link to='/home'>Su_blog</Link></div>
                     <div className="util">

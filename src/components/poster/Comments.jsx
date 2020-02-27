@@ -67,9 +67,9 @@ const ReplyBox = styled.div`
         left:10px;
     }
     .comment {
+        line-height:22px;
         margin:10px 0 5px 45px;
-        color:rgba(0, 0, 0, 0.54);
-        font-weight:600;
+        color:#484848;
         word-break:keep-all;
     }
     .reply {

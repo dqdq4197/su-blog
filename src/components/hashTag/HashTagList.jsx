@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SearchTag from './SearchTag';
 import {device} from '../../lib/MediaStyled';

@@ -1,7 +1,6 @@
 import React,{useState, useEffect, useRef, useCallback} from 'react';
 import queryString from 'query-string';
 import axios from 'axios';
-import Header from '../components/header/Header';
 import styled from 'styled-components';
 import {Input} from '../lib/AuthInput';
 import {useHistory} from 'react-router-dom';
@@ -232,7 +231,6 @@ const Search = ({location}) => {
     
     return (
         <>
-            <Header />
             <SearchBox >
             <div className="explanation"><p>KeyWord로 검색해보세요! 원하는 정보를 더 쉽고 빠르게 찾을 수 있습니다. 해당 KeyWord는 포스트의 제목 또는 내용에 매치됩니다.</p></div>
                 <Input className="searchInput" ref={inputFocus} name={'# 키워드를 입력해주세요'} onChange={onchangeValue} value={keyWord} />

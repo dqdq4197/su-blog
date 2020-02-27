@@ -6,13 +6,13 @@ import {home_load_request, home_load_success, home_more_request, home_more_succe
 import {device} from '../lib/MediaStyled';
 import {useDispatch, useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
-import Header from '../components/header/Header';
 import ScrollTopBtn from '../components/home/ScrollTopBtn';
 import HashTags from '../components/home/HashTags';
 import Category from '../components/home/Category';
 import {homeAPI} from '../lib/api/home';
 import DeskTop from '../lib/skeleton/Home/DeskTop';
 import LaptopL from '../lib/skeleton/Home/LaptopL';
+import axios from 'axios';
 
 const Content = styled.div`
 
@@ -172,7 +172,6 @@ const Home = ({match}) => {
 `
     useEffect(() => {
         callPosts();
-        window.scrollTo(0,0);
         window.addEventListener('scroll', handleScroll);
         
         return (() => { window.removeEventListener('scroll', handleScroll)})
@@ -181,11 +180,10 @@ const Home = ({match}) => {
     const callPosts = async() => {
         setPosterId([]);
         dispatch(home_load_request());
-        // await axios.get(`/home/${match.params.categories}`)
-        homeAPI.get({page:match.params.categories,history:history})
+        await axios.get(`/home/${match.params.categories}`)
+        // homeAPI.get({page:match.params.categories,history:history})
         .then((res) => {
             res.data.map(tag =>tag.hashTags=== null ? null : tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
-            console.log(res.data);
             let test;
             dispatch(home_load_success());
             test = res.data.slice(0,4);
@@ -249,7 +247,6 @@ const Home = ({match}) => {
     
     return (
         <Content>
-            <Header></Header>
             <div className="topBar">
                 <div className="mTags"></div>
                 <div className="mCategories"><Category /></div>

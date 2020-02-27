@@ -1,5 +1,4 @@
 import React, {useEffect,useState ,useRef} from 'react';
-import Header from '../components/header/Header';
 import styled from 'styled-components';
 import VariousBtn from '../components/poster/VariousBtn'
 import {posterLoadRequest, posterLoadSuccess} from '../actions/posts';
@@ -307,7 +306,6 @@ const Poster = ({match}) => {
     console.log(title.current.profile_img)
     return (
       <>
-        <Header />
         <SubTitle />
         <ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo && userInfo.nick} author={match.params.author} />
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>

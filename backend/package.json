@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon cross-env LOGGER_LEVEL=info node server.js"
+    "start": "nodemon node server.js"
   },
   "author": "heesu",
   "license": "ISC",

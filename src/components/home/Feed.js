@@ -52,17 +52,21 @@ const PosterWrap = styled.div`
     
     .feed_content {
         .test {
+            font-size:13px;
             padding-left:18px;
         }
         a { 
           text-decoration:none;
           color: black;
           h4 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             font-weight:600;
             line-height:30px;
             font-size:1.7rem;
             color:black;
-            margin:0 16px 8px;
+            margin:10px 16px 8px;
           };
           .feed_preview {
               padding:4px 16px;
@@ -87,21 +91,18 @@ const PosterWrap = styled.div`
         .tags {
             width:100%;
             padding-left:20px;
-            margin-top:5px;
+            margin:15px 0;
             .feed_tags {
                 position:relative;
                 width:auto;
                 background-color:rgb(13,72,50,.95);
-                border-radius:5px;
+                border-radius:10px;
                 padding: 3px 8px;
                 margin:0 0 30px 5px;
                 font-weight:500;
                 transition:.2s;
                 &:hover {
-                    border-color:#008000;
-                    a {
-                        color:#008000;
-                    }
+                    background-color:rgb(13,72,50,.8);
                 }
                 a {
                     color:white;
@@ -153,13 +154,13 @@ const Feed = ({block, contents}) => {
                     <img style={{width:'100%', marginTop:10}} src={block.tumnailImg ? 'img/'+block.tumnailImg : postTumnail} alt="thumnail" ></img>
                 </Link>  
                 {/* <div className="feed_reply"><div><Icon name="thumbs up outline"/>{block.p_likes.length}</div><div><Icon name='comment outline'/>{block.comments.length}개의 댓글</div></div> */}
-                <div className="test">{block.p_likes.length}개 좋아요 · {block.comments.length}개의 댓글</div>
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >
                     <h4>{block.tumnailTitle}</h4>
                 </Link>
                 <Link to={{ pathname:`/poster/${block.id}/${block.author}`, state:{background:location, block, replys:block.comments}}} onClick={hideScroll} >  
-                    <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(0,3)}</p> : 'contents'}</div>
+                    <div className="feed_preview">{contents.length > 2 ? <p>{contents.slice(2,5)}</p> : 'contents'}</div>
                 </Link>
+                <div className="test">{block.p_likes.length}개 좋아요 · {block.comments.length}개의 댓글</div>
                 <div className="tags">
                     {block.hashTags===null ? null :(block.hashTags.match(',') ?
                         block.hashTags.split(',').map( (res,i) => <span key={i} className="feed_tags" ><Link to={`/hashtags/${res}`} >{'#'+res}</Link></span>) 

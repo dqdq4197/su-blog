@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import postTumnail from '../../lib/basicTumnail/postTumnail.png';
+import Img from 'react-image';
+import ImageLoad from '../../lib/skeleton/Home/ImageLoad';
 
 const TumnailBox = styled.div`
     position:relative;
@@ -16,32 +18,53 @@ const TumnailBox = styled.div`
     &:hover {
         .posterInfo {
             opacity:1;
-            bottom:0;
     }
     }
     .posterInfo {
         position:absolute;
-        padding:0 0 0 10%;
+        display:flex;
+        padding: 0 8px 8px;
         bottom:0;
-        background: rgb(255,255,255);
         background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(2,0,36,0.5489905434830182) 100%);
         width:100%;
         height:60px;
-        bottom:-60px;
         color:white;
-        font-size:1.3rem
         opacity:0;
         transition:.3s;
         text-shadow: 1px 1px 3px rgba(0,0,0,.5);
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        flex-direction: row;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        box-sizing: border-box;
+        .left {
+            box-flex:1;
+            flex:1;
+            margin-right:14px;
+            font-weight:300;
+            p {
+                font-size:11px;
+            }
+        }
+        .right {
+            display:flex;
+            div {
+                display:flex;
+            }
+        }
+        b {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-weight:600;
+            font-size:14px;
+        }
         p {
             position:relative;
-            font-size:0.9rem;
+            font-size:14px;
             text-shadow: 1px 1px 3px rgba(0,0,0,.5);
-            text {
-                position:absolute;
-                color:white;
-                right:20px;
-            }
         }
 
     }
@@ -60,8 +83,9 @@ const TumnailBox = styled.div`
     } 
 `
 
-
 const ProfilePoster = ({data}) => {
+    
+console.log(data)
     return (
         <>
         
@@ -69,12 +93,26 @@ const ProfilePoster = ({data}) => {
                 return <TumnailBox key={block.id}>
                         <Link to={`/poster/${block.id}/${block.author}`}>
                         <div className='posterInfo'>
-                            <b>{block.tumnailTitle}</b>
-            <p>{block.author}<Icon name="comment outline" />{block.comments.length}개의 댓글</p>
-                            
+                            <div className="left">
+                                <b>{block.tumnailTitle}</b>
+                                <p>{block.author}</p>
+                            </div>
+                            <div className='right'>
+                                <div style={{marginRight:'7px'}}>
+                                    <Icon name="heart outline" />
+                                    3
+                                </div>
+                                <div>
+                                    <Icon name="comment outline" />
+                                    <p>{block.comments.length}</p>
+                                </div>
+                            </div>
                         </div>
                         <div className="tumnailImg">
-                            <img src={block.tumnailImg ? `img/${block.tumnailImg}` : postTumnail} />
+                            <Img 
+                                src={block.tumnailImg ? `img/${block.tumnailImg}` : postTumnail}
+                                loader={<ImageLoad />}
+                             />
                         </div>
                         </Link>
                         </TumnailBox>

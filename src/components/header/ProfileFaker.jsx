@@ -7,6 +7,7 @@ import storage from '../../lib/storage';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {device} from '../../lib/MediaStyled';
+import basic from '../../lib/basicTumnail/basic.png';
 
 const Profile_box = styled.span`
   font-size:1.1rem;
@@ -30,7 +31,7 @@ const ProfileFaker = ({info}) => {
     
     const trigger = (
         <Profile_box>
-          <Image avatar src={'img/' + info.profile_img} /> {info.nick}
+          <Image avatar src={info.profile_img ==='basic.png' ? basic : 'img/' + info.profile_img} /> {info.nick}
         </Profile_box>
     )
 
