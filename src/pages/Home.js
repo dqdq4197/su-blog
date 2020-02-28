@@ -13,6 +13,8 @@ import {homeAPI} from '../lib/api/home';
 import DeskTop from '../lib/skeleton/Home/DeskTop';
 import LaptopL from '../lib/skeleton/Home/LaptopL';
 import axios from 'axios';
+import {Icon} from 'semantic-ui-react';
+import SearchIcon from '@material-ui/icons/Search';
 
 const Content = styled.div`
 
@@ -31,26 +33,56 @@ const Content = styled.div`
         }
     }
     .topBar {
+        background-color:rgb(239,242,246);
+        height:50px;
+        border-radius:4px;
         display:none;
-        width:100%;
-        padding:0 5%;
-        margin:0 auto;
         align-items:center;
         justify-content: space-between;
-        @media ${device.tablet} {
+        width:100%;
+    
+        @media ${device.laptop} {
             display:flex;
         }
-        @media ${device.mobileL} {
-            padding:0;
-        }
         .mTags {
-            width:50px;
-        }
-        .mCategories {
-            background-color:rgba(13,72,50,.8);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:100%;
+            font-size:1rem;
+            color:rgba(0, 0, 0, 0.54);
+            cursor:pointer;
             border-radius:5px;
+            &:hover {
+                path {
+                    color:black;
+                }
+            }
             margin-top:5px;
             padding:8px;
+            margin-right:5px;
+            font-weight:600;
+            border-radius:
+            &:hover {
+                background-color:rgba(0, 0, 0, 0.04);
+                
+            }
+            @media ${device.mobileL} {
+                padding:6px;
+            }
+            
+        }
+        .mCategories {
+            display:none;
+            height:100%;
+            border-radius:5px;
+            align-items:center;
+            justify-content:center;
+            padding:8px;
+            margin-right:5px;
+            @media ${device.tablet} {
+                display:flex;
+            }
             @media ${device.mobileL} {
                 padding:3px;
             }
@@ -135,17 +167,18 @@ const Home = ({match}) => {
         }
         @media ${device.laptop} {
             width:94%;
+            margin:0 auto;
         }
         @media ${device.tablet} {
             width:100%;
-            margin:0 auto;
+           
         }
         .feed {
             width:100%;
             height:100%;
             margin:15px 5% 0;
             padding-bottom:40px;
-            @media ${device.tablet} {
+            @media ${device.laptop} {
                 margin-top:5px;
             }
             @media ${device.mobileL} {
@@ -245,23 +278,30 @@ const Home = ({match}) => {
         nextRef.current = 4;
     }
     
+    const goSearch =() => {
+        history.push('/hashtags');
+    }
     return (
         <Content>
-            <div className="topBar">
-                <div className="mTags"></div>
-                <div className="mCategories"><Category /></div>
-            </div>
+            {/* <div className="topBar">
+                <div className="topBarBox">
+                    
+                </div>
+            </div> */}
             
             <PosterContainer>
                 {/* {showScrollBtn ? <ScrollTopBtn /> : null } */}
                 <div className="categorieswrapper">
                     <ul className="categories">
                         <SearchComponent />
-                        {/* <h5>Categories</h5> */}
                         {category.map(value => (<li id={value.replace(/ /gi, "") } onClick={() => matchCategory(value)} key={value}>{value}</li>))}
                     </ul>
                 </div>
                 <div className="feed">
+                    <div className="topBar">
+                        <div className="mTags" onClick={goSearch}><SearchIcon />태그검색</div>
+                        <div className="mCategories"><Category /></div>
+                    </div>
                     {home.isLoading==='SUCCESS' ?
                      (posterId.length === 0 ? "게시물이 존재하지 않습니다." : posterId.map((info, index) =>
                         <Feed key ={index} 

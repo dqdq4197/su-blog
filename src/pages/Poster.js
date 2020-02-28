@@ -28,14 +28,20 @@ hljs.registerLanguage('python', python);
 hljs.registerLanguage('typescript', typescript);
 
 
-
+const Dial =styled.div`
+  @media ${device.tablet} {
+    display:none;
+  }
+`
 const SubTitleBox = styled.div`
   position:fixed;
   z-index:100;
   top:200px;
   right:0;
   width:20%;
-  
+  @media ${device.tablet} {
+    display:none;
+  }
     ul {
       margin:0;
       .commentView {
@@ -55,8 +61,6 @@ const SubTitleBox = styled.div`
         font-size:.95rem;
       }
   }
-  
- 
 `
 
 const PosterContainer= styled.div`
@@ -66,20 +70,69 @@ const PosterContainer= styled.div`
       margin-right:0;
     }
     .col-md-8.blog-main {
+      .blog-post {
+        max-width: 880px;
+        margin: 0 auto;
+      }
       img {
         display:block;
       }
-      font-size:1.2rem;
+      font-size:1.3rem;
       margin:0 auto;
-      padding:8%;
+      padding:80px 0 ;
       word-break:keep-all;
       @media ${device.laptop} {
         padding:0;
         padding-top:8%;
       }
       @media ${device.tablet} {
+        font-size:1.15rem;
         padding:8%;
+        max-width:100%;
+        h5 {
+          font-size:1.15rem;
+        }
+        h4 {
+          font-size:1.3rem;
+        }
+        h3 {
+          font-size: 1.45rem;
+        }
+        h2 {
+          font-size:1.6rem;
+        }
+        h1 {
+          font-size:1.9rem;
+        }
       }
+     
+      @media ${device.mobileL} {
+        pre {
+          code {
+            font-size:13px;
+          }
+        }
+        h5 {
+          font-size:1rem;
+        }
+        h4 {
+          font-size:1.15rem;
+        }
+        h3 {
+          font-size: 1.3rem;
+        }
+        h2 {
+          font-size:1.45rem;
+        }
+        h1 {
+          font-size:1.7rem;
+        }
+        font-size:1.1rem;
+      }
+      @media (min-width: 768px){
+        .col-md-8 {
+          width:100%;
+      }}
       #content {
         a {
           color:#008000;
@@ -88,6 +141,13 @@ const PosterContainer= styled.div`
           font-size:3rem;
           font-weight:bold;
           margin-bottom:20px;
+          word-break:break-all;
+          @media ${device.tablet} {
+            font-size:2.4rem;
+          }
+          @media ${device.mobileL} {
+            font-size:2rem;
+          }
         }
         #Title_profileImg {
           cursor:pointer;
@@ -307,7 +367,7 @@ const Poster = ({match}) => {
     return (
       <>
         <SubTitle />
-        <ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo && userInfo.nick} author={match.params.author} />
+        <Dial><ToggleDial width={54} left={'18%'} id={match.params.id} user={userInfo && userInfo.nick} author={match.params.author} /></Dial>
         <ScrollupBtn height={window.innerHeight} onClick={scrollup}><Icon name="angle up"/></ScrollupBtn>
         <ScrolldownBtn height={window.innerHeight} onClick={scrolldown}><Icon name="angle down"/></ScrolldownBtn>
         <PosterContainer profile_img={'img/'+title.current.profile_img}>

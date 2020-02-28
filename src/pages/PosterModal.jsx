@@ -8,6 +8,7 @@ import ToggleDial from '../components/poster/ToggleDial';
 import {device} from '../lib/MediaStyled';
 import Backbutton from '../components/poster/Backbutton';
 import CommentBox from '../components/poster/Comments';
+import ClearIcon from '@material-ui/icons/Clear';
 import storage from '../lib/storage';
 import hljs from 'highlight.js/lib/highlight';
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -37,11 +38,25 @@ const ModalContainer = styled.div`
     left:0;
     bottom:0;
     right:0;
+    @media ${device.laptop} {
+      background-color:white;
+    }
     .modalClose {
-      width:20px;
-      height:20px;
+      position:fixed;
+      display:flex;
+      right:10px;
+      align-items:center;
+      justify-content:center;
+      margin-top:5px;
+      cursor:pointer;
+      width:50px;
+      height:50px;
       color:white;
-      float:right;
+      border-radius: 40%;
+      &:hover {
+        background: rgba(255,255,255,.3);
+      }
+      transition:.3s;
 
     }
     .dial {
@@ -66,7 +81,6 @@ const ModalContainer = styled.div`
         left:0;
         right:0;
         top:0;
-        border-radius:0;
       }
     }
 `
@@ -111,6 +125,10 @@ const PosterContainer= styled.div`
       }
     }
     .col-md-10.blog-main {
+      .blog-post {
+        max-width: 880px;
+        margin: 0 auto;
+      }
       img {
         display:block;
       }
@@ -120,6 +138,11 @@ const PosterContainer= styled.div`
       } 
      
       @media ${device.mobileL} {
+        pre {
+          code {
+            font-size:13px;
+          }
+        }
         h5 {
           font-size:1rem;
         }
@@ -137,7 +160,8 @@ const PosterContainer= styled.div`
         }
         font-size:1.1rem;
       }
-      padding:0 50px;
+      padding-left: 40px;
+      padding-right:25px;
       margin:50px auto 0;
       word-break:keep-all;
       #content {
@@ -360,10 +384,14 @@ console.log(location.state.block.author);
         history.goBack();
       }    
     };
+
+    const onCloseModal = () => {
+      history.goBack();
+    }
     return (
         <>
         <ModalContainer onClick={back} id='modalContainer' imgPath={'img/'+location.state.block.user.profile_img}>
-          <span className="modalClose"><Icon name="close" /></span>
+          <span className="modalClose"><ClearIcon onClick={onCloseModal} fontSize="large"/></span>
           <div className="modalBox">
           <SubTitle />
           <div className="dial"><ToggleDial  left={'15%'} width={0} id={id} author={author} user={userInfo && userInfo.nick} /></div>

@@ -44,9 +44,9 @@ export default function Category() {
         aria-controls="long-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        style={{padding:'3px',color:'white',fontSize:'.9rem', outline:'none'}}
+        style={{padding:'3px',fontSize:'1rem', fontWeight:600,outline:'none'}}
       >
-        Categories<MoreVertIcon />
+        카테고리<MoreVertIcon />
       </IconButton>
       <Menu
         id="long-menu"

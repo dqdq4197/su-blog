@@ -1,4 +1,5 @@
-- As a web/mobile developer, you can start a blog to share your knowledge with others who want to make big in this industry.
+# Su_blog
+> As a web/mobile developer, you can start a blog to share your knowledge with others who want to make big in this industry.
 
 ### FrontEnd
 - React Hooks
@@ -23,13 +24,12 @@
 
 
 # Todo... 
-- About페이지,프로필 설정페이지 , Poster페이지 로딩처리, 로그인페이지 
+- About페이지,프로필 설정페이지 , Post페이지 로딩처리, 로그인페이지 
 - 알림 창 띄우기 (수정하기 PosterModal 데이터 자동기입)
 
 
 
 - PostModal 해시태그 map반복문 key값 value로
-- posterTumnail img src로 할지 background:url로 할지..
 
 
 
@@ -51,7 +51,7 @@
 - 삭제작업으로 (완료) 마무리하기
 
 ### 헤더 고정
-- 스크롤 올릴시 헤더 고정하기.
+- 스크롤 올릴시 헤더 고정하기. (완료)
 
 ### 수정하기 PosterModal 데이터 자동기입
 

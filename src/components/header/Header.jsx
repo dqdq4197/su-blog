@@ -84,16 +84,11 @@ const Header = () => {
                     } else {
                       document.getElementById("head").style.top = "-60px";
                     }
-                    console.log(prevScrollpos,currentScrollPos)
                     prevScrollpos = currentScrollPos
                 }});
 
-        return () => {document.removeEventListener('scroll', handleScroll)
-    }})
-    const handleScroll = (prevScrollpos) => {
-        
-        
-        }
+        // return () => {document.removeEventListener('scroll', handleScroll)}
+    })
     const goSearch =() => {
         history.push('/search?key=');
     }

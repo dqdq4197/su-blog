@@ -46,6 +46,20 @@ const PosterWrap = styled.div`
             }
         }
         .date {
+            .rrui__tooltip--before-hide {
+                opacity : 0;
+            }
+            .rrui__tooltip {
+                /* Display the tooltip above the content. */
+                margin-top : -0.5em;
+                background-color : black;
+                color : white;
+                opacity:0;
+              }
+               
+              .rrui__tooltip--after-show {
+                opacity : 0;
+              }
             color:rgba(0,0,0,.6);
         }
     }
@@ -95,17 +109,18 @@ const PosterWrap = styled.div`
             .feed_tags {
                 position:relative;
                 width:auto;
-                background-color:rgb(13,72,50,.95);
+                background-color:rgb(239, 242, 246) ;
                 border-radius:10px;
                 padding: 3px 8px;
                 margin:0 0 30px 5px;
                 font-weight:500;
                 transition:.2s;
                 &:hover {
-                    background-color:rgb(13,72,50,.8);
+                    background-color:rgba(0,0,0,.1);
                 }
                 a {
-                    color:white;
+                    color:#008000;
+                    font-weight:600;
                 }
                 
                 &:nth-child(2) {
@@ -146,7 +161,7 @@ const Feed = ({block, contents}) => {
                 <div className="feed_Header_text"> 
                     <Link to={`/about/@${block.author}`}><span className="author">{block.author}</span></Link>
                     <Popup content={`
-                        ${block.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일`} trigger={<span className="date"><TimeAgo date={block.createdAt} locale="en" /></span>}/>
+                        ${block.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일`} trigger={<span className="date"><TimeAgo date={block.createdAt} /></span>}/>
                 </div>
             </div>
             <div className="feed_content" >

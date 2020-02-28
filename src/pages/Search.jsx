@@ -37,6 +37,9 @@ const SearchBox = styled.div`
         @media ${device.laptopL} {
             width:90%;
         }
+        @media ${device.mobileL} {
+            font-size:1.05rem;
+        }
         margin:0 auto;
         text-align:right;
         color:#90A4AE;
@@ -55,6 +58,9 @@ const SearchBox = styled.div`
         }
         @media ${device.laptopL} {
             width:100%;
+        }
+        @media ${device.tablet} {
+            margin-top:25px;
         }
         p {
             width:900px;
@@ -101,6 +107,7 @@ const FeedBox = styled.div`
         font-weight:600;
         margin-left:1%;
         cursor:pointer;
+        word-break:break-all;
         @media ${device.mobileL} {
             font-size:1.6rem;
         }

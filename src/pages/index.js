@@ -1,13 +1,11 @@
 import 'semantic-ui-css/semantic.min.css';
 
-import JavascriptTimeAgo from 'javascript-time-ago'
+import JavascriptTimeAgo from 'javascript-time-ago';
 import withSplitting from '../lib/withSplitting';
-import en from 'javascript-time-ago/locale/en'
-import ru from 'javascript-time-ago/locale/ru'
+import ko from 'javascript-time-ago/locale/ko';
  
 // Initialize the desired locales.
-JavascriptTimeAgo.locale(en)
-JavascriptTimeAgo.locale(ru)
+JavascriptTimeAgo.locale(ko)
 
 export const About = withSplitting(() => import('./About'));
 export { default as Login } from './Login';

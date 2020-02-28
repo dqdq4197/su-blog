@@ -23,8 +23,7 @@ useEffect(() => {
     <Router>
       <ScrollToTop />
       <div className="App">
-        
-        <AppSwitch />
+      <AppSwitch />
       </div>
     </Router>
   );
