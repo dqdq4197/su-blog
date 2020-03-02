@@ -9,7 +9,7 @@ import ImageLoad from '../../lib/skeleton/Home/ImageLoad';
 const TumnailBox = styled.div`
     position:relative;
     display:inline-block;
-    width:330px;
+    width:33%;
     height:240px;
     margin:0 20px 20px 0;
     border-radius:5px;

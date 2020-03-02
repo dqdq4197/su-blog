@@ -30,10 +30,19 @@ module.exports = (sequelize,DataTypes) => (
             allowNull:true,
             defaultValue:'basic.png',
         },
+        skills: {
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
+        intro: {
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
         snsId: {
             type: DataTypes.STRING(30),
             allowNull: true,
         },
+        
     },{
         timestamps: true,
         paranoid:true,

@@ -2,14 +2,13 @@ import React,{useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Button} from '../../lib/AuthInput';
 import axios from 'axios';
-import {Icon} from 'semantic-ui-react';
+import {Icon,Popup} from 'semantic-ui-react';
 import storage from '../../lib/storage';
 import TimeAgo from '../../lib/TimeAgo';
-import {useHistory} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 
 const CommentContainer = styled.div`
-    width:100%;
+    max-width:880px;
     height:500px;
     margin-top:30px;
     form {
@@ -23,8 +22,14 @@ const CommentContainer = styled.div`
 const ReplyBox = styled.div`
     position:relative;
     margin-top:15px;
+    background-color:rgba(13,72,50,.04);
+    border-radius:10px;
+    padding:10px;
     &.childReply {
         margin-left:60px;
+        background-color:rgba(13,72,50,.04);
+        border-radius:10px;
+        padding:10px;
     }
     .profile {
         position:relative;
@@ -50,9 +55,9 @@ const ReplyBox = styled.div`
             div {
                 display:inline-block;
             }
-            font-weight:400;
+            font-weight:600;
             font-style: normal;
-            font-size: 0.9em;
+            font-size: 1rem;
             color:rgba(0,0,0,.4);
             margin-left:6px;
         }
@@ -67,25 +72,29 @@ const ReplyBox = styled.div`
         left:10px;
     }
     .comment {
-        line-height:22px;
+        line-height:1.7;
         margin:10px 0 5px 45px;
         color:#484848;
         word-break:keep-all;
     }
-    .reply {
+    .replys {
         margin:5px 0 0 22px;
+        font-weight:bold;
+        color:#008000;
         font-size:.9em;
-        color:rgba(0,0,0,0.67);
         cursor:pointer;
+        border-radius:5px;
+        i {
+            margin:0;
+        }
         &:hover {
-            color:rgba(0,0,0,.9);
+            color:rgba(0, 128, 0,.8)
         }
     }
     
     .replyBox {
         text-align:right;
         width:100%;
-        height:120px;
         textarea {
             width:94%;
             height:100px;
@@ -165,7 +174,10 @@ const Comments = ({postId}) => {
             <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
             <div className="profile_info">
                 <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
-                <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                <Popup content={`
+                    ${res.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일`} 
+                    trigger={<span className="date"><TimeAgo date={res.createdAt} /></span>}
+                />
             </div>
             <span className="delete" onClick={() => onDelteReply(res.id,res.author)} ><Icon name="trash alternate"/></span>
             <div className="comment">{res.content}</div>
@@ -182,19 +194,22 @@ const Comments = ({postId}) => {
 
 
     return (
-        <>
+        <div style={{maxWidth:'880px', margin:'0 auto'}}>
         <h3 id='commentView' style={{marginTop:30}}>{comments.length} 답변</h3>
-        <hr style={{backgroundColor:'rgba(0,0,0,.6)'}} />
+        <hr style={{backgroundColor:'rgba(0,0,0,.6)', maxWidth:'880px'}} />
         {comments[0] && comments.map(
             (res, i) => res.seq === 1 ? <ReplyBox id={res.id} key={res.id} path={res.profile_img}>
                         <Link to={`/about/@${res.author}`} ><div className="profile"></div></Link>
                         <div className="profile_info">
                             <Link to={`/about/@${res.author}`} ><span className="author">{res.author}</span></Link>
-                            <span className="date"><TimeAgo date={res.createdAt} locale="en" /></span>
+                            <Popup content={`
+                                ${res.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ')}일`} 
+                                trigger={<span className="date"><TimeAgo date={res.createdAt} /></span>}
+                            />
                         </div>
                         <span className="delete" onClick={() => onDelteReply(res.id,res.author)} ><Icon name="trash alternate"/></span>
-                        <div className="comment">{res.content}</div>
-                        <span className="reply" onClick={()=>onClickReply(i)}><Icon name="reply" /> 댓글 달기</span>
+                        <p className="comment">{res.content}</p>
+                        <span className="replys" onClick={()=>onClickReply(i)}><Icon name="reply" /> 댓글 달기</span>
                     {reply && (i===reply -1 ) ?
                         <div className="replyBox">
                         <form>
@@ -206,13 +221,13 @@ const Comments = ({postId}) => {
                         test(res)
         )}
         <CommentContainer>
-            <hr />
+            <hr/>
             <form>
                 {userInfo ? <textarea onChange={onChangeParent} value={parentValue}></textarea> : <textarea readOnly placeholder='로그인이 필요합니다.'></textarea> }
                 <Button onClick={onReplyParent}>댓글 작성</Button>
             </form>
         </CommentContainer>
-        </>
+        </div>
     )
 }
 

@@ -5,12 +5,16 @@ import storage from '../../lib/storage';
 import ProfileFaker from './ProfileFaker';
 import {device} from '../../lib/MediaStyled';
 import {Icon} from 'semantic-ui-react';
+import {useSelector} from 'react-redux';
+
 
 const Header = () => {
-    
-    const userinfo = storage.get('loginInfo');
+        
+    const [userinfo, setUserinfo] = useState('');
     const [scrollFix, setScrollFix] = useState(true);
     const history = useHistory();
+    const {status} = useSelector(state => state.authentication)
+
 
     const HeaderContainer = styled.div`
         transition:top .3s;
@@ -72,8 +76,9 @@ const Header = () => {
             }
         }
     `
-
+        console.log(status.currentUser.profile_img_path)
     useEffect (() => {
+        setUserinfo(storage.get('loginInfo'));
         let prevScrollpos = window.pageYOffset;
         document.addEventListener('scroll',
                 function() { 
@@ -88,7 +93,7 @@ const Header = () => {
                 }});
 
         // return () => {document.removeEventListener('scroll', handleScroll)}
-    })
+    },[status.currentUser.profile_img_path])
     const goSearch =() => {
         history.push('/search?key=');
     }

@@ -15,6 +15,7 @@ const homeRouter = require('./routes/home');
 const commentRouter = require('./routes/comment');
 const posttingRouter = require('./routes/postting');
 const tagRouter = require('./routes/tag');
+const settingRouter = require('./routes/setting');
 const cors = require('cors');
 // let cache = apicache.middleware
 const {sequelize} =require('./models');
@@ -61,6 +62,7 @@ app.use('/postting', posttingRouter);
 app.use('/comment', commentRouter);
 app.use('/about', aboutRouter);
 app.use('/tag', tagRouter);
+app.use('/setting', settingRouter);
 
 
 //app.use((req, res, next) => {

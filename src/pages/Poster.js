@@ -64,18 +64,34 @@ const SubTitleBox = styled.div`
 `
 
 const PosterContainer= styled.div`
+  padding-top:60px;
   .posterdiv {
     .row {
       margin-left:0;
       margin-right:0;
     }
     .col-md-8.blog-main {
+      .inline-code {
+        color:#008000;
+        background-color:rgba(13,72,50,.08);
+      }
       .blog-post {
         max-width: 880px;
         margin: 0 auto;
       }
       img {
         display:block;
+      }
+      embed {
+        display:block;
+        margin:0 auto;
+        @media ${device.laptop} {
+          width:100%;
+          height:39vw;
+        }
+        @media ${device.tablet} {
+          height:49vw;
+        }
       }
       font-size:1.3rem;
       margin:0 auto;
@@ -380,7 +396,7 @@ const Poster = ({match}) => {
                   </div>
                 </div>
                 {isLoadding === 'SUCCESS' && (userInfo ? (userInfo.nick === match.params.author || userInfo.nick === ' Operator') : false ) ? 
-                  <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
+                <VariousBtn data={modifyData} posterId={match.params.id} author={match.params.author}/> : ''}
                 <CommentBox postId={match.params.id}/>
               </div>
             </div>

@@ -1,5 +1,5 @@
 const express = require('express');
-const {Post,User,Comment} = require('../models');
+const {Post,User,Comment,P_like} = require('../models');
 
 const router = express.Router();
 
@@ -12,6 +12,8 @@ router.get('/:nick', async(req,res,next) => {
             model:User
         },{
             model:Comment,
+        },{
+            model:P_like
         }],
         where:{author:nick}
     }).then((data) => {
@@ -20,4 +22,8 @@ router.get('/:nick', async(req,res,next) => {
     );
 });
 
+router.get('/setting/:nick', (req,res) => {
+    const nick = req.params.nick;
+    
+})
 module.exports = router; 

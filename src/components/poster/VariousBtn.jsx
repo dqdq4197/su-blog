@@ -7,7 +7,8 @@ import {useDispatch} from 'react-redux';
 import {posterModifyData} from '../../actions/posterModify';
 
 const BtnContainer = styled.div`
-    margin-top: 60px;
+    max-width:880px;
+    margin: 60px auto 0;
     .deletebtn {
       right:0px;
       border:1px solid rgb(0,0,0);

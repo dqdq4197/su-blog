@@ -14,85 +14,81 @@ import {Icon} from 'semantic-ui-react';
 import {Link , useLocation, Switch, Route} from 'react-router-dom';
 import TimeLine from './TimeLine';
 import PosterImage from './PosterImage';
-
-
+import RealFeed from './RealFeed';
 
 
 const ProfileContainer = styled.div`
-    width:100%;
+    width:1300px;
     background-color:#f9f9f9;
     height:94%;
     margin:0 auto;
-    padding:0 0 0 60px;
     .profile_box {
         display:flex;
         height:100%;
-        padding:20px 30px;
-        .profile {
-            display:block;
-            text-align:center;
-            .leftTop {
-                background-color:white;
-                width:360px;
-                height:100%;
-                padding: 25px 30px 16px;
-                box-shadow: 0 0 3px rgba(0,0,0,.2);
-                border-radius:5px;
-                .profile_pic {
-                    width:110px;
-                    height:110px;
-                    border-radius:110px;
-                    margin:0 auto;
-                    background:url(${props => props.img});
-                    background-size:cover;
-                    background-position:center center;
-                }
-                p {
-                    text-align:center;
-                    color:black;
-                    margin-top:20px;
-                    font-weight:400;
-                    b {
-                        font-size:1.5rem;
+        .profile_card {
+            position:sticky;
+            top:50px;
+            margin-top:20px;
+            width:360px;
+            height:800px;
+            .profile {
+                width:300px;
+                display:block;
+                text-align:center;
+                .leftTop {
+                    background-color:white;
+                    padding: 25px 30px 16px;
+                    box-shadow: 0 0 3px rgba(0,0,0,.2);
+                    border-radius:5px;
+                    .profile_pic {
+                        width:110px;
+                        height:110px;
+                        border-radius:110px;
+                        margin:0 auto;
+                        background:url(${props => props.img});
+                        background-size:cover;
+                        background-position:center center;
                     }
-                }
-                p.skillTitle {
-                    font-size:1.5rem;
-                    font-weight:500;
-                }
-                ul {
-                    margin:0;
-                    padding:0;
-                }
-                ul li {
-                    display:inline-block;
-                    width: auto;
-                    background-color: transparent;
-                    list-style:none;
-                    border: 1px solid #E1E7EB;
-                    border-radius: 5px;
-                    margin: 0 0 3px 5px;
-                    padding: 3px 8px;
-                    color:#90A4AE;
-                }
-                .socialUtil {
-                    font-size:1.8rem;
-                }
-                p.IntroTitle {
-                    font-weight:600;
-                    font-size:1.4rem;
+                    p {
+                        text-align:center;
+                        color:black;
+                        margin-top:20px;
+                        font-weight:400;
+                        b {
+                            font-size:1.5rem;
+                        }
+                    }
+                    p.skillTitle {
+                        font-size:1.5rem;
+                        font-weight:500;
+                    }
+                    ul {
+                        margin:0;
+                        padding:0;
+                    }
+                    ul li {
+                        display:inline-block;
+                        width: auto;
+                        background-color: transparent;
+                        list-style:none;
+                        border: 1px solid #E1E7EB;
+                        border-radius: 5px;
+                        margin: 0 0 3px 5px;
+                        padding: 3px 8px;
+                        color:#90A4AE;
+                    }
+                    .socialUtil {
+                        font-size:1.8rem;
+                    }
+                    p.IntroTitle {
+                        font-weight:600;
+                        font-size:1.4rem;
+                    }
                 }
             }
         }
         .FeedBox {
-            span {
-                width:30px;
-                margin-right:20px;
-                font-size:1.2rem;
-                font-weight:400;
-                color:black;
-            }
-            width:100%;
+            width:80%;
             padding:20px 0 0 3%;
             background-color:transparent;
             margin-left:20px;
@@ -167,8 +163,10 @@ const Profile = ({profile,nick}) => {
     return (
         <>
             {info ? <>
+            {console.log(info)}
             <ProfileContainer img={'img/'+info.profile_img} pathCase={activeTap}>
                 <div className="profile_box">
+                    <div className="profile_card">
                     <div className="profile">
                         <div className="leftTop">
                             <div className="profile_pic" />
@@ -213,20 +211,20 @@ const Profile = ({profile,nick}) => {
                             </div>
                         </div>
                     </div>
-                
+                    </div>
                 <div className="FeedBox">
                     <div className="util"> 
                         <Link to={`/about/@${info.nick}`}><span className="basic">글</span></Link>
                         <Link to={`@${info.nick}/timeline`}><span className="time">타임라인</span></Link>
                     </div>
                     <hr/>
-                    <Switch>
-                    <Route path="/about/:nick" exact>
-                        <ProfilePoster data={info.posters} />
-                    </Route>
-                    <Route path="/about/:nick/timeline">
-                        <PosterImage data={info.posters}/>
-                    </Route>
+                    <Switch location={location}>
+                        <Route path="/about/:nick" exact>
+                            <ProfilePoster data={info.posters} />
+                        </Route>
+                        <Route path="/about/:nick/timeline">
+                            <PosterImage data={info.posters}/>
+                        </Route>
                     </Switch>
                 </div>
                     

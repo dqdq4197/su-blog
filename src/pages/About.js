@@ -4,11 +4,6 @@ import Profile from '../components/about/Profile';
 
 const About = ({match}) => {
     
-    useEffect(()=> {
-        document.getElementById('body').style.overflow='hidden';
-        
-        return () => {document.getElementById('body').style.overflow='visible';}
-    },[])
     const {result} = useSelector(state => state.authentication)
     return (
         <>

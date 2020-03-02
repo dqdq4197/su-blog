@@ -6,7 +6,7 @@ import {device} from '../../lib/MediaStyled';
 
 const ListContainer = styled.div`
     width:1200px;
-    margin:0 auto;
+    margin:75px auto 0;
     height:100%;
     background-color:#fafbfc;
     text-align:center;

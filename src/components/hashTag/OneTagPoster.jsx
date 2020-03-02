@@ -1,5 +1,4 @@
 import React,{useEffect, useState} from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import GetFeed from './GetFeed';
 import {useLocation, useHistory} from 'react-router-dom';
@@ -10,11 +9,15 @@ import {tagFeedAPI} from '../../lib/api/tagSearch';
 
 
 const TagContainer = styled.div`
-    width:1200px;
+    width:720px;
     height:100%;
     margin:0 auto;
     text-align:center;
+    margin-top:100px;
     @media ${device.laptopL} {
+        width:680px
+    };
+    @media ${device.tablet} {
         width:95%;
     }
     .title {

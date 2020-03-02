@@ -125,12 +125,28 @@ const PosterContainer= styled.div`
       }
     }
     .col-md-10.blog-main {
+      .inline-code {
+        color:#008000;
+        background-color:rgba(13,72,50,.08);
+      }
       .blog-post {
         max-width: 880px;
         margin: 0 auto;
       }
       img {
         display:block;
+      }
+      embed {
+        display:block;
+        margin:0 auto;
+        @media ${device.laptopL} {
+          width:493px;
+          height:256px;
+        }
+        @media ${device.tablet} {
+          width: 100%;
+          height: 45vw;
+        }
       }
       font-size:1.2rem;
       @media ${device.laptop} {
@@ -166,6 +182,19 @@ const PosterContainer= styled.div`
       word-break:keep-all;
       #content {
         word-break:break-all; 
+        .delimiter {
+          line-height: 1.6em;
+          width: 100%;
+          text-align: center;
+          &::before {
+            display: inline-block;
+            content: "***";
+            font-size: 30px;
+            line-height: 65px;
+            height: 30px;
+            letter-spacing: 0.2em;
+          }
+        }
         a {
           color:#008000;
         }
@@ -330,10 +359,10 @@ const PosterModal = () => {
             html += `<p>${block.data.text}</p>`;
             break;
           case 'delimiter':
-            html += '<hr />';
+            html += '<div class="delimiter"></div>';
             break;
           case 'image':
-            html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+            html += `<img src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
             break;
           case 'list':
             if(block.data.style==='ordered') {

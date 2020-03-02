@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux';
 import {postShowRequest} from '../../actions/posts';
 import TimeAgo from '../../lib/TimeAgo';
 import styled from 'styled-components';
-import {Icon, Popup} from 'semantic-ui-react';
+import {Popup} from 'semantic-ui-react';
 import postTumnail from '../../lib/basicTumnail/postTumnail.png';
 import Img from 'react-image';
 
@@ -46,6 +46,7 @@ const PosterWrap = styled.div`
             }
         }
         .date {
+            cursor:text;
             .rrui__tooltip--before-hide {
                 opacity : 0;
             }

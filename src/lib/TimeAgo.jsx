@@ -3,9 +3,9 @@ import ReactTimeAgo from 'react-time-ago/tooltip'
  
 export default function TimeAgo({ date }) {
   let newDate = new Date(date).getTime()
-  return (
+  return (  
     <div>
-      <ReactTimeAgo date={newDate} tooltip={false} locale="ko"/>
+      <ReactTimeAgo style={{pointerEvents: 'none'}} date={newDate} locale="ko"/>
     </div>
   )
 } 

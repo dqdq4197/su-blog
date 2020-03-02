@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, useLocation, Redirect} from 'react-router-dom';
 import './App.css';
-import {Board, About, Login, Home, Poster, Signup, TagList, Search ,OneTag, PosterModal} from './pages';
+import {Board, About, Login, Home, Poster, Signup, TagList, Search ,OneTag, PosterModal, Setting} from './pages';
 import Header from './components/header/Header';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
@@ -43,6 +43,7 @@ function AppSwitch() {
           <Route path="/home" exact component={Home}/>
           <Route path="/Search" component={Search} />
           <Route path="/about/:nick" component={About}/>
+          <Route path="/setting" component={Setting}/>
           <Route path="/poster/:id/:author" component={Poster} />
           <Route path="/Postting" component={Board} />
           <Route path="/Signup" exact component={Signup}/>

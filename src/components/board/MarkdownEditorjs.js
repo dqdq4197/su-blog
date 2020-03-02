@@ -15,9 +15,42 @@ import {useDispatch, useSelector} from 'react-redux';
 import SavePosterModal from '../../lib/SavePosterModal';
 import {posterOutputData} from '../../actions/posts';
 import styled from 'styled-components';
+import {device} from '../../lib/MediaStyled';
 
 const Canvas = styled.div`
   text-align:center;
+  background-color:rgba(13, 72, 50, 0.08);
+  max-width:100%;
+  padding:100px 0 0 0;
+  min-height:100vh;
+  @media ${device.tablet} {
+    padding-top:20px;  
+  }
+  .postBox {
+    @media ${device.laptop} {
+      max-width:750px;
+    }
+    max-width:850px;
+    margin:0 auto;
+    .postWrap {
+      @media ${device.tablet} {
+        border-radius:0;
+        margin:0 10px;  
+      }
+      background-color:#fff
+      margin:0 auto;
+      border-radius: 8px;
+      -webkit-box-shadow: 0 24px 24px -18px rgba(69,104,129,.33), 0 9px 45px 0 rgba(114,119,160,.12);
+      box-shadow: 0 24px 24px -18px rgba(69,104,129,.33), 0 9px 45px 0 rgba(114,119,160,.12);
+      padding: 70px 50px 30px;
+      font-size: 16px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    #markdownEditor {
+      
+    }
+  }
 `
 
 
@@ -31,6 +64,17 @@ const MarkdownEditorjs = ({}) => {
     holderId: 'markdownEditor', 
     placeholder: '여기에 작성하세요!',
     tools: {
+      header: {
+        class: Header, 
+        inlineToolbar: ['link'], 
+        config: {
+          placeholder: "Enter a header"
+        },
+        type: {
+          text: "hi",
+          level:2,
+        }
+      }, 
       image: {
         class: ImageTool,
         config: {
@@ -72,7 +116,10 @@ const MarkdownEditorjs = ({}) => {
           }
         }
       },
-      //image: SimpleImage,
+      list: { 
+        class: List, 
+        inlineToolbar: true, 
+      },
       inlineCode: {
         class: InlineCode,
         shortcut: 'CMD+SHIFT+M',
@@ -90,33 +137,17 @@ const MarkdownEditorjs = ({}) => {
           services: {
             youtube: true,
             coub: true,
+            codepen: {
+              regex: /https?:\/\/codepen.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
+              embedUrl: 'https://codepen.io/<%= remote_id %>?height=300&theme-id=0&default-tab=css,result&embed-version=2',
+              html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
+              height: 300,
+              width: 600,
+              id: (groups) => groups.join('/embed/')
+            }
           }
         }
-      },
-      quote: {
-        class: Quote,
-        inlineToolbar: true,
-        config: {
-          quotePlaceholder: 'Enter a quote',
-          captionPlaceholder: 'Quote\'s author',
-        },
-        shortcut: 'CMD+SHIFT+O',
-      },
-      header: {
-        class: Header, 
-        inlineToolbar: ['link'], 
-        config: {
-          placeholder: "Enter a header"
-        },
-        type: {
-          text: "hi",
-          level:2,
-        }
-      }, 
-      list: { 
-        class: List, 
-        inlineToolbar: true, 
-      }  
+      }      
   },
    data: modifyData.posterModifyData.content,
   onReady: () => {
@@ -159,9 +190,13 @@ const outData = () => {
 
   return (
     <Canvas>
-      <h1>Create Post</h1>
-      <div id="markdownEditor"></div>
-      <SavePosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
+      <div className="postBox">
+        <div className="postWrap">
+        <div id="markdownEditor"></div>
+          <SavePosterModal modifydata={modifyData.posterModifyData} posterId={modifyData.posterId} onClick={outData}/>
+        </div>
+      </div>
+      
     </Canvas>
   )
 }

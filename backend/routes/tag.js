@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Post,User,Comment} = require('../models');
+const {Post,User,Comment, P_like} = require('../models');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
 
@@ -14,6 +14,8 @@ router.get('/getPost/:tag', (req,res) => {
             attributes:['profile_img'],
         },{
             model: Comment
+        },{
+            model: P_like
         }],
         where:{
             [Op.or]: [

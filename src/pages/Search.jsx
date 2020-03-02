@@ -11,6 +11,7 @@ const SearchBox = styled.div`
     width:1200px;
     height:100vh;
     text-align:center;
+    padding-top:60px;
     margin:0 auto;
     @media ${device.laptopL} {
         width:1024px;

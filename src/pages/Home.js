@@ -13,7 +13,6 @@ import {homeAPI} from '../lib/api/home';
 import DeskTop from '../lib/skeleton/Home/DeskTop';
 import LaptopL from '../lib/skeleton/Home/LaptopL';
 import axios from 'axios';
-import {Icon} from 'semantic-ui-react';
 import SearchIcon from '@material-ui/icons/Search';
 
 const Content = styled.div`
@@ -21,6 +20,7 @@ const Content = styled.div`
     width:100%;
     height:auto;
     background-color:#fafbfc;
+    margin-top:60px;
     .laptopL {
         display:none;
         @media ${device.laptopL} {

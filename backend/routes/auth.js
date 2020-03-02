@@ -43,6 +43,8 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
           nick:user.nick,
           profile_img:user.profile_img,
           createdAt:user.createdAt,
+          skills:user.skills,
+          intro:user.intro
         })
       )
     })
@@ -181,12 +183,18 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage })
 
-router.post('/profile/img',upload.single('img'), (req, res) => {
-  console.log(req.file);
-  if(req.file){
-    res.json({ path: `${req.file.filename}` });
+router.post('/profile/img/:nick',upload.single('img'), (req, res) => {
+  console.log(req,'asd');
+  const {formdata} = req.body
+  const nick = req.params.nick;
+  if(formdata) {
+    User.update({profile_img:formdata},{where:{nick}})
+    res.json({ path: formdata });
+  }else if(req.file){
+    User.update({profile_img:req.file.filename},{where:{nick}})
+    res.json({ path: `${req.file.filename }` });
   }else {
-    req.status("404").json("No file to Upload!")
+    res.status("404").json("No file to Upload!")
   }
 });
 

@@ -39,6 +39,10 @@ const ProfileFaker = ({info}) => {
         history.push(`/about/@${info.nick}`);
     }
     
+    const goSetting = () =>(
+      history.push('/setting')
+    )
+    
     const onclicklogout = async(e) => {
         e.preventDefault();
         dispatch(logoutRequest()).then(
@@ -55,10 +59,10 @@ const ProfileFaker = ({info}) => {
     }
     
     const options = [
-        { key: 'user', text: 'Account', icon: 'user', onClick:goAbout},
-        { key: 'settings', text: 'Settings', icon: 'settings'},
-        { key: 'sign-out', text: 'Sign Out', icon: 'sign out', onClick:onclicklogout },
-        { key: 'write', text: 'write', icon: 'write', onClick:resetState },
+      { key: 'write', text: '글쓰기', icon: 'write', onClick:resetState },
+      { key: 'user', text: '내 정보', icon: 'user', onClick:goAbout},
+      { key: 'settings', text: '설정', icon: 'settings', onClick:goSetting},
+      { key: 'sign-out', text: '로그아웃', icon: 'sign out', onClick:onclicklogout },
     ]
         
     return(

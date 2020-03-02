@@ -42,15 +42,33 @@ export function logoutRequest() {
     }
 }
 
-export function profile_img_change(formdata) {
+export function profile_img_change(formdata,nick) {
     return (dispatch) => {
-        return axios.post('/auth/profile/img',formdata)
-        .then((res) => {
-            dispatch(profile_img_change_success(res.data.path))
-            console.log('path: ',res.data.path)
-        }).catch((error) => {
-            console.log("action profile_img_change_error")
-        })
+        if(formdata=== 'basic.png') {
+            return axios.post(`/auth/profile/img/${nick}`,{formdata})
+            .then((res) => {
+                dispatch(profile_img_change_success(res.data.path))
+                let info = storage.get('loginInfo');
+                info.profile_img=res.data.path;
+                storage.set('loginInfo',info);
+                console.log('path: ',res.data.path)
+                return res.data.path
+            }).catch((error) => {
+                console.log("action profile_img_change_error")
+            })
+        }else {
+            return axios.post(`/auth/profile/img/${nick}`,formdata)
+            .then((res) => {
+                dispatch(profile_img_change_success(res.data.path))
+                let info = storage.get('loginInfo');
+                info.profile_img=res.data.path;
+                storage.set('loginInfo',info);
+                console.log('path: ',res.data.path)
+                return res.data.path
+            }).catch((error) => {
+                console.log("action profile_img_change_error")
+            })
+        }
     }
 }
 export function login() {
