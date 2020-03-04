@@ -71,6 +71,9 @@ const PosterContainer= styled.div`
       margin-right:0;
     }
     .col-md-8.blog-main {
+      h1,h2,h3,h4,h5 {
+        word-break: break-word;
+      }
       .inline-code {
         color:#008000;
         background-color:rgba(13,72,50,.08);
@@ -297,9 +300,12 @@ const Poster = ({match}) => {
             title.current.date = res.data.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ');
             title.current.categorie = res.data.skills;
             title.current.tags = res.data.hashTags;
-        
+            
+            console.log(res.data.user.profile_img)
             jsonData(outdata)};
-        })
+        }).catch((error) => 
+        document.getElementById('content').innerHTML = 'Notfound'
+        )
       
       }
       useEffect(() => {

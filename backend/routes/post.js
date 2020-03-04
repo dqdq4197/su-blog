@@ -50,7 +50,11 @@ router.get('/:id/:author', (req,res) => {
         }],
         where: {id: req.params.id}})
         .then((response) => {
-        res.json(response.dataValues);
+            if(response) {
+                res.json(response.dataValues);
+            } else {
+                res.status(404).send('fail')
+            }
     })
 })
 

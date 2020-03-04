@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, useLocation, Redirect} from 'react-router-dom';
 import './App.css';
-import {Board, About, Login, Home, Poster, Signup, TagList, Search ,OneTag, PosterModal, Setting} from './pages';
+import {Board, About, Login, Home, Poster, Signup, TagList,NotFound , Search ,OneTag, PosterModal, Setting} from './pages';
 import Header from './components/header/Header';
 import storage from './lib/storage';
 import {login_info_save} from './actions/authentication';
@@ -50,6 +50,7 @@ function AppSwitch() {
           <Route path="/hashtags" exact component={TagList} />
           <Route path="/hashtags/:tag" component={OneTag} />
           <Route path="/home/:categories" exact component={Home} />
+          <Route component={NotFound} />
         </Switch>
         {background && <Route path="/poster/:id/:author" component={PosterModal} />}
         

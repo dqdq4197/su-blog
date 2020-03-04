@@ -1,9 +1,9 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import SetImage from './SetImage';
-import axios from 'axios';
 import storage from '../../lib/storage';
 import styled from 'styled-components';
 import SetDetail from './SetDetail';
+import {device} from '../../lib/MediaStyled';
 
 const ProfBox = styled.div`
     width:800px;
@@ -11,6 +11,10 @@ const ProfBox = styled.div`
     padding-top:60px;
     margin:50px auto 0;
 
+    @media ${device.tablet} {
+        width:100%;
+        padding:30px 3px 3px 3px;
+    }
 ` 
 
 const SetWrap = () => {

@@ -18,3 +18,4 @@ export { default as PosterModal} from './PosterModal';
 export { default as TagList} from './TagList';
 export { default as OneTag} from './OneTag';
 export { default as Setting} from './Setting';
+export { default as NotFound} from './NotFound';

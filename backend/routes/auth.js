@@ -16,6 +16,7 @@ const {userinfo} = require('../passport/kakaoStrategy');
 const router = express.Router();
 router.post('/login',isNotLoggedIn, (req,res,next) => {
   passport.authenticate('local',(error,user,info) => {
+    console.log(user);
     if(error) {
       res.status(500).json({
         message: error || 'Oops, something happened!',
@@ -37,6 +38,7 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
         );
       }
       return (
+        
         res.json({
           id:user.id,
           email:user.email,
@@ -44,7 +46,8 @@ router.post('/login',isNotLoggedIn, (req,res,next) => {
           profile_img:user.profile_img,
           createdAt:user.createdAt,
           skills:user.skills,
-          intro:user.intro
+          intro:user.intro,
+          social:user.social
         })
       )
     })

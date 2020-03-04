@@ -6,13 +6,22 @@ import {Button} from '../../lib/AuthInput';
 import {useDispatch, useSelector} from 'react-redux';
 import {profile_img_change} from '../../actions/authentication';
 import storage from '../../lib/storage';
+import {device} from '../../lib/MediaStyled';
 
 const Container = styled.div`
     display:flex;
+    padding:20px;
+    @media ${device.tablet} {
+        display:block;
+        padding-bottom:0;
+    }
     .setImageBox {
         width:200px;
         height:200px;
         text-align:center;
+        @media ${device.tablet} {
+            margin:0 auto;
+        }
         .deleteBtn {
             background-color:white;
             border:1px solid #008000;
@@ -32,9 +41,24 @@ const Container = styled.div`
         margin-left:25px;
         font-weight:600;
         color:#90A4AE;
+        @media ${device.tablet} {
+            display:none;
+        }
         h2,h4 {
             color:black;
             margin-left:10px;
+        }
+    }
+    .tabletInfo {
+        display:none;
+        font-size:16px;
+        h5 {
+            color:black;
+            font-weight:600;
+            margin:5px 0;
+        }
+        @media ${device.tablet} {
+            display:block;
         }
     }
 
@@ -71,7 +95,7 @@ const SetImage = ({data}) => {
     return (
         <Container >
         <div className="setImageBox">
-            <Avatar style={{margin:'0 auto'}} alt={data.nick} src={`img/${path}`} className={classes.large}/>
+            <Avatar className="img" style={{margin:'0 auto'}} alt={data.nick} src={`img/${path}`} className={classes.large}/>
             <div className="btn">
                 <Button onChange={onImgChange} style={{marginBottom:'4px'}}>
                     <label htmlFor="profile_change_input">이미지 업로드</label>
@@ -86,6 +110,12 @@ const SetImage = ({data}) => {
         <div className="basicInfo">
             닉네임<h2>{data.nick}</h2>
             이메일<h4>{data.email}</h4>
+        </div>
+        <div className="tabletInfo">
+            <hr/>
+            <div><h5>닉네임</h5>{data.nick}</div>
+            <div><h5>이메일</h5>{data.email}</div>
+            <hr/>
         </div>
         </Container>
     

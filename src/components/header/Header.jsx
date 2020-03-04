@@ -1,4 +1,4 @@
-import React,{useState, useEffect,useRef} from 'react';
+import React,{useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {Link, useHistory} from 'react-router-dom';
 import storage from '../../lib/storage';
@@ -11,7 +11,6 @@ import {useSelector} from 'react-redux';
 const Header = () => {
         
     const [userinfo, setUserinfo] = useState('');
-    const [scrollFix, setScrollFix] = useState(true);
     const history = useHistory();
     const {status} = useSelector(state => state.authentication)
 
@@ -81,16 +80,21 @@ const Header = () => {
         setUserinfo(storage.get('loginInfo'));
         let prevScrollpos = window.pageYOffset;
         document.addEventListener('scroll',
-                function() { 
-                    if(window.scrollY >120){
+            function() { 
+                if(window.scrollY >120){
                     let currentScrollPos = window.pageYOffset;
-                    if (prevScrollpos > currentScrollPos) {
+                    if (prevScrollpos > currentScrollPos || window.scrollHeight === 0) {
                       document.getElementById("head").style.top = "0";
                     } else {
                       document.getElementById("head").style.top = "-60px";
                     }
                     prevScrollpos = currentScrollPos
-                }});
+                }
+                if(window.scrollY === 0) {
+                    document.getElementById("head").style.top = "0";
+                }
+            }
+        );
 
         // return () => {document.removeEventListener('scroll', handleScroll)}
     },[status.currentUser.profile_img_path])
