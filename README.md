@@ -4,6 +4,8 @@
 
 __demo: [Sublog][<https://sublog.co>]__
 
+> 기능 : 로그인(local)/소셜로그인(Oouth), 회원가입, 포스트 마크다운(image,embed,코드 highlight, codepen.io 불러오기),포스트 등록(해시태그, 썸네일, 카테고리, 공개/비공개 설정), 포스트 설정(좋아요, 수정, 삭제, 페이스북 공유, 주소복사, 댓글 ), 해시태그 검색, 포스트 검색, 프로필 설정(보유 기술, 소개글, 소셜정보, 프로필 사진 설정)
+
 ### FrontEnd
 - React Hooks
 - markdownEditor(editorjs)
@@ -22,7 +24,7 @@ __demo: [Sublog][<https://sublog.co>]__
 - passport를 이용한 로그인 구현 (local + Oouth)
 - 회원가입 인증메일 (nodemailer)
 
-### 배포 + 보안
+### 인프라(배포) + 보안
 - aws ec2 -> ubuntu운영체제 -> nginx서버 
 - aws router53 도메인 연결 
 - aws s3 multer 프로필/포스트이미지 저장 (람다 함수 적용)
