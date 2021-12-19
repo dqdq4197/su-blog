@@ -3,6 +3,7 @@ const router = express.Router();
 const {Post,User,Comment, P_like} = require('../models');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
+const {cache} = require('./middlewares');
 
 router.get('/getPost/:tag', (req,res) => {
     
@@ -31,12 +32,11 @@ router.get('/getPost/:tag', (req,res) => {
                 {hashTags: tag }
             ]
     }}).then((value) => {
-        console.log(value)
         res.json(value);
     })
 })
 
-router.get('/getTags', (req,res) => {
+router.get('/getTags',cache(10), (req,res) => {
     Post.findAll({attributes:['hashTags']})
     .then((value) => res.json(value))
 })

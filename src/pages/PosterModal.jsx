@@ -246,11 +246,12 @@ const PosterContainer= styled.div`
       li {
         line-height:230%;
       }
-      img {
-        left:0;
-        right:0;
-        margin:0 auto;
-        max-width:100%;
+      .img-fluid {
+        text-align:center;
+        img {
+          margin:0 auto;
+          max-width:100%;
+        }
       }
     }
   }
@@ -327,7 +328,6 @@ const PosterModal = () => {
         return result;
       })
       setModifyData(location.state.block);
-      console.log(location.state.block)
       jsonData(outData);
     
     };
@@ -362,7 +362,7 @@ const PosterModal = () => {
             html += '<div class="delimiter"></div>';
             break;
           case 'image':
-            html += `<img src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+            html += `<div class="img-fluid"><img src="${block.data.file.url}" alt="${block.data.caption}" title="${block.data.caption}" /><em>${block.data.caption}</em><br/></div>`;
             break;
           case 'list':
             if(block.data.style==='ordered') {
@@ -396,7 +396,6 @@ const PosterModal = () => {
         document.getElementById('Title_author').onclick=function(){ history.push(`/about/@${location.state.block.author}`)}
       });
     };
-console.log(location.state.block.author);
     const SubTitle = () => {
       return header ? <SubTitleBox>{<ul>{header.map(
           (title) => {

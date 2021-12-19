@@ -153,6 +153,26 @@ const PosterContainer= styled.div`
           width:100%;
       }}
       #content {
+        .img-fluid {
+          text-align:center;
+          img {
+            margin:0 auto;
+            max-width:100%;
+          }
+        }
+        .delimiter {
+          line-height: 1.6em;
+          width: 100%;
+          text-align: center;
+          &::before {
+            display: inline-block;
+            content: "***";
+            font-size: 30px;
+            line-height: 65px;
+            height: 30px;
+            letter-spacing: 0.2em;
+          }
+        }
         a {
           color:#008000;
         }
@@ -211,9 +231,6 @@ const PosterContainer= styled.div`
       }
       li {
         line-height:230%;
-      }
-      img {
-        max-width:100%;
       }
     }
   }
@@ -291,8 +308,6 @@ const Poster = ({match}) => {
               return result;
             })
             setModifyData(res.data);
-            console.log(outdata);
-            console.log(res.data)
             
             title.current.title=res.data.tumnailTitle;
             title.current.profile_img = res.data.user.profile_img;
@@ -300,8 +315,7 @@ const Poster = ({match}) => {
             title.current.date = res.data.createdAt.slice(0,10).replace(/-/, '년 ').replace(/-/,'월 ');
             title.current.categorie = res.data.skills;
             title.current.tags = res.data.hashTags;
-            
-            console.log(res.data.user.profile_img)
+        
             jsonData(outdata)};
         }).catch((error) => 
         document.getElementById('content').innerHTML = 'Notfound'
@@ -324,7 +338,6 @@ const Poster = ({match}) => {
           behavior: 'smooth'
         });
       }
-      console.log(modifyData.tumnailTitle);
       const jsonData = (json) => {
         let html = `<h1 id="Title_postTitle">${title.current.title}</h1><div id='Title_profileImg'></div><div id="Title_author">${title.current.author}</div>  <p id="Title_date">· ${title.current.date}일</p>`;
         json.forEach(function(block,i) {
@@ -338,10 +351,10 @@ const Poster = ({match}) => {
               html += `<p>${block.data.text}</p>`;
               break;
             case 'delimiter':
-              html += '<hr />';
+              html += '<div class="delimiter"></div>';
               break;
             case 'image':
-              html += `<img className="img-fluid" src="${block.data.file.url}" alt="" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+              html += `<div class="img-fluid"><img src="${block.data.file.url}" alt="${block.data.caption}" title="${block.data.caption}" /><em>${block.data.caption}</em><br/></div>`;
               break;
             case 'list':
               if(block.data.style==='ordered') {
@@ -385,7 +398,6 @@ const Poster = ({match}) => {
             }
         )}<li className="commentView"><a href="#commentView">댓글 보기</a></li></ul>}</SubTitleBox> : null
       }
-    console.log(title.current.profile_img)
     return (
       <>
         <SubTitle />

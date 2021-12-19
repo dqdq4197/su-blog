@@ -62,7 +62,6 @@ export default function ToggleDial({id,author,user, width , left}) {
     getLike();
   },[])
   const movePoster = () => {
-    console.log(location);
     history.push(location.pathname)
   }
   
@@ -72,7 +71,6 @@ export default function ToggleDial({id,author,user, width , left}) {
       user_nick:user,
     }).then((data) => {
       setLikeInfo(data.data);
-      return console.log(data.data);
     })
   }
   const onLike = () => {
@@ -85,7 +83,6 @@ export default function ToggleDial({id,author,user, width , left}) {
       setValid(!valid);
     })
   }
-  console.log(likeInfo.send)
   const actions = [
     { icon: <FileCopyIcon/>, name: 'Copy', onclick:copyAddress },
     { icon: <PrintIcon />, name: 'Print' },

@@ -9,6 +9,7 @@ import SignupField from '../components/singup/SignupField';
 import storage from '../lib/storage';
 import styled,{keyframes} from 'styled-components';
 import {Button} from '../lib/AuthInput'
+import {device} from '../lib/MediaStyled';
 
 
 const AuthContainer = styled.div`

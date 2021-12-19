@@ -3,6 +3,7 @@ const {Post,User,P_like} = require('../models');
 const router = express.Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
 router.post('/upload', (req,res,next) => {
     const {outputData, userId, isHide,nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
     //var sysdate = new Date(outputData.time);
@@ -28,7 +29,6 @@ router.post('/upload', (req,res,next) => {
 
 router.post('/modify/:posterId', async(req,res,next) => {
     const {outputData, isHide,userId, nick,tumnailTitle,hashTags,skills,tumnailImg} =req.body;
-    console.log(isHide)
     await Post.update({
         content:outputData,
         userId,
@@ -42,7 +42,7 @@ router.post('/modify/:posterId', async(req,res,next) => {
     ).then(() => res.send('수정완료'))
 })
 
-router.get('/:id/:author', (req,res) => {
+router.get('/:id/:author',(req,res) => {
     Post.findOne({
         include:[{
             model : User,
@@ -72,7 +72,7 @@ router.delete('/delete/:id/:author', async(req,res,next) => {
     }
 });
 
-router.post('/getLike', (req,res) => {
+router.post('/getLike',(req,res) => {
     const {postId, user_nick} = req.body;
     P_like.findAll({where:{postId}})
     .then((send) => {

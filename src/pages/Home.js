@@ -207,13 +207,15 @@ const Home = ({match}) => {
         callPosts();
         window.addEventListener('scroll', handleScroll);
         
-        return (() => { window.removeEventListener('scroll', handleScroll)})
+        return (() => { 
+            window.removeEventListener('scroll', handleScroll)
+        })
     },[match.params.categories]);
     
-    const callPosts = async() => {
+    const callPosts = () => {
         setPosterId([]);
         dispatch(home_load_request());
-        await axios.get(`/home/${match.params.categories}`)
+         axios.get(`/home/${match.params.categories}`)
         // homeAPI.get({page:match.params.categories,history:history})
         .then((res) => {
             res.data.map(tag =>tag.hashTags=== null ? null : tag.hashTags.split(',').map( res => setHashTag(prev => [...prev, res])));
